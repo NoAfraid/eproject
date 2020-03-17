@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet"  href="../../static/css/css.css"/>
+		<link rel="stylesheet" type="text/css" href="../../static/css/grzx.css"/>
+		<link rel="stylesheet" type="text/css" href="../../static/css/zt.css"/>
+	</head>
+	<body>
+		<div id="zd">
+
+			<!--#include file="../header.html"-->
+			<div class="bj1">
+				<div class="dk1">
+					<div class="xsdh">
+						<div class="p1">
+							<a href="../	qindex.html"><p>首页</p></a>
+							<p>></p>
+						</div>
+						<div class="p1">
+							<a href="../center.html"><p>个人中心</p></a>
+							<p>></p>
+						</div>
+						<div class="p1">
+							<p>修改密码</p>
+						</div>
+					</div>
+					<div class="grzx">
+						<div class="grzxdht">
+							<div class="gr">
+								<a href="../center.html">个人资料</a>
+							</div>
+							<div class="gr">
+								<a href="centerCollect.html">我的收藏</a>
+							</div>
+							<div class="gr">
+								<a href="wdguanzhu.html">我关注的人</a>
+							</div>
+							<div class="gr">
+								<a href="wdfensi.html">我的粉丝</a>
+							</div>
+							<div class="gr">
+								<a href="wdshangchuan.html">我的上传</a>
+							</div>
+							<div class="gr">
+								<a href="wdtiezi.html">我发表的帖子</a>
+							</div>
+							<div class="gr">
+								<a href="wdzhixun.html">我的咨询</a>
+							</div>
+							<div class="gr">
+								<a href="wdwujuan.html">我参与的问卷</a>
+							</div>
+							<div class="gr">
+								<a href="xgmima.html" class="hsys">修改密码</a>
+							</div>
+							<div class="gr">
+								<a href="javascript:loginout()">退出</a>
+							</div>
+						</div>
+						<div class="grkj" id="app" v-cloak>
+							<div class="grzl">
+								<div class="grzlbt">
+									<p>修改密码</p>
+								</div>
+								<div class="grzlnr">
+									<div class="xgzh">
+										<div class="zh">
+											<p>原密码：</p>
+											<input :type="showPassword ? 'text' : 'password'" name="oldPassword"  v-model.trim="oldPassword" />
+										</div>
+										<div class="zh">
+											<p>新密码：</p>
+											<input :type="showPassword ? 'text' : 'password'" name="password"  v-model.trim="password" />
+										</div>
+										<div class="zh">
+											<p>确认密码：</p>
+											<input :type="showPassword ? 'text' : 'password'" name="confirmPassword"  v-model.trim="confirmPassword" />
+										</div>
+										<div class="an">
+											<div style="text-align: left;margin-bottom: 10px;">
+												<input type="checkbox" v
+
+												>显示密码
+											</div>
+											<div>
+												<input type="button" @click="modify"  value="修改" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!--#include file="../footer.html"-->
+		</div>
+		<script src="../static/js/modules/center/xgmima.js"></script>
+	</body>
+</html>

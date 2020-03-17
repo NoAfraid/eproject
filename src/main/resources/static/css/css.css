@@ -1,0 +1,783 @@
+/*全局样式*/
+html{height: 100%;width: 100%;}
+body, div, ul, dl, dt, dd, li, dl, h1, h2, h3, h4
+{padding: 0;margin: 0;font-family:"微软雅黑";color: #000000;font-size: 12px;}
+ul, ol{list-style: none;}
+img {border: 0; vertical-align:middle; width: 100%; height: 100%;}
+body{color:#000000;background:#FFF; text-align:center; width: 100%;height: 100%;}
+.clear{clear:both;height:1px;width:100%; overflow:hidden; margin-top:-1px;}
+a{color:#000000;text-decoration:none; }
+a:hover {color:#BA2636;text-decoration:none;}
+table, th, tr, td{border-collapse:collapse;}
+input{
+	outline: none;
+}
+textarea{
+
+	resize: none;
+}
+[v-cloak] {
+	display: none;
+}
+/*顶部*/
+#bj{
+	float: left;
+	min-width: 100%;
+	height: 58px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	border-bottom: 1px solid #e2e2e2;
+	background: #ffffff;
+}
+#dk{
+	width: 1200px;
+	height: 58px;
+	border-bottom: 1px solid#E2E2E2;
+}
+.logo{
+	height: 40px;
+	width: 143px;
+	float: left;
+	margin-top: 10px;
+}
+.dht{
+	width: 800px;
+	float: left;
+	margin-left: 20px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+.sz{
+	float: left;
+	width: 100px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	height: 58px;
+	line-height: 58px;
+	margin: 0 20px;
+}
+.sz a{
+	font-size: 16px;
+	float: left;
+}
+.sz a:hover{
+	border-bottom: 2px solid#BA2636;
+	color: #BA2636;
+	height: 56px;
+	line-height: 58px;
+}
+.rd{
+	float: left;
+	width: 120px;
+	position: relative;
+    display: inline-block;
+    z-index: 999;
+    margin: 0 10px;
+}
+.rd a{
+	font-size: 16px;
+}
+.ssk{
+	float: left;
+	margin-top: 15px;
+	margin-left: 15px;
+
+}
+.ssk input{
+	float: left;
+	padding-top: 0;
+	padding-bottom: 0;
+	border-radius: 5px;
+	width: 151px;
+    border: 1px solid #E2E2E2;
+    height: 26px;
+    font-size: 12px;
+    padding-left: 8px;
+    outline:none;
+    margin-top: -1px;
+
+}
+.shousuo{
+	float: left;
+	width: 100%;
+}
+.sskj{
+	float: left;
+	width: 1160px;
+	margin: 20px 0;
+}
+.sk{
+	float: left;
+	width: 100%;
+}
+.sk input{
+	width: 500px;
+	height: 32px;
+	font-size: 15px;
+	float: left;
+	text-indent: 10px;
+}
+.sk a{
+	float: left;
+	width: 90px;
+	height: 38px;
+	line-height: 38px;
+	background: #538FFC;
+	color: #FFFFFF;
+	font-size: 15px;
+}
+.tb{
+	width: 12px;
+	height: 12px;
+	float: left;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	margin-left: -21px;
+	margin-top: 4px;
+}
+.dr{
+	float: right;
+	border: 1px solid #FFFFFF;
+	margin-top: 12px;
+
+}
+.dr a{
+	float: left;
+}
+.dr a img{
+	width: 30px;
+	height: 30px;
+	border-radius: 100%;
+}
+/*底部*/
+.db{
+	float: left;
+	min-width: 100%;
+	height: 120px;
+	background: #cc3333;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+.dibu{
+	float: left;
+	width: 1200px;
+}
+.xzkj{
+	float: left;
+	width: 800px;
+	height: 118px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+.wz{
+	float: left;
+	margin-right: 40px;
+}
+.wz img{
+	float: left;
+	width: 36px;
+	height: 36px;
+}
+.wz div{
+	float: left;
+	width: 100%;
+}
+.wz div p:nth-child(1){
+	float: left;
+	font-size: 14px;
+	color: #FFFFFF;
+	margin: 0;
+	text-align: left;
+
+}
+.wz div p:nth-child(2){
+	float: left;
+	font-size: 14px;
+	color: #FFFFFF;
+	margin: 0;
+}
+.ewm{
+	float: left;
+	width: 400px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	margin-top: 14px;
+}
+.gfwx{
+	float: left;
+	width: 100%;
+}
+.gfwx img{
+	width: 89px;
+	height: 88px;
+}
+.gfwx p{
+	float: left;
+	font-size: 14px;
+	color: #FFFFFF;
+	margin: 0;
+	margin-top: 34px;
+}
+/*框架*/
+.zjbf{
+	float: left;
+	width: 100%;
+}
+.dsz{
+	float: left;
+	width: 264px;
+	margin-left: 10px;
+	
+	margin-top: 12px;
+}
+.dsz a{
+	float: left;
+}
+.dsz a img{
+	width: 264px;
+    height: 87px;
+    margin-bottom: 20px;
+}
+#zd{
+	width:100%;
+	height:100%;
+}
+
+
+.bj1{
+	min-width: 100%;
+	float: left;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+
+}
+.dk1{
+	float: left;
+	width: 1200px;
+	height: 100%;
+}
+.bsk{
+	background-color: #FFFFFF;
+	width: 1200px;
+	float: left;
+	margin-top: 15px;
+}
+.kk{
+	float: left;
+	width: 916px;
+	margin-top: 12px;
+	margin-bottom: 20px;
+}
+.kf{
+	float: left;
+	width: 264px;
+	margin-top: 12px;
+	margin-bottom: 20px;
+	margin-left: 20px;
+}
+.kj{
+	float: left;
+	width: 916px;
+}
+.spkj{
+	float: left;
+	width: 100%;
+}
+/*导航条弹出特效*/
+.dropbtn{
+    background-color: #FFFFFF;
+    font-size: 16px;
+    height: 58px;
+    line-height: 58px;
+    border: none;
+    cursor: pointer;
+}
+.qydtkj{
+	float: left;
+	width: 144px;
+	position: relative;
+    display: inline-block;
+}
+.qydt{
+    background-color: #f9f9f9;
+    width: 144px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    color: black;
+	padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.qydt:hover{
+    background-color: #f1f1f1
+}
+.qydtzt{
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 144px;
+    border-left: 1px solid#E2E2E2;
+    left: 144px;
+    top: 0px;
+}
+.qydtzt a{
+	color: black;
+	padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.qydtzt a:hover{
+    background-color: #f1f1f1
+}
+.dropdown-content{
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 144px;
+    /*border: 1px solid#E2E2E2;*/
+    top: 58px;
+    left: -22px;
+	z-index: 99;
+}
+.dropdown-content a{
+	color: black;
+	width: 112px;
+	height: 21px;
+	float: left;
+	padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown-content a:hover{
+    background: #BA2636;
+	color: #FFFFFF;
+}
+.rd:hover .dropdown-content{
+    display: block;
+}
+.rd:hover .dropbtn{
+	border-bottom: 2px solid#BA2636;
+	color: #BA2636;
+}
+.qydtkj:hover .qydtzt{
+    display: block;
+}
+.qydtkj:hover .qydt{
+	background: #BA2636;
+	color: #FFFFFF;
+}
+.qydtzt a:hover{
+	background: #BA2636;
+	color: #FFFFFF;
+}
+.dropdown:hover .dropbtn{
+    background-color: #f1f1f1;
+}
+/*正常内容*/
+.jxs{
+	float: left;
+	width: 100%;
+}
+.tu{
+	width: 450px;
+	margin-top: 12px;
+	float: left;
+}
+.tu img{
+	width: 450px;
+	height: 300px;
+	float: left;
+}
+.lbtbt{
+	float: left;
+	width: 100%;
+	height: 36px;
+	line-height: 36px;
+	background: rgba(0, 0, 0, 0.6);
+	margin-top: -36px;
+}
+.lbtbt p{
+	width: 100%;
+	font-size: 15px;
+	color: #FFFFFF;
+	margin: 0;
+	text-align: left;
+	text-indent: 20px;
+}
+.youbian{
+	width: 442px;
+	float: left;
+	margin-left: 20px;
+	margin-top: 12px;
+
+}
+.xw{
+	float: left;
+}
+.xw1{
+	width: 442px;
+	height: 105px;
+	float: left;
+	background-color: #eaeaea;
+}
+.nr{
+	width: 100%;
+	text-align: left;
+	margin-top: 14px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.nr a{
+	font-size: 18px;
+	margin-left: 10px;
+	font-weight: bold;
+}
+.ckxq{
+	float: left;
+	padding-top: 34px;
+	padding-left: 10px;
+	font-size: 14px;
+}
+.xw2{
+	width: 442px;
+	height: 40px;
+	float: left;
+	border-bottom: 1px dashed#b3b3b3;
+	margin-top: 8px;
+}
+.nr1{
+	width: 311px;
+	text-align: left;
+	float: left;
+	margin-top: 6px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+	font-size: 16px;
+}
+
+.ellipsis p {
+	height: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+
+
+	/*! autoprefixer: off */
+
+	/*-webkit-box-orient: vertical;*/
+
+}
+
+.sj1{
+
+	font-size: 12px;
+	float: right;
+	margin: 0;
+	margin-top: -4px;
+	color: #b3b3b3;
+}
+.bt{
+	float: left;
+	width: 100%;
+	border-bottom: 1px solid#E2E2E2;
+}
+.bt p{
+	float: left;
+	font-size: 20px;
+	border-bottom: 2px solid #cc3333;
+	color: #cc3333;
+	margin: 0;
+	padding-bottom: 6px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.zt{
+	float: left;
+	width: 305px;
+}
+.ztbt{
+	float: left;
+	width: 100%;
+}
+.ztbt p{
+	font-size: 16px;
+	font-weight: bold;
+	text-align: left;
+}
+.ztnr{
+	float: left;
+	width: 100%;
+}
+.zttu{
+	float: left;
+	width: 140px;
+	height: 170px;
+	background: url(../img/356.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+.zttu img{
+	object-fit: cover;
+	width: 122px;
+	height: 158px;
+	float: left;
+	margin-left: 5px;
+	margin-top: 6px;
+}
+.ztg{
+	float: left;
+	width: 165px;
+}
+.ztg p{
+	font-size: 14px;
+	text-align: left;
+	margin: 0;
+	margin-top: 10px;
+	margin-left: 5px;
+	color: #000000;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.ztg a{
+	font-size: 16px;
+	text-align: left;
+	margin: 0;
+	margin-top: 10px;
+	margin-left: 5px;
+	color: #000000;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.spxw{
+	float: left;
+	width: 206px;
+	margin-top: 20px;
+	margin-left: 30px;
+}
+.spxw img{
+	width: 206px;
+	height: 120px;
+}
+.spxw p{
+	float: left;
+	width: 100%;
+	font-size: 16px;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.jcdtkj{
+	float: left;
+	width: 263px;
+}
+.jcdt{
+	float: left;
+	width: 100%;
+}
+.jcdtnr{
+	float: left;
+	width: 100%;
+	font-size: 16px;
+	margin: 0;
+	margin-top: 10px;
+	color: #000000;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.ycsh{
+	float: left;
+	width: 100%;
+}
+.ycshz{
+	float: left;
+	width: 440px;
+}
+.ycshy{
+	float: left;
+	width: 440px;
+	margin-left: 36px;
+}
+.qg{
+	float: left;
+	width: 100%;
+	height: 53px;
+	line-height: 53px;
+}
+.qg p:nth-child(1){
+	float: left;
+	font-size: 16px;
+	margin: 0;
+}
+.qg p:nth-child(2){
+	float: right;
+	font-size: 14px;
+	color: #8890a7;
+	margin: 0;
+}
+.rmzx{
+	float: left;
+	width: 100%;
+	display:flex;
+	justify-content:left;
+	align-items:center;
+	margin-top: 20px;
+}
+.zx{
+	float: left;
+	padding: 2px 7px;
+	color: #FFFFFF;
+	background: red;
+	border-radius: 5px;
+	font-size: 13px;
+	margin: 0;
+}
+.ry{
+	float: left;
+	width: 231px;
+	text-align: left;
+	font-size: 16px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    margin: 0;
+    margin-left: 10px;
+}
+.rmzx1{
+	float: left;
+	width: 100%;
+	display:flex;
+	justify-content:left;
+	align-items:center;
+	margin-top: 20px;
+}
+.zx1{
+	float: left;
+	padding: 2px 7px;
+	color: #C70202;
+	border: 1px solid#C70202;
+	border-radius: 5px;
+	font-size: 13px;
+	margin: 0;
+}
+.ry1{
+	float: left;
+	width: 220px;
+	text-align: left;
+	font-size: 15px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    margin: 0;
+    margin-left: 10px;
+}
+.rmzx2{
+	float: left;
+	width: 100%;
+	display:flex;
+	justify-content:left;
+	align-items:center;
+	margin-top: 20px;
+}
+.zx2{
+	float: left;
+	padding: 2px 7px;
+	color: #FFFFFF;
+	background: #999999;
+	border-radius: 5px;
+	font-size: 13px;
+	margin: 0;
+}
+.ry2{
+	float: left;
+	width: 231px;
+	text-align: left;
+	font-size: 15px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    margin: 0;
+    margin-left: 10px;
+}
+.kwa{
+	float: left;
+    width: 94%;
+	margin-left: 3%;
+    border-bottom: 1px solid#E2E2E2;
+	margin-top: 10px;
+}
+.rm{
+	float: left;
+	padding-bottom: 6px;
+    border-bottom: 1px solid#EB3939;
+}
+.rm p{
+	float: left;
+    font-size: 18px;
+    color: #EB3939;
+    margin: 0;
+    margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    margin-left: 6px;
+    padding-right: 10px;
+}
+.rm img{
+	float: left;
+	width: 30px;
+	height: 30px;
+}
+.xsdh{
+	float: left;
+	width: 100%;
+}
+.p1{
+	float: left;
+}
+.p1 p{
+	font-size: 12px;
+	float: left;
+	margin-right: 10px;
+	color: #999999;
+}
+.pagination a {
+	cursor:pointer;
+}
+.pagination a.banclick {
+	/*cursor: not-allowed;*/
+}
+.red {
+	color: red;
+}
