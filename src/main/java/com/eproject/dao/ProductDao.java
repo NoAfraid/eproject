@@ -42,4 +42,8 @@ public interface ProductDao {
     int updateStock(@Param("ids") Integer[] ids);
 
     int updateSale(@Param("id") Integer[] id);
+
+    List<Product> selectProductBySearchPage(PageQuery pageQuery);
+
+    int selectTotalProductBySearch(PageQuery pageQuery);
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Objects;
 
@@ -186,11 +187,52 @@ public class ProductController {
         Integer result = productService.updateSaleNumber(id);
         return R.ok().put("success",result);
     }
-    /**
-     *根据商品编号搜索
-     */
 
     /**
      * 根据商品名称或者货号模糊查询
      */
+    @RequestMapping(value = "/update/search", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public R searchProduct(@RequestParam Map<String, Object> params, HttpServletRequest request){
+        if (StringUtils.isEmpty(params.get("page"))){
+            params.put("page",1);
+        }
+        String productName = "";
+        String description = "";
+        String productSn = "";
+        //对keyword做去空格处理
+        if (params.containsKey("productName") && !StringUtils.isEmpty((params.get("productName") + "").trim())) {
+            productName = params.get("productName") + "";
+        }
+        request.setAttribute("productName", productName);
+        params.put("productName",productName);
+
+        if (params.containsKey("description") && !StringUtils.isEmpty((params.get("description") + "").trim())) {
+            description = params.get("description") + "";
+        }
+        request.setAttribute("description", description);
+        params.put("description",description);
+
+        if (params.containsKey("productSn") && !StringUtils.isEmpty((params.get("productSn") + "").trim())) {
+            productSn = params.get("productSn") + "";
+        }
+        request.setAttribute("productSn", productSn);
+        params.put("productSn",productSn);
+        //封装商品数据
+        PageQuery pageQuery = new PageQuery(params);
+        return R.ok().put("data",productService.searchProduct(pageQuery));
+    }
+    /**
+     * 获取商品详情
+     * @PathVariable 占位符，截取URL的一部分
+     */
+    @RequestMapping(value = "/product/detail/{id}", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public R productDetail(@PathVariable("id") Integer id){
+        Product product = productService.selectProductById(id);
+        if (product == null){
+            return R.error(-1,"参数错误，查询为空");
+        }
+        return R.ok().put("data",product);
+    }
 }

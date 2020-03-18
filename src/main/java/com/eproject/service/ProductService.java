@@ -61,4 +61,16 @@ public interface ProductService {
      * @param id
      */
     int updateSaleNumber(Integer[] id);
+
+    /**
+     * 模糊查询
+     * 根据商品名或者货号
+     * 分页
+     */
+    PageResult searchProduct(PageQuery pageQuery);
+
+    /**
+     * 获取商品详情
+     */
+    Product selectProductById(Integer id);
 }

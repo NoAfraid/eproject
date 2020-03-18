@@ -75,6 +75,38 @@
       </if>
     </where>
   </select>
+    <select id="selectProductBySearchPage" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from product
+        <where>
+            <if test="productSn!=null and productSn!=''">
+                and (product_sn like CONCAT('%',#{productSn},'%'))
+            </if>
+            <if test="productName!=null and productName!=''">
+                or (product_name like CONCAT('%',#{productName},'%'))
+            </if>
+            <if test="description!=null and description!=''">
+                or (description like CONCAT('%',#{description},'%'))
+            </if>
+        </where>
+        order by id
+    </select>
+    <select id="selectTotalProductBySearch" parameterType="Map" resultType="int">
+        select count(*)
+        from product
+        <where>
+            <if test="productSn!=null and productSn!=''">
+                and (product_sn like CONCAT('%',#{productSn},'%'))
+            </if>
+            <if test="productName!=null and productName!=''">
+                or (product_name like CONCAT('%',#{productName},'%'))
+            </if>
+            <if test="description!=null and description!=''">
+                or (description like CONCAT('%',#{description},'%'))
+            </if>
+        </where>
+    </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product
     where id = #{id,jdbcType=INTEGER}
