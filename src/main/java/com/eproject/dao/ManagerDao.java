@@ -19,4 +19,6 @@ public interface ManagerDao {
     int updateByPrimaryKey(Manager record);
 
     Manager login(@Param("userName") String userName, @Param("password") String password);
+
+    void updateLoginTime(@Param("userName") String userName, @Param("password") String password);
 }

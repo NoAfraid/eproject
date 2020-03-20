@@ -22,6 +22,11 @@
     from manager
     where login_name = #{userName,jdbcType=VARCHAR} AND password = #{password,jdbcType=VARCHAR}
   </select>
+  <update id="updateLoginTime">
+    update manager
+    set  login_time = now()
+    where login_name = #{userName,jdbcType=VARCHAR} AND password = #{password,jdbcType=VARCHAR}
+  </update>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from manager
     where id = #{id,jdbcType=BIGINT}

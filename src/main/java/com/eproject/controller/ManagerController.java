@@ -3,11 +3,9 @@ package com.eproject.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.eproject.entity.Manager;
 import com.eproject.service.ManagerService;
+import com.eproject.util.MD5Encode;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -20,9 +18,10 @@ public class ManagerController {
     private ManagerService managerService;
 
     @RequestMapping("/login")
-    public String login(@RequestParam("userName") String userName,
+    public String login(@RequestBody Manager manager,
+                        @RequestParam("userName") String userName,
                         @RequestParam("password") String password){
-        Manager login = managerService.login(userName, password);
+        Manager login = managerService.login(userName,password);
         JSONObject result = new JSONObject();
         if (login==null){
             result.put("error","-1");

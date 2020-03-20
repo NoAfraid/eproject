@@ -9,27 +9,69 @@
     <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="adress" jdbcType="VARCHAR" property="adress" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="personalized_signature" jdbcType="VARCHAR" property="personalizedSignature" />
+    <result column="nick" jdbcType="VARCHAR" property="nick" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, username, `password`, phone, sex, adress, create_time
+    id, username, `password`, phone, sex, adress, create_time, personalized_signature, 
+    nick, pic
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="Map" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="selectPassword" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id}
+  </select>
+  <select id="selectUserInfo" parameterType="Map" resultMap="BaseResultMap">
+    select id, username, phone, sex, adress, personalized_signature,
+    nick, pic
+    from user
+    where username = #{username} or id = #{id}
+  </select>
+  <select id="selectByPhone" parameterType="com.eproject.entity.User" resultMap="BaseResultMap">
+    select username, phone
+    from user
+    where username = #{username,jdbcType=VARCHAR} or phone =  #{phone,jdbcType=VARCHAR}
+  </select>
+  <select id="loginUser" resultMap="BaseResultMap" parameterType="com.eproject.entity.User">
+    select username, phone, password
+    from user
+    <where>
+      <if test="phone!= null and phone.trim() != ''">
+        and phone = #{phone}
+      </if>
+      <if test="username!= null and username.trim() != ''">
+        or username = #{username}
+      </if>
+      <if test="password!= null and password.trim() != ''">
+        or password = #{password}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.eproject.entity.User">
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.User" useGeneratedKeys="true">
     insert into user (username, `password`, phone, 
-      sex, adress, create_time
+      sex, adress, create_time, 
+      personalized_signature, nick, pic
       )
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{sex,jdbcType=VARCHAR}, #{adress,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      #{sex,jdbcType=VARCHAR}, #{adress,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{personalizedSignature,jdbcType=VARCHAR}, #{nick,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}
       )
+  </insert>
+  <insert id="insertUser" parameterType="com.eproject.entity.User">
+    insert into user (username, password, phone, create_time) values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+     #{phone,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP});
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.User" useGeneratedKeys="true">
     insert into user
@@ -52,6 +94,15 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="personalizedSignature != null">
+        personalized_signature,
+      </if>
+      <if test="nick != null">
+        nick,
+      </if>
+      <if test="pic != null">
+        pic,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="username != null">
@@ -71,6 +122,15 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="personalizedSignature != null">
+        #{personalizedSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="nick != null">
+        #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -95,6 +155,15 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="personalizedSignature != null">
+        personalized_signature = #{personalizedSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="nick != null">
+        nick = #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null">
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -105,7 +174,25 @@
       phone = #{phone,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR},
       adress = #{adress,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      personalized_signature = #{personalizedSignature,jdbcType=VARCHAR},
+      nick = #{nick,jdbcType=VARCHAR},
+      pic = #{pic,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateUserInfo" parameterType="com.eproject.entity.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      adress = #{adress,jdbcType=VARCHAR},
+      personalized_signature = #{personalizedSignature,jdbcType=VARCHAR},
+      nick = #{nick,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER} or username = #{username,jdbcType=VARCHAR}
+  </update>
+  <update id="updatePassword" parameterType="com.eproject.entity.User">
+    update user
+    set password = #{password}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
