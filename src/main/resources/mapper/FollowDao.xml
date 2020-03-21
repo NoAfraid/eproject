@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eproject.dao.FollowDao">
+  <resultMap id="BaseResultMap" type="com.eproject.entity.Follow">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="product_sn" jdbcType="VARCHAR" property="productSn" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_img" jdbcType="VARCHAR" property="productImg" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, product_id, product_sn, product_name, product_img, `status`, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from follow
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectInfo" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from follow
+    where user_id = #{userId}
+  </select>
+  <select id="selectByFollow" resultType="java.lang.Integer" parameterType="com.eproject.entity.Follow">
+    select count(f.id)
+    from follow f
+    left join user u on f.user_id = u.id
+    where f.product_id = #{id} and u.id = #{userId}
+  </select>
+  <update id="updateFollowStatus" parameterType="com.eproject.entity.Follow">
+    update follow
+    set status = #{status}
+    where id = #{id}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from follow
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertFollowInfo" parameterType="com.eproject.entity.Collect">
+    insert into follow(product_name, product_sn,product_img, product_id,user_id,status,create_time)
+    select
+        p.product_name,
+        p.product_sn,
+        p.product_img,
+        p.id ,
+        u.id,
+        1,
+        now()
+    from product p, user u
+    left join follow f on f.user_id = u.id
+    where p.id = #{id} and u.id = #{userId}
+  </insert>
+  <update id="updateFollowTime" parameterType="com.eproject.entity.Follow">
+    update follow
+    set  status = 1, create_time = now()
+    where id = #{id}
+  </update>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Follow" useGeneratedKeys="true">
+    insert into follow (user_id, product_id, product_sn, 
+      product_name, product_img, `status`, 
+      create_time)
+    values (#{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{productSn,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{productImg,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Follow" useGeneratedKeys="true">
+    insert into follow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="productSn != null">
+        product_sn,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="productImg != null">
+        product_img,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productSn != null">
+        #{productSn,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productImg != null">
+        #{productImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eproject.entity.Follow">
+    update follow
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productSn != null">
+        product_sn = #{productSn,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productImg != null">
+        product_img = #{productImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eproject.entity.Follow">
+    update follow
+    set user_id = #{userId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      product_sn = #{productSn,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_img = #{productImg,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

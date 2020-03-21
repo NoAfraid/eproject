@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eproject.dao.CollectDao">
+  <resultMap id="BaseResultMap" type="com.eproject.entity.Collect">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="product_sn" jdbcType="VARCHAR" property="productSn" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_img" jdbcType="VARCHAR" property="productImg" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, product_id, product_sn, product_name, product_img, `status`, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from collect
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectInfo" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from collect
+    where user_id = #{userId}
+  </select>
+  <select id="selectByCollect" resultType="java.lang.Integer" parameterType="com.eproject.entity.Collect">
+    select count(c.id)
+    from collect c
+    left join user u on c.user_id = u.id
+    where c.product_id = #{id} and u.id = #{userId}
+  </select>
+  <insert id="selectCollectInfo" parameterType="com.eproject.entity.Collect">
+    insert into collect(product_name, product_sn,product_img, product_id,user_id,status,create_time)
+    select
+        p.product_name,
+        p.product_sn,
+        p.product_img,
+        p.id ,
+        u.id,
+        1,
+        now()
+    from product p, user u
+    left join collect c on c.user_id = u.id
+    where p.id = #{id} and u.id = #{userId}
+  </insert>
+  <update id="updateCollectStatus" parameterType="com.eproject.entity.Follow">
+    update collect
+    set status = #{status}
+    where id = #{id}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from collect
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Collect" useGeneratedKeys="true">
+    insert into collect (user_id, product_id, product_sn, 
+      product_name, product_img, `status`, 
+      create_time)
+    values (#{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{productSn,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{productImg,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Collect" useGeneratedKeys="true">
+    insert into collect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="productSn != null">
+        product_sn,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="productImg != null">
+        product_img,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productSn != null">
+        #{productSn,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productImg != null">
+        #{productImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eproject.entity.Collect">
+    update collect
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productSn != null">
+        product_sn = #{productSn,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productImg != null">
+        product_img = #{productImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eproject.entity.Collect">
+    update collect
+    set user_id = #{userId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      product_sn = #{productSn,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_img = #{productImg,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
