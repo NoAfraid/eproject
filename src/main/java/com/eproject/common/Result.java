@@ -7,6 +7,10 @@ public enum Result {
 
     PRODUCT_EXIT("商品已经存在"),
 
+    COLLECT_SOURCE_ID("收藏来源id不能为空"),
+
+    COLLECT_EXIT("已收藏"),
+
     DATA_NOT_EXIST("未查询到记录！"),
 
     SAME_LOGIN_NAME_EXIST("用户名已存在！"),

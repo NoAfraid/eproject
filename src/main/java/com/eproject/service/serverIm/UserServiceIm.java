@@ -2,7 +2,11 @@ package com.eproject.service.serverIm;
 
 import com.eproject.common.R;
 import com.eproject.common.Result;
+import com.eproject.dao.CollectDao;
+import com.eproject.dao.FollowDao;
 import com.eproject.dao.UserDao;
+import com.eproject.entity.Collect;
+import com.eproject.entity.Follow;
 import com.eproject.entity.User;
 import com.eproject.service.UserService;
 import com.eproject.util.MD5Encode;
@@ -18,6 +22,12 @@ public class UserServiceIm implements UserService {
 
     @Resource
     private UserDao userDao;
+
+    @Resource
+    private CollectDao collectDao;
+
+    @Resource
+    private FollowDao followDao;
 
     @Override
     public String register(User registerUser){
@@ -70,13 +80,81 @@ public class UserServiceIm implements UserService {
             String newPasswordMD5 = MD5Encode.MD5Encode(newPassword,"UTF-8");
             //比较和原密码是否相同
             if (originalPasswordMd5.equals(updatePassword.getPassword())){
-//                R.error(-1,"原密码输入错误");
+                //R.error(-1,"原密码输入错误");
                 updatePassword.setPassword(newPasswordMD5);
                 userDao.updatePassword(updatePassword);
             }
-//            if (newPasswordMD5.equals(originalPasswordMd5)){
-//                return R.error(-1,"新旧密码一致");
-//            }
         }
     }
+
+    @Override
+    public String updatePic(User updateUserPic){
+        List<User> selectInfo = userDao.selectUserInfo(updateUserPic);
+        if (selectInfo.size() <=0){
+            return Result.DATA_NOT_EXIST.getResult();
+        }
+        User updatePic = new User();
+        updatePic.setPic(updateUserPic.getPic());
+        if (userDao.updatePic(updateUserPic) > 0){
+            return Result.SUCCESS.getResult();
+        }else {
+            return Result.OPERTE_ERROR.getResult();
+        }
+    }
+
+    @Override
+    public int selectCollectInfo(Integer id, Integer userId){
+        //判断用户是否为null
+        int count = userDao.countById(userId);
+        if(count <= 0){
+            return -2;
+        }
+        // 获取是否收藏过
+        int num = collectDao.selectByCollect(id,userId);
+        //判断是否存在已经收藏的，（已收藏：-1，未收藏：1）
+        if (num > 0){
+            return -1;
+        }
+        int collectInfo = collectDao.selectCollectInfo(id, userId);
+        return 1;
+    }
+
+    @Override
+    public int insertFollowInfo(Integer id, Integer userId){
+        //判断用户是否为null
+        int count = userDao.countById(userId);
+        if(count <= 0){
+            return -2;
+        }
+        // 获取是否收藏过
+        int num = followDao.selectByFollow(id,userId);
+        //判断是否存在已经收藏的，（已收藏：-1，未收藏：1）
+        if (num > 0){
+            return -1;
+        }
+        Follow follow = new Follow();
+        int collectInfo = followDao.insertFollowInfo(id, userId);
+        return 1;
+    }
+
+    @Override
+    public int updateFollowStatus(Integer id, Integer status){
+       return followDao.updateFollowStatus(id, status);
+    }
+
+    @Override
+    public int updateCollectStatus(Integer id, Integer status){
+        return collectDao.updateCollectStatus(id, status);
+    }
+
+    @Override
+    public List<Collect>  selectInfo(Collect collect){
+        return collectDao.selectInfo(collect);
+    }
+
+    @Override
+    public List<Follow>  selectFollowInfo(Follow follow){
+        return followDao.selectInfo(follow);
+    }
+
 }

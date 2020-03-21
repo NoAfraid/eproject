@@ -1,19 +1,30 @@
 package com.eproject.controller;
 
+import com.eproject.annotation.LoginUser;
 import com.eproject.common.Contants;
 import com.eproject.common.R;
 import com.eproject.common.Result;
+import com.eproject.entity.Collect;
+import com.eproject.entity.Follow;
+import com.eproject.entity.Product;
 import com.eproject.entity.User;
+import com.eproject.service.ProductService;
 import com.eproject.service.UserService;
 import com.eproject.util.MD5Encode;
+import com.eproject.util.PasswordUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 @ResponseBody
@@ -22,6 +33,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private ProductService productService;
 
     /**
      * 注册方法
@@ -110,6 +124,12 @@ public class UserController {
         if (StringUtils.isEmpty(newPassword)){
             return R.error(-1,"新密码不能为空");
         }
+        if (newPassword.equals(originalPassword)){
+            return R.error(-1,"新旧密码相同");
+        }
+        if (!PasswordUtils.validatorPassord(newPassword)){
+            return R.error(-1,"修改密码失败,密码必须是字母和数字的组合，并且长度大于等于6位");
+        }
         //confirmPassword.equals(newPassword) 两次密码是否相同
         //获取登录名的ID
 //        Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
@@ -120,15 +140,163 @@ public class UserController {
     /**
      * 修改用户头像
      */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/updatePic")//,produces = "application/json;charset=UTF-8"
+    public R updatePic( User user,@RequestParam("file") MultipartFile file){
+        try {
+            //获取文件名，带扩展名
+            String originFileName = file.getOriginalFilename();
+            //获取文件扩展名
+            String extension = originFileName.substring(originFileName.lastIndexOf("."));
+            //以日期的形式设置文件夹
+            //LocalDate now = LocalDate.now();
+            //String fileFolder = "/" + now.getYear() + "/" + now.getMonthValue() + "/" +now.getDayOfMonth();
+            //以存储在U盘中的文件夹来命名文件夹
+            String fileFolder = Contants.FILE_UPLOAD_DIC;
+            //截取掉U盘名
+            fileFolder = fileFolder.substring(2);
+            if (Objects.isNull(user.getId())){
+                return R.error(-1,"用户不存在");
+            }
+            //更新文件名
+            String name = UUID.randomUUID().toString().replace("-", "");
+            String newfileName =  name + extension;
+            user.setPic(fileFolder  + newfileName);
+            String result = userService.updatePic(user);
+            return R.ok().put("filePath", fileFolder + "/" + newfileName).put("fileName", originFileName);
+        }catch (Exception e){
+            e.printStackTrace();
+            return R.error(-405,"图片上传失败，msg:"+e.getMessage());
+        }
+
+    }
 
     /**
      * 用户收藏产品
      */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/collect",produces = "application/json;charset=UTF-8")
+    public R collectInfo(@RequestBody User user, @RequestParam("id") Integer id){
+        int num =userService.selectCollectInfo(id,user.getId());
+        //判断是否收藏过
+        if (num == -1){
+            return R.error(-1,"已收藏过该产品");
+        }
+        //判断用户是否为null
+        if (num == -2){
+            return R.error(-1,"该用户不存在");
+        }
+        return R.ok("收藏成功");
+    }
 
     /**
      * 用户的关注：人和产品
      */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/follow",produces = "application/json;charset=UTF-8")
+    public R followInfo(@RequestBody User user, @RequestParam("id") Integer id){
+        int num = userService.insertFollowInfo(id,user.getId());
+        //判断是否收藏过
+        if (num == -1){
+            return R.error(-1,"已关注过该产品");
+        }
+        //判断用户是否为null
+        if (num == -2){
+            return R.error(-1,"该用户不存在");
+        }
+        return R.ok("关注成功");
+    }
+    /**
+     * 取消关注
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/cancelFollow",produces = "application/json;charset=UTF-8")
+    public R cancelFollow(@RequestParam("id") Integer id){
+        if (id == null){
+            return R.error(-1,"未关注该商品");
+        }
+        Follow follow = new Follow();
+        follow.setStatus(0);
+        int count = userService.updateFollowStatus(id, follow.getStatus());
+        if (count > 0) {
+            return R.ok().put("已取消关注", count);
+        } else {
+            return R.error(-1, "取消异常");
+        }
+    }
 
+    /**
+     *
+     * 取消收藏
+    */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/cancelCollect",produces = "application/json;charset=UTF-8")
+    public R cancelCollect(@RequestParam("id") Integer id){
+        if (id == null){
+            return R.error(-1,"未收藏该商品");
+        }
+        Collect collect = new Collect();
+        collect.setStatus(0);
+        int count = userService.updateCollectStatus(id, collect.getStatus());
+        if (count > 0) {
+            return R.ok().put("已取消收藏", count);
+        } else {
+            return R.error(-1, "取消异常");
+        }
+    }
+
+    /**
+     * 查看收藏内容
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/searchCollect",produces = "application/json;charset=UTF-8")
+    public R searchCollect(@RequestBody Collect collect){
+        if (collect == null){
+            return R.error(-1,"未收藏该商品");
+        }
+        List<Collect> data = userService.selectInfo(collect);
+        if (data.size() <= 0){
+            return R.error(-1,"未收藏");
+        }
+        return R.ok().put("data",data);
+    }
+    /**
+     * 查看关注内容
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/searchFollow",produces = "application/json;charset=UTF-8")
+    public R searchFollow(@RequestBody Follow follow){
+        if (follow == null){
+            return R.error(-1,"未关注该商品");
+        }
+        List<Follow> data = userService.selectFollowInfo(follow);
+        if (data.size() <= 0){
+            return R.error(-1,"未关注");
+        }
+        return R.ok().put("data",data);
+    }
+
+    /**
+     * 退出登录
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/logout",produces = "application/json;charset=UTF-8")
+    public R logout(@RequestBody Map<String, Object> params,HttpServletRequest request){
+        try {
+            String accessToken = (String) params.get("accessToken");
+            if (StringUtils.isEmpty(accessToken)) {
+                return R.error(1, "accessToken为空");
+            }
+            request.getSession().removeAttribute("loginUserId");
+            request.getSession().removeAttribute("loginUser");
+            request.getSession().removeAttribute("errorMsg");
+            return R.error(0, "已退出");
+        }catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
+            return R.error(-2,"退出失败，msg:"+e.getMessage());
+        }
+    }
     /**
      * 刷新token（有时间就做）
      */

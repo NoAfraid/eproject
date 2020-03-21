@@ -40,6 +40,11 @@
     from user
     where username = #{username,jdbcType=VARCHAR} or phone =  #{phone,jdbcType=VARCHAR}
   </select>
+  <select id="countById" parameterType="com.eproject.entity.User" resultType="java.lang.Integer">
+    select count(id)
+    from user
+    where id = #{userId}
+  </select>
   <select id="loginUser" resultMap="BaseResultMap" parameterType="com.eproject.entity.User">
     select username, phone, password
     from user
@@ -193,6 +198,11 @@
   <update id="updatePassword" parameterType="com.eproject.entity.User">
     update user
     set password = #{password}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updatePic" parameterType="com.eproject.entity.User">
+    update user
+    set pic = #{pic}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

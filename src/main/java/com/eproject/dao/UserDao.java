@@ -14,6 +14,8 @@ public interface UserDao {
 
     int insertSelective(User record);
 
+    int countById(Integer userId);
+
     User selectPassword(Integer id);
 
     List<User> selectByPrimaryKey(User user);
@@ -27,6 +29,8 @@ public interface UserDao {
     int updateUserInfo(User user);
 
     int updatePassword(User user);
+
+    int updatePic(User user);
 
     List<User> selectByPhone(User user);
 
