@@ -35,6 +35,9 @@
     from user
     where username = #{username} or id = #{id}
   </select>
+  <select id="selectUser" resultType="com.eproject.entity.User" parameterType="com.eproject.entity.User">
+    select * from user where id =#{id}
+  </select>
   <select id="selectByPhone" parameterType="com.eproject.entity.User" resultMap="BaseResultMap">
     select username, phone
     from user

@@ -1,6 +1,7 @@
 package com.eproject.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -49,6 +50,16 @@ public class Cart implements Serializable {
      * 更新时间
      */
     private Date updataTime;
+
+    /**
+     * 商品属性
+     */
+    private String productAttr;
+
+    /**
+     * 添加到购物车的价格
+     */
+    private BigDecimal price;
 
     private static final long serialVersionUID = 1L;
 
@@ -124,6 +135,22 @@ public class Cart implements Serializable {
         this.updataTime = updataTime;
     }
 
+    public String getProductAttr() {
+        return productAttr;
+    }
+
+    public void setProductAttr(String productAttr) {
+        this.productAttr = productAttr;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -144,7 +171,9 @@ public class Cart implements Serializable {
             && (this.getDeleteStatus() == null ? other.getDeleteStatus() == null : this.getDeleteStatus().equals(other.getDeleteStatus()))
             && (this.getProductCount() == null ? other.getProductCount() == null : this.getProductCount().equals(other.getProductCount()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getUpdataTime() == null ? other.getUpdataTime() == null : this.getUpdataTime().equals(other.getUpdataTime()));
+            && (this.getUpdataTime() == null ? other.getUpdataTime() == null : this.getUpdataTime().equals(other.getUpdataTime()))
+            && (this.getProductAttr() == null ? other.getProductAttr() == null : this.getProductAttr().equals(other.getProductAttr()))
+            && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()));
     }
 
     @Override
@@ -160,6 +189,8 @@ public class Cart implements Serializable {
         result = prime * result + ((getProductCount() == null) ? 0 : getProductCount().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdataTime() == null) ? 0 : getUpdataTime().hashCode());
+        result = prime * result + ((getProductAttr() == null) ? 0 : getProductAttr().hashCode());
+        result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
         return result;
     }
 
@@ -178,6 +209,8 @@ public class Cart implements Serializable {
         sb.append(", productCount=").append(productCount);
         sb.append(", createTime=").append(createTime);
         sb.append(", updataTime=").append(updataTime);
+        sb.append(", productAttr=").append(productAttr);
+        sb.append(", price=").append(price);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

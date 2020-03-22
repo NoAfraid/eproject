@@ -11,16 +11,31 @@
     <result column="product_count" jdbcType="INTEGER" property="productCount" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="updata_time" jdbcType="TIMESTAMP" property="updataTime" />
+    <result column="product_attr" jdbcType="VARCHAR" property="productAttr" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
   </resultMap>
   <sql id="Base_Column_List">
     id, user_id, product_id, product_name, product_img, delete_status, product_count, 
-    create_time, updata_time
+    create_time, updata_time, product_attr, price
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from cart
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectProductExist" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cart
+    where user_id = #{userId,jdbcType=INTEGER} and product_id =  #{productId,jdbcType=INTEGER}
+    limit 1
+  </select>
+  <select id="selectCartInfo" parameterType="com.eproject.entity.Cart" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cart
+    where user_id = #{userId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cart
@@ -29,10 +44,12 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Cart" useGeneratedKeys="true">
     insert into cart (user_id, product_id, product_name, 
       product_img, delete_status, product_count, 
-      create_time, updata_time)
+      create_time, updata_time, product_attr, 
+      price)
     values (#{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, 
       #{productImg,jdbcType=VARCHAR}, #{deleteStatus,jdbcType=INTEGER}, #{productCount,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updataTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=TIMESTAMP}, #{updataTime,jdbcType=TIMESTAMP}, #{productAttr,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Cart" useGeneratedKeys="true">
     insert into cart
@@ -61,6 +78,12 @@
       <if test="updataTime != null">
         updata_time,
       </if>
+      <if test="productAttr != null">
+        product_attr,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -86,6 +109,12 @@
       </if>
       <if test="updataTime != null">
         #{updataTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productAttr != null">
+        #{productAttr,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -116,6 +145,12 @@
       <if test="updataTime != null">
         updata_time = #{updataTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="productAttr != null">
+        product_attr = #{productAttr,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -128,7 +163,54 @@
       delete_status = #{deleteStatus,jdbcType=INTEGER},
       product_count = #{productCount,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      updata_time = #{updataTime,jdbcType=TIMESTAMP}
+      updata_time = #{updataTime,jdbcType=TIMESTAMP},
+      product_attr = #{productAttr,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateQuantity" parameterType="com.eproject.entity.Cart">
+    update cart
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productImg != null">
+        product_img = #{productImg,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteStatus != null">
+        delete_status = #{deleteStatus,jdbcType=INTEGER},
+      </if>
+      <if test="productCount != null">
+        product_count = #{productCount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updataTime != null">
+        updata_time = #{updataTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productAttr != null">
+        product_attr = #{productAttr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id} and user_id = #{userId,jdbcType=INTEGER} and product_id = #{productId,jdbcType=INTEGER}
+  </update>
+  <update id="updateDeleteStatus" parameterType="com.eproject.entity.Cart">
+    update cart
+    set delete_status = 1
+    where user_id = #{userId,jdbcType=INTEGER} and product_id = #{productId,jdbcType=INTEGER} and id in
+    <foreach item="id" collection="ids" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
+  <update id="clearCart" parameterType="com.eproject.entity.Cart">
+    update cart
+    set delete_status = 1
+    where user_id = #{userId}
   </update>
 </mapper>

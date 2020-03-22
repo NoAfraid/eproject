@@ -22,6 +22,8 @@ public interface UserDao {
 
     List<User> selectUserInfo(User user);
 
+    User selectUser(Integer id);
+
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
