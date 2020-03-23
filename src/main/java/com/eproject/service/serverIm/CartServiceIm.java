@@ -3,6 +3,7 @@ package com.eproject.service.serverIm;
 import com.eproject.dao.CartDao;
 import com.eproject.dao.UserDao;
 import com.eproject.entity.Cart;
+import com.eproject.entity.User;
 import com.eproject.service.CartService;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,12 @@ public class CartServiceIm implements CartService {
     public int add(Cart cart){
         int count = 0;
         // 获取用户信息（用户ID和用户Nick）
-//        User userInfo = new User();
-//        User selectInfo = userDao.selectUser(userInfo.getId());
+        //User userInfo = new User();
+        //User selectInfo = userDao.selectUser(userInfo.getId());
         cart.setUserId(cart.getUserId());
         //Cart existCart = get
         // 获取购物车商品
-        Cart product = cartDao.selectProductExist(cart.getUserId());
+        Cart product = cartDao.selectProductExist(cart.getUserId(),cart.getProductId());
         //判断是否存在该商品（为null则插入改商品，否则增加商品数量）
         if (product == null){
             cart.setCreateTime(new Date());
@@ -36,18 +37,19 @@ public class CartServiceIm implements CartService {
             product.setUpdataTime(new Date());
             //统计商品数量
             product.setProductCount(product.getProductCount() + cart.getProductCount());
-            count = cartDao.updateByPrimaryKey(product);
+            cartDao.updateByPrimaryKey(product);
+            count = product.getProductCount();
             //是否要设置购买数量最大为5
-//            if (count > 5){
-//                return -1;
-//            }
+            //if (count > 5){
+             //   return -2;
+            //}
         }
         return count;
     }
 
     @Override
-    public int updateQuantity(Cart cart){
-        //Cart cart = new Cart();//Integer id, Integer userId, Integer productCount
+    public int updateQuantity(Cart cart){//Integer id, Integer userId, Integer productCount
+        //Cart cart = new Cart();
         cart.setProductCount(cart.getProductCount());
         cart.setProductId(cart.getProductId());
         cart.setUserId(cart.getUserId());

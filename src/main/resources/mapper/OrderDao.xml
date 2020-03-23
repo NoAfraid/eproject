@@ -4,9 +4,10 @@
   <resultMap id="BaseResultMap" type="com.eproject.entity.Order">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="order_no" jdbcType="INTEGER" property="orderNo" />
-    <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
     <result column="delivery_company" jdbcType="VARCHAR" property="deliveryCompany" />
     <result column="delivery_no" jdbcType="INTEGER" property="deliveryNo" />
     <result column="auto_confirm_day" jdbcType="TIMESTAMP" property="autoConfirmDay" />
@@ -18,7 +19,7 @@
     <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
     <result column="receiver_province" jdbcType="VARCHAR" property="receiverProvince" />
     <result column="bill_type" jdbcType="VARCHAR" property="billType" />
-    <result column="bill_receiver_phone" jdbcType="VARCHAR" property="billReceiverPhone" />
+    <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone" />
     <result column="bill_content" jdbcType="VARCHAR" property="billContent" />
     <result column="bill_header" jdbcType="VARCHAR" property="billHeader" />
     <result column="pay_type" jdbcType="VARCHAR" property="payType" />
@@ -27,12 +28,16 @@
     <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
     <result column="updata_time" jdbcType="TIMESTAMP" property="updataTime" />
     <result column="dalete_status" jdbcType="INTEGER" property="daleteStatus" />
+    <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime" />
+    <result column="freight_amount" jdbcType="DECIMAL" property="freightAmount" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, order_no, total_price, user_id, pay_time, delivery_company, delivery_no, auto_confirm_day, 
-    bill_receiver_email, receiver_post_code, note, receiver_detail_adress, receiver_city, 
-    receiver_name, receiver_province, bill_type, bill_receiver_phone, bill_content, bill_header, 
-    pay_type, order_status, pay_status, delivery_time, updata_time, dalete_status
+    id, order_no, product_id, user_id, pay_time, total_price, delivery_company, delivery_no, 
+    auto_confirm_day, bill_receiver_email, receiver_post_code, note, receiver_detail_adress, 
+    receiver_city, receiver_name, receiver_province, bill_type, receiver_phone, bill_content, 
+    bill_header, pay_type, order_status, pay_status, delivery_time, updata_time, dalete_status, 
+    receive_time, freight_amount, product_name
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -45,24 +50,26 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Order" useGeneratedKeys="true">
-    insert into order (order_no, total_price, user_id, 
-      pay_time, delivery_company, delivery_no, 
-      auto_confirm_day, bill_receiver_email, receiver_post_code, 
-      note, receiver_detail_adress, receiver_city, 
-      receiver_name, receiver_province, bill_type, 
-      bill_receiver_phone, bill_content, bill_header, 
-      pay_type, order_status, pay_status, 
-      delivery_time, updata_time, dalete_status
-      )
-    values (#{orderNo,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, #{userId,jdbcType=INTEGER}, 
-      #{payTime,jdbcType=TIMESTAMP}, #{deliveryCompany,jdbcType=VARCHAR}, #{deliveryNo,jdbcType=INTEGER}, 
-      #{autoConfirmDay,jdbcType=TIMESTAMP}, #{billReceiverEmail,jdbcType=VARCHAR}, #{receiverPostCode,jdbcType=VARCHAR}, 
-      #{note,jdbcType=VARCHAR}, #{receiverDetailAdress,jdbcType=VARCHAR}, #{receiverCity,jdbcType=VARCHAR}, 
-      #{receiverName,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, #{billType,jdbcType=VARCHAR}, 
-      #{billReceiverPhone,jdbcType=VARCHAR}, #{billContent,jdbcType=VARCHAR}, #{billHeader,jdbcType=VARCHAR}, 
-      #{payType,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, 
-      #{deliveryTime,jdbcType=TIMESTAMP}, #{updataTime,jdbcType=TIMESTAMP}, #{daleteStatus,jdbcType=INTEGER}
-      )
+    insert into order (order_no, product_id, user_id, 
+      pay_time, total_price, delivery_company, 
+      delivery_no, auto_confirm_day, bill_receiver_email, 
+      receiver_post_code, note, receiver_detail_adress, 
+      receiver_city, receiver_name, receiver_province, 
+      bill_type, receiver_phone, bill_content, 
+      bill_header, pay_type, order_status, 
+      pay_status, delivery_time, updata_time, 
+      dalete_status, receive_time, freight_amount, 
+      product_name)
+    values (#{orderNo,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{payTime,jdbcType=TIMESTAMP}, #{totalPrice,jdbcType=DECIMAL}, #{deliveryCompany,jdbcType=VARCHAR}, 
+      #{deliveryNo,jdbcType=INTEGER}, #{autoConfirmDay,jdbcType=TIMESTAMP}, #{billReceiverEmail,jdbcType=VARCHAR}, 
+      #{receiverPostCode,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{receiverDetailAdress,jdbcType=VARCHAR}, 
+      #{receiverCity,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, 
+      #{billType,jdbcType=VARCHAR}, #{receiverPhone,jdbcType=VARCHAR}, #{billContent,jdbcType=VARCHAR}, 
+      #{billHeader,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, 
+      #{payStatus,jdbcType=INTEGER}, #{deliveryTime,jdbcType=TIMESTAMP}, #{updataTime,jdbcType=TIMESTAMP}, 
+      #{daleteStatus,jdbcType=INTEGER}, #{receiveTime,jdbcType=TIMESTAMP}, #{freightAmount,jdbcType=DECIMAL}, 
+      #{productName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Order" useGeneratedKeys="true">
     insert into order
@@ -70,14 +77,17 @@
       <if test="orderNo != null">
         order_no,
       </if>
-      <if test="totalPrice != null">
-        total_price,
+      <if test="productId != null">
+        product_id,
       </if>
       <if test="userId != null">
         user_id,
       </if>
       <if test="payTime != null">
         pay_time,
+      </if>
+      <if test="totalPrice != null">
+        total_price,
       </if>
       <if test="deliveryCompany != null">
         delivery_company,
@@ -112,8 +122,8 @@
       <if test="billType != null">
         bill_type,
       </if>
-      <if test="billReceiverPhone != null">
-        bill_receiver_phone,
+      <if test="receiverPhone != null">
+        receiver_phone,
       </if>
       <if test="billContent != null">
         bill_content,
@@ -139,19 +149,31 @@
       <if test="daleteStatus != null">
         dalete_status,
       </if>
+      <if test="receiveTime != null">
+        receive_time,
+      </if>
+      <if test="freightAmount != null">
+        freight_amount,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderNo != null">
         #{orderNo,jdbcType=INTEGER},
       </if>
-      <if test="totalPrice != null">
-        #{totalPrice,jdbcType=DECIMAL},
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
       <if test="payTime != null">
         #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalPrice != null">
+        #{totalPrice,jdbcType=DECIMAL},
       </if>
       <if test="deliveryCompany != null">
         #{deliveryCompany,jdbcType=VARCHAR},
@@ -186,8 +208,8 @@
       <if test="billType != null">
         #{billType,jdbcType=VARCHAR},
       </if>
-      <if test="billReceiverPhone != null">
-        #{billReceiverPhone,jdbcType=VARCHAR},
+      <if test="receiverPhone != null">
+        #{receiverPhone,jdbcType=VARCHAR},
       </if>
       <if test="billContent != null">
         #{billContent,jdbcType=VARCHAR},
@@ -213,6 +235,15 @@
       <if test="daleteStatus != null">
         #{daleteStatus,jdbcType=INTEGER},
       </if>
+      <if test="receiveTime != null">
+        #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="freightAmount != null">
+        #{freightAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.eproject.entity.Order">
@@ -221,14 +252,17 @@
       <if test="orderNo != null">
         order_no = #{orderNo,jdbcType=INTEGER},
       </if>
-      <if test="totalPrice != null">
-        total_price = #{totalPrice,jdbcType=DECIMAL},
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="payTime != null">
         pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalPrice != null">
+        total_price = #{totalPrice,jdbcType=DECIMAL},
       </if>
       <if test="deliveryCompany != null">
         delivery_company = #{deliveryCompany,jdbcType=VARCHAR},
@@ -263,8 +297,8 @@
       <if test="billType != null">
         bill_type = #{billType,jdbcType=VARCHAR},
       </if>
-      <if test="billReceiverPhone != null">
-        bill_receiver_phone = #{billReceiverPhone,jdbcType=VARCHAR},
+      <if test="receiverPhone != null">
+        receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
       </if>
       <if test="billContent != null">
         bill_content = #{billContent,jdbcType=VARCHAR},
@@ -290,15 +324,25 @@
       <if test="daleteStatus != null">
         dalete_status = #{daleteStatus,jdbcType=INTEGER},
       </if>
+      <if test="receiveTime != null">
+        receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="freightAmount != null">
+        freight_amount = #{freightAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.eproject.entity.Order">
     update order
     set order_no = #{orderNo,jdbcType=INTEGER},
-      total_price = #{totalPrice,jdbcType=DECIMAL},
+      product_id = #{productId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
       pay_time = #{payTime,jdbcType=TIMESTAMP},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
       delivery_company = #{deliveryCompany,jdbcType=VARCHAR},
       delivery_no = #{deliveryNo,jdbcType=INTEGER},
       auto_confirm_day = #{autoConfirmDay,jdbcType=TIMESTAMP},
@@ -310,7 +354,7 @@
       receiver_name = #{receiverName,jdbcType=VARCHAR},
       receiver_province = #{receiverProvince,jdbcType=VARCHAR},
       bill_type = #{billType,jdbcType=VARCHAR},
-      bill_receiver_phone = #{billReceiverPhone,jdbcType=VARCHAR},
+      receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
       bill_content = #{billContent,jdbcType=VARCHAR},
       bill_header = #{billHeader,jdbcType=VARCHAR},
       pay_type = #{payType,jdbcType=VARCHAR},
@@ -318,7 +362,10 @@
       pay_status = #{payStatus,jdbcType=INTEGER},
       delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
       updata_time = #{updataTime,jdbcType=TIMESTAMP},
-      dalete_status = #{daleteStatus,jdbcType=INTEGER}
+      dalete_status = #{daleteStatus,jdbcType=INTEGER},
+      receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      freight_amount = #{freightAmount,jdbcType=DECIMAL},
+      product_name = #{productName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

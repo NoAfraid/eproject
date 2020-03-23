@@ -38,6 +38,9 @@ public class CartController {
         if (num > 0){
             return R.ok().put("count",num);
         }
+        //if (num == -2){
+        //    return R.error(-2,"超过最大购买数量");
+        //}
         return R.error(-1,"添加出错");
     }
     /**

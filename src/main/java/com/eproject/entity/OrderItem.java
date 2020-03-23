@@ -11,23 +11,55 @@ import java.util.Date;
 public class OrderItem implements Serializable {
     private Integer id;
 
+    /**
+     * 订单id
+     */
     private Integer orderId;
 
+    /**
+     * 用户id
+     */
     private Integer userId;
 
+    /**
+     * 商品id
+     */
     private Integer productId;
 
+    /**
+     * 商品名
+     */
     private String productName;
 
+    /**
+     * 订单号
+     */
     private Integer orderNo;
 
+    /**
+     * 商品图
+     */
     private String productImg;
 
+    /**
+     * 商品价格
+     */
     private BigDecimal productPrice;
 
-    private String productQuantity;
+    /**
+     * 商品数量
+     */
+    private Integer productQuantity;
 
+    /**
+     * 创建时间
+     */
     private Date createTime;
+
+    /**
+     * 商品属性
+     */
+    private String productAttr;
 
     private static final long serialVersionUID = 1L;
 
@@ -95,11 +127,11 @@ public class OrderItem implements Serializable {
         this.productPrice = productPrice;
     }
 
-    public String getProductQuantity() {
+    public Integer getProductQuantity() {
         return productQuantity;
     }
 
-    public void setProductQuantity(String productQuantity) {
+    public void setProductQuantity(Integer productQuantity) {
         this.productQuantity = productQuantity;
     }
 
@@ -109,6 +141,14 @@ public class OrderItem implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getProductAttr() {
+        return productAttr;
+    }
+
+    public void setProductAttr(String productAttr) {
+        this.productAttr = productAttr;
     }
 
     @Override
@@ -132,7 +172,8 @@ public class OrderItem implements Serializable {
             && (this.getProductImg() == null ? other.getProductImg() == null : this.getProductImg().equals(other.getProductImg()))
             && (this.getProductPrice() == null ? other.getProductPrice() == null : this.getProductPrice().equals(other.getProductPrice()))
             && (this.getProductQuantity() == null ? other.getProductQuantity() == null : this.getProductQuantity().equals(other.getProductQuantity()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()));
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getProductAttr() == null ? other.getProductAttr() == null : this.getProductAttr().equals(other.getProductAttr()));
     }
 
     @Override
@@ -149,6 +190,7 @@ public class OrderItem implements Serializable {
         result = prime * result + ((getProductPrice() == null) ? 0 : getProductPrice().hashCode());
         result = prime * result + ((getProductQuantity() == null) ? 0 : getProductQuantity().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getProductAttr() == null) ? 0 : getProductAttr().hashCode());
         return result;
     }
 
@@ -168,6 +210,7 @@ public class OrderItem implements Serializable {
         sb.append(", productPrice=").append(productPrice);
         sb.append(", productQuantity=").append(productQuantity);
         sb.append(", createTime=").append(createTime);
+        sb.append(", productAttr=").append(productAttr);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

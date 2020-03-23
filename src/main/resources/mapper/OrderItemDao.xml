@@ -10,12 +10,13 @@
     <result column="order_no" jdbcType="INTEGER" property="orderNo" />
     <result column="product_img" jdbcType="VARCHAR" property="productImg" />
     <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
-    <result column="product_quantity" jdbcType="VARCHAR" property="productQuantity" />
+    <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="product_attr" jdbcType="VARCHAR" property="productAttr" />
   </resultMap>
   <sql id="Base_Column_List">
     id, order_id, user_id, product_id, product_name, order_no, product_img, product_price, 
-    product_quantity, create_time
+    product_quantity, create_time, product_attr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -30,12 +31,12 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.OrderItem" useGeneratedKeys="true">
     insert into order_item (order_id, user_id, product_id, 
       product_name, order_no, product_img, 
-      product_price, product_quantity, create_time
-      )
+      product_price, product_quantity, create_time, 
+      product_attr)
     values (#{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
       #{productName,jdbcType=VARCHAR}, #{orderNo,jdbcType=INTEGER}, #{productImg,jdbcType=VARCHAR}, 
-      #{productPrice,jdbcType=DECIMAL}, #{productQuantity,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
-      )
+      #{productPrice,jdbcType=DECIMAL}, #{productQuantity,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{productAttr,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.OrderItem" useGeneratedKeys="true">
     insert into order_item
@@ -67,6 +68,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="productAttr != null">
+        product_attr,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderId != null">
@@ -91,10 +95,13 @@
         #{productPrice,jdbcType=DECIMAL},
       </if>
       <if test="productQuantity != null">
-        #{productQuantity,jdbcType=VARCHAR},
+        #{productQuantity,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productAttr != null">
+        #{productAttr,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -123,10 +130,13 @@
         product_price = #{productPrice,jdbcType=DECIMAL},
       </if>
       <if test="productQuantity != null">
-        product_quantity = #{productQuantity,jdbcType=VARCHAR},
+        product_quantity = #{productQuantity,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productAttr != null">
+        product_attr = #{productAttr,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -140,8 +150,9 @@
       order_no = #{orderNo,jdbcType=INTEGER},
       product_img = #{productImg,jdbcType=VARCHAR},
       product_price = #{productPrice,jdbcType=DECIMAL},
-      product_quantity = #{productQuantity,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      product_quantity = #{productQuantity,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      product_attr = #{productAttr,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

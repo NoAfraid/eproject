@@ -17,9 +17,9 @@ public class Order implements Serializable {
     private Integer orderNo;
 
     /**
-     * 总价格
+     * 商品id
      */
-    private BigDecimal totalPrice;
+    private Integer productId;
 
     /**
      * 用户id
@@ -30,6 +30,11 @@ public class Order implements Serializable {
      * 支付时间
      */
     private Date payTime;
+
+    /**
+     * 总价格
+     */
+    private BigDecimal totalPrice;
 
     /**
      * 快递公司
@@ -89,7 +94,7 @@ public class Order implements Serializable {
     /**
      * 收票人电话
      */
-    private String billReceiverPhone;
+    private String receiverPhone;
 
     /**
      * 发票内容
@@ -131,6 +136,21 @@ public class Order implements Serializable {
      */
     private Integer daleteStatus;
 
+    /**
+     * 确认收货时间
+     */
+    private Date receiveTime;
+
+    /**
+     * 运费
+     */
+    private BigDecimal freightAmount;
+
+    /**
+     * 商品名
+     */
+    private String productName;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -149,12 +169,12 @@ public class Order implements Serializable {
         this.orderNo = orderNo;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public Integer getUserId() {
@@ -171,6 +191,14 @@ public class Order implements Serializable {
 
     public void setPayTime(Date payTime) {
         this.payTime = payTime;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public String getDeliveryCompany() {
@@ -261,12 +289,12 @@ public class Order implements Serializable {
         this.billType = billType;
     }
 
-    public String getBillReceiverPhone() {
-        return billReceiverPhone;
+    public String getReceiverPhone() {
+        return receiverPhone;
     }
 
-    public void setBillReceiverPhone(String billReceiverPhone) {
-        this.billReceiverPhone = billReceiverPhone;
+    public void setReceiverPhone(String receiverPhone) {
+        this.receiverPhone = receiverPhone;
     }
 
     public String getBillContent() {
@@ -333,6 +361,30 @@ public class Order implements Serializable {
         this.daleteStatus = daleteStatus;
     }
 
+    public Date getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(Date receiveTime) {
+        this.receiveTime = receiveTime;
+    }
+
+    public BigDecimal getFreightAmount() {
+        return freightAmount;
+    }
+
+    public void setFreightAmount(BigDecimal freightAmount) {
+        this.freightAmount = freightAmount;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -347,9 +399,10 @@ public class Order implements Serializable {
         Order other = (Order) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getOrderNo() == null ? other.getOrderNo() == null : this.getOrderNo().equals(other.getOrderNo()))
-            && (this.getTotalPrice() == null ? other.getTotalPrice() == null : this.getTotalPrice().equals(other.getTotalPrice()))
+            && (this.getProductId() == null ? other.getProductId() == null : this.getProductId().equals(other.getProductId()))
             && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getPayTime() == null ? other.getPayTime() == null : this.getPayTime().equals(other.getPayTime()))
+            && (this.getTotalPrice() == null ? other.getTotalPrice() == null : this.getTotalPrice().equals(other.getTotalPrice()))
             && (this.getDeliveryCompany() == null ? other.getDeliveryCompany() == null : this.getDeliveryCompany().equals(other.getDeliveryCompany()))
             && (this.getDeliveryNo() == null ? other.getDeliveryNo() == null : this.getDeliveryNo().equals(other.getDeliveryNo()))
             && (this.getAutoConfirmDay() == null ? other.getAutoConfirmDay() == null : this.getAutoConfirmDay().equals(other.getAutoConfirmDay()))
@@ -361,7 +414,7 @@ public class Order implements Serializable {
             && (this.getReceiverName() == null ? other.getReceiverName() == null : this.getReceiverName().equals(other.getReceiverName()))
             && (this.getReceiverProvince() == null ? other.getReceiverProvince() == null : this.getReceiverProvince().equals(other.getReceiverProvince()))
             && (this.getBillType() == null ? other.getBillType() == null : this.getBillType().equals(other.getBillType()))
-            && (this.getBillReceiverPhone() == null ? other.getBillReceiverPhone() == null : this.getBillReceiverPhone().equals(other.getBillReceiverPhone()))
+            && (this.getReceiverPhone() == null ? other.getReceiverPhone() == null : this.getReceiverPhone().equals(other.getReceiverPhone()))
             && (this.getBillContent() == null ? other.getBillContent() == null : this.getBillContent().equals(other.getBillContent()))
             && (this.getBillHeader() == null ? other.getBillHeader() == null : this.getBillHeader().equals(other.getBillHeader()))
             && (this.getPayType() == null ? other.getPayType() == null : this.getPayType().equals(other.getPayType()))
@@ -369,7 +422,10 @@ public class Order implements Serializable {
             && (this.getPayStatus() == null ? other.getPayStatus() == null : this.getPayStatus().equals(other.getPayStatus()))
             && (this.getDeliveryTime() == null ? other.getDeliveryTime() == null : this.getDeliveryTime().equals(other.getDeliveryTime()))
             && (this.getUpdataTime() == null ? other.getUpdataTime() == null : this.getUpdataTime().equals(other.getUpdataTime()))
-            && (this.getDaleteStatus() == null ? other.getDaleteStatus() == null : this.getDaleteStatus().equals(other.getDaleteStatus()));
+            && (this.getDaleteStatus() == null ? other.getDaleteStatus() == null : this.getDaleteStatus().equals(other.getDaleteStatus()))
+            && (this.getReceiveTime() == null ? other.getReceiveTime() == null : this.getReceiveTime().equals(other.getReceiveTime()))
+            && (this.getFreightAmount() == null ? other.getFreightAmount() == null : this.getFreightAmount().equals(other.getFreightAmount()))
+            && (this.getProductName() == null ? other.getProductName() == null : this.getProductName().equals(other.getProductName()));
     }
 
     @Override
@@ -378,9 +434,10 @@ public class Order implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getOrderNo() == null) ? 0 : getOrderNo().hashCode());
-        result = prime * result + ((getTotalPrice() == null) ? 0 : getTotalPrice().hashCode());
+        result = prime * result + ((getProductId() == null) ? 0 : getProductId().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getPayTime() == null) ? 0 : getPayTime().hashCode());
+        result = prime * result + ((getTotalPrice() == null) ? 0 : getTotalPrice().hashCode());
         result = prime * result + ((getDeliveryCompany() == null) ? 0 : getDeliveryCompany().hashCode());
         result = prime * result + ((getDeliveryNo() == null) ? 0 : getDeliveryNo().hashCode());
         result = prime * result + ((getAutoConfirmDay() == null) ? 0 : getAutoConfirmDay().hashCode());
@@ -392,7 +449,7 @@ public class Order implements Serializable {
         result = prime * result + ((getReceiverName() == null) ? 0 : getReceiverName().hashCode());
         result = prime * result + ((getReceiverProvince() == null) ? 0 : getReceiverProvince().hashCode());
         result = prime * result + ((getBillType() == null) ? 0 : getBillType().hashCode());
-        result = prime * result + ((getBillReceiverPhone() == null) ? 0 : getBillReceiverPhone().hashCode());
+        result = prime * result + ((getReceiverPhone() == null) ? 0 : getReceiverPhone().hashCode());
         result = prime * result + ((getBillContent() == null) ? 0 : getBillContent().hashCode());
         result = prime * result + ((getBillHeader() == null) ? 0 : getBillHeader().hashCode());
         result = prime * result + ((getPayType() == null) ? 0 : getPayType().hashCode());
@@ -401,6 +458,9 @@ public class Order implements Serializable {
         result = prime * result + ((getDeliveryTime() == null) ? 0 : getDeliveryTime().hashCode());
         result = prime * result + ((getUpdataTime() == null) ? 0 : getUpdataTime().hashCode());
         result = prime * result + ((getDaleteStatus() == null) ? 0 : getDaleteStatus().hashCode());
+        result = prime * result + ((getReceiveTime() == null) ? 0 : getReceiveTime().hashCode());
+        result = prime * result + ((getFreightAmount() == null) ? 0 : getFreightAmount().hashCode());
+        result = prime * result + ((getProductName() == null) ? 0 : getProductName().hashCode());
         return result;
     }
 
@@ -412,9 +472,10 @@ public class Order implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", orderNo=").append(orderNo);
-        sb.append(", totalPrice=").append(totalPrice);
+        sb.append(", productId=").append(productId);
         sb.append(", userId=").append(userId);
         sb.append(", payTime=").append(payTime);
+        sb.append(", totalPrice=").append(totalPrice);
         sb.append(", deliveryCompany=").append(deliveryCompany);
         sb.append(", deliveryNo=").append(deliveryNo);
         sb.append(", autoConfirmDay=").append(autoConfirmDay);
@@ -426,7 +487,7 @@ public class Order implements Serializable {
         sb.append(", receiverName=").append(receiverName);
         sb.append(", receiverProvince=").append(receiverProvince);
         sb.append(", billType=").append(billType);
-        sb.append(", billReceiverPhone=").append(billReceiverPhone);
+        sb.append(", receiverPhone=").append(receiverPhone);
         sb.append(", billContent=").append(billContent);
         sb.append(", billHeader=").append(billHeader);
         sb.append(", payType=").append(payType);
@@ -435,6 +496,9 @@ public class Order implements Serializable {
         sb.append(", deliveryTime=").append(deliveryTime);
         sb.append(", updataTime=").append(updataTime);
         sb.append(", daleteStatus=").append(daleteStatus);
+        sb.append(", receiveTime=").append(receiveTime);
+        sb.append(", freightAmount=").append(freightAmount);
+        sb.append(", productName=").append(productName);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
