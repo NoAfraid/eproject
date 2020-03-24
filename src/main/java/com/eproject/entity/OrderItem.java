@@ -34,7 +34,7 @@ public class OrderItem implements Serializable {
     /**
      * 订单号
      */
-    private Integer orderNo;
+    private String orderNo;
 
     /**
      * 商品图
@@ -103,11 +103,11 @@ public class OrderItem implements Serializable {
         this.productName = productName;
     }
 
-    public Integer getOrderNo() {
+    public String getOrderNo() {
         return orderNo;
     }
 
-    public void setOrderNo(Integer orderNo) {
+    public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
     }
 

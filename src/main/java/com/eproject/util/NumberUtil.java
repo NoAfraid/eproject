@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 /**
  * 数字生成器
  */
-public class NUmberUtil {
-    private NUmberUtil(){}
+public class NumberUtil {
+    private NumberUtil(){}
 
     /**
      * 判断是否为11位电话号码

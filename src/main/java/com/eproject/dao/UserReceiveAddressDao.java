@@ -18,4 +18,6 @@ public interface UserReceiveAddressDao {
     int updateByPrimaryKeySelective(UserReceiveAddress record);
 
     int updateByPrimaryKey(UserReceiveAddress record);
+
+    List<UserReceiveAddress> selectByExample(UserReceiveAddress record);
 }

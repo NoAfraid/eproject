@@ -14,7 +14,7 @@ public class Order implements Serializable {
     /**
      * 订单编号
      */
-    private Integer orderNo;
+    private String orderNo;
 
     /**
      * 商品id
@@ -30,6 +30,11 @@ public class Order implements Serializable {
      * 支付时间
      */
     private Date payTime;
+
+    /**
+     * 商品名
+     */
+    private String productName;
 
     /**
      * 总价格
@@ -146,11 +151,6 @@ public class Order implements Serializable {
      */
     private BigDecimal freightAmount;
 
-    /**
-     * 商品名
-     */
-    private String productName;
-
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -161,11 +161,11 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public Integer getOrderNo() {
+    public String getOrderNo() {
         return orderNo;
     }
 
-    public void setOrderNo(Integer orderNo) {
+    public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
     }
 
@@ -191,6 +191,14 @@ public class Order implements Serializable {
 
     public void setPayTime(Date payTime) {
         this.payTime = payTime;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public BigDecimal getTotalPrice() {
@@ -377,14 +385,6 @@ public class Order implements Serializable {
         this.freightAmount = freightAmount;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -402,6 +402,7 @@ public class Order implements Serializable {
             && (this.getProductId() == null ? other.getProductId() == null : this.getProductId().equals(other.getProductId()))
             && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getPayTime() == null ? other.getPayTime() == null : this.getPayTime().equals(other.getPayTime()))
+            && (this.getProductName() == null ? other.getProductName() == null : this.getProductName().equals(other.getProductName()))
             && (this.getTotalPrice() == null ? other.getTotalPrice() == null : this.getTotalPrice().equals(other.getTotalPrice()))
             && (this.getDeliveryCompany() == null ? other.getDeliveryCompany() == null : this.getDeliveryCompany().equals(other.getDeliveryCompany()))
             && (this.getDeliveryNo() == null ? other.getDeliveryNo() == null : this.getDeliveryNo().equals(other.getDeliveryNo()))
@@ -424,8 +425,7 @@ public class Order implements Serializable {
             && (this.getUpdataTime() == null ? other.getUpdataTime() == null : this.getUpdataTime().equals(other.getUpdataTime()))
             && (this.getDaleteStatus() == null ? other.getDaleteStatus() == null : this.getDaleteStatus().equals(other.getDaleteStatus()))
             && (this.getReceiveTime() == null ? other.getReceiveTime() == null : this.getReceiveTime().equals(other.getReceiveTime()))
-            && (this.getFreightAmount() == null ? other.getFreightAmount() == null : this.getFreightAmount().equals(other.getFreightAmount()))
-            && (this.getProductName() == null ? other.getProductName() == null : this.getProductName().equals(other.getProductName()));
+            && (this.getFreightAmount() == null ? other.getFreightAmount() == null : this.getFreightAmount().equals(other.getFreightAmount()));
     }
 
     @Override
@@ -437,6 +437,7 @@ public class Order implements Serializable {
         result = prime * result + ((getProductId() == null) ? 0 : getProductId().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getPayTime() == null) ? 0 : getPayTime().hashCode());
+        result = prime * result + ((getProductName() == null) ? 0 : getProductName().hashCode());
         result = prime * result + ((getTotalPrice() == null) ? 0 : getTotalPrice().hashCode());
         result = prime * result + ((getDeliveryCompany() == null) ? 0 : getDeliveryCompany().hashCode());
         result = prime * result + ((getDeliveryNo() == null) ? 0 : getDeliveryNo().hashCode());
@@ -460,7 +461,6 @@ public class Order implements Serializable {
         result = prime * result + ((getDaleteStatus() == null) ? 0 : getDaleteStatus().hashCode());
         result = prime * result + ((getReceiveTime() == null) ? 0 : getReceiveTime().hashCode());
         result = prime * result + ((getFreightAmount() == null) ? 0 : getFreightAmount().hashCode());
-        result = prime * result + ((getProductName() == null) ? 0 : getProductName().hashCode());
         return result;
     }
 
@@ -475,6 +475,7 @@ public class Order implements Serializable {
         sb.append(", productId=").append(productId);
         sb.append(", userId=").append(userId);
         sb.append(", payTime=").append(payTime);
+        sb.append(", productName=").append(productName);
         sb.append(", totalPrice=").append(totalPrice);
         sb.append(", deliveryCompany=").append(deliveryCompany);
         sb.append(", deliveryNo=").append(deliveryNo);
@@ -498,7 +499,6 @@ public class Order implements Serializable {
         sb.append(", daleteStatus=").append(daleteStatus);
         sb.append(", receiveTime=").append(receiveTime);
         sb.append(", freightAmount=").append(freightAmount);
-        sb.append(", productName=").append(productName);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -1,7 +1,9 @@
 package com.eproject.dao;
 
 import com.eproject.entity.Order;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface OrderDao {
     int deleteByPrimaryKey(Integer id);
 

@@ -21,7 +21,7 @@ public interface CartService {
     /**
      * 批量删除购物车中的商品
      */
-    int deleteCart(Cart cart, Integer[] ids);
+    int deleteCart(Cart cart, List<Integer> ids);//Integer[] ids
     /**
      * 清空购物车
      */

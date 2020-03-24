@@ -1,8 +1,10 @@
 package com.eproject.service;
 
+import com.eproject.common.PageQuery;
 import com.eproject.domain.ConfirmOrderResult;
 import com.eproject.entity.Order;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,11 +20,11 @@ public interface OrderService {
     /**
      * 根据提交信息生成订单
      */
-    String generateOrder(Order order);
+    Map<String, Object> generateOrder(Order order);
     /**
      * 查看我的订单列表
      */
-
+    List<Order> getMyOrders(PageQuery pageQuery);
     /**
      * 修改我的订单信息
      */
@@ -78,5 +80,8 @@ public interface OrderService {
      * 修改订单费用信息
      */
 
-
+    /**
+     * 发送延迟消息取消订单
+     */
+    int sendDelayMessageCancelOrder(Integer orderId);
 }

@@ -1,7 +1,12 @@
 package com.eproject.dao;
 
 import com.eproject.entity.OrderItem;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
+@Mapper
 public interface OrderItemDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +19,6 @@ public interface OrderItemDao {
     int updateByPrimaryKeySelective(OrderItem record);
 
     int updateByPrimaryKey(OrderItem record);
+
+    int insertList(@Param("list")List<OrderItem> list);
 }

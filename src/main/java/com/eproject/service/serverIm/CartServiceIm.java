@@ -65,7 +65,7 @@ public class CartServiceIm implements CartService {
     }
 
     @Override
-    public int deleteCart(Cart cart,Integer[] ids){ ;
+    public int deleteCart(Cart cart, List<Integer> ids){//Integer[] ids
         //deleteStatus(1删除，0保留)
         cart.setDeleteStatus(1);
         int num = cartDao.updateDeleteStatus(cart.getUserId(),cart.getProductId(),ids);

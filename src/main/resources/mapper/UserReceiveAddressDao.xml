@@ -144,4 +144,10 @@
       detail_address = #{detailAddress,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByExample" parameterType="com.eproject.entity.UserReceiveAddress" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_receive_address
+    where user_id = #{userId}
+  </select>
 </mapper>

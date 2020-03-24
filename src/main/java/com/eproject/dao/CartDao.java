@@ -20,7 +20,7 @@ public interface CartDao {
 
     int updateQuantity(Cart cart);//
 
-    int updateDeleteStatus(Integer userId,Integer productId,@Param("ids") Integer[] ids);
+    int updateDeleteStatus(Integer userId,Integer productId,@Param("ids") List<Integer> ids);
 
     int clearCart(Integer userId);
 
@@ -29,4 +29,5 @@ public interface CartDao {
     int updateByPrimaryKey(Cart record);
 
     List<Cart> selectCartInfo(Integer userId);
+
 }

@@ -76,7 +76,7 @@ public class CartController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/deleteCartInfo",produces = "application/json;charset=UTF-8")
-    public R deleteCartInf(@RequestBody Cart cart,@RequestParam("ids") Integer[] ids){
+    public R deleteCartInf(@RequestBody Cart cart,@RequestParam("ids") List<Integer> ids){//Integer[] ids
         //,@RequestParam("id") List<Integer> id
         int count = cartService.deleteCart(cart,ids);
         if (count > 0){

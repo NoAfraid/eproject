@@ -7,7 +7,7 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="product_id" jdbcType="INTEGER" property="productId" />
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
-    <result column="order_no" jdbcType="INTEGER" property="orderNo" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
     <result column="product_img" jdbcType="VARCHAR" property="productImg" />
     <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
     <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
@@ -34,7 +34,7 @@
       product_price, product_quantity, create_time, 
       product_attr)
     values (#{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
-      #{productName,jdbcType=VARCHAR}, #{orderNo,jdbcType=INTEGER}, #{productImg,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{productImg,jdbcType=VARCHAR}, 
       #{productPrice,jdbcType=DECIMAL}, #{productQuantity,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{productAttr,jdbcType=VARCHAR})
   </insert>
@@ -86,7 +86,7 @@
         #{productName,jdbcType=VARCHAR},
       </if>
       <if test="orderNo != null">
-        #{orderNo,jdbcType=INTEGER},
+        #{orderNo,jdbcType=VARCHAR},
       </if>
       <if test="productImg != null">
         #{productImg,jdbcType=VARCHAR},
@@ -121,7 +121,7 @@
         product_name = #{productName,jdbcType=VARCHAR},
       </if>
       <if test="orderNo != null">
-        order_no = #{orderNo,jdbcType=INTEGER},
+        order_no = #{orderNo,jdbcType=VARCHAR},
       </if>
       <if test="productImg != null">
         product_img = #{productImg,jdbcType=VARCHAR},
@@ -147,7 +147,7 @@
       user_id = #{userId,jdbcType=INTEGER},
       product_id = #{productId,jdbcType=INTEGER},
       product_name = #{productName,jdbcType=VARCHAR},
-      order_no = #{orderNo,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=VARCHAR},
       product_img = #{productImg,jdbcType=VARCHAR},
       product_price = #{productPrice,jdbcType=DECIMAL},
       product_quantity = #{productQuantity,jdbcType=INTEGER},
@@ -155,4 +155,16 @@
       product_attr = #{productAttr,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="insertList" >
+    insert into order_item (order_id, user_id, product_id,
+    product_name, order_no, product_img,
+    product_price, product_quantity, create_time,
+    product_attr) VALUES
+    <foreach collection="list" item="item" separator="," index="index">
+        (#{item.orderId,jdbcType=INTEGER}, #{item.userId,jdbcType=INTEGER}, #{item.productId,jdbcType=INTEGER},
+        #{item.productName,jdbcType=VARCHAR}, #{item.orderNo,jdbcType=VARCHAR}, #{item.productImg,jdbcType=VARCHAR},
+        #{item.productPrice,jdbcType=DECIMAL}, #{item.productQuantity,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP},
+        #{item.productAttr,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
 </mapper>
