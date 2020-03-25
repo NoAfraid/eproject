@@ -9,6 +9,8 @@ public enum Result {
 
     COLLECT_SOURCE_ID("收藏来源id不能为空"),
 
+    ORDER_NOT_EXIST_ERROR("订单不存在！"),
+
     COLLECT_EXIT("已收藏"),
 
     DATA_NOT_EXIST("未查询到记录！"),

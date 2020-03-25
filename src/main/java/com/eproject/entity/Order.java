@@ -151,6 +151,11 @@ public class Order implements Serializable {
      */
     private BigDecimal freightAmount;
 
+    /**
+     * 创建时间
+     */
+    private Date creatTime;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -385,6 +390,14 @@ public class Order implements Serializable {
         this.freightAmount = freightAmount;
     }
 
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -425,7 +438,8 @@ public class Order implements Serializable {
             && (this.getUpdataTime() == null ? other.getUpdataTime() == null : this.getUpdataTime().equals(other.getUpdataTime()))
             && (this.getDaleteStatus() == null ? other.getDaleteStatus() == null : this.getDaleteStatus().equals(other.getDaleteStatus()))
             && (this.getReceiveTime() == null ? other.getReceiveTime() == null : this.getReceiveTime().equals(other.getReceiveTime()))
-            && (this.getFreightAmount() == null ? other.getFreightAmount() == null : this.getFreightAmount().equals(other.getFreightAmount()));
+            && (this.getFreightAmount() == null ? other.getFreightAmount() == null : this.getFreightAmount().equals(other.getFreightAmount()))
+            && (this.getCreatTime() == null ? other.getCreatTime() == null : this.getCreatTime().equals(other.getCreatTime()));
     }
 
     @Override
@@ -461,6 +475,7 @@ public class Order implements Serializable {
         result = prime * result + ((getDaleteStatus() == null) ? 0 : getDaleteStatus().hashCode());
         result = prime * result + ((getReceiveTime() == null) ? 0 : getReceiveTime().hashCode());
         result = prime * result + ((getFreightAmount() == null) ? 0 : getFreightAmount().hashCode());
+        result = prime * result + ((getCreatTime() == null) ? 0 : getCreatTime().hashCode());
         return result;
     }
 
@@ -499,6 +514,7 @@ public class Order implements Serializable {
         sb.append(", daleteStatus=").append(daleteStatus);
         sb.append(", receiveTime=").append(receiveTime);
         sb.append(", freightAmount=").append(freightAmount);
+        sb.append(", creatTime=").append(creatTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

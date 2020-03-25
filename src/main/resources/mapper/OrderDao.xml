@@ -31,13 +31,14 @@
     <result column="dalete_status" jdbcType="INTEGER" property="daleteStatus" />
     <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime" />
     <result column="freight_amount" jdbcType="DECIMAL" property="freightAmount" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, order_no, product_id, user_id, pay_time, product_name, total_price, delivery_company, 
     delivery_no, auto_confirm_day, bill_receiver_email, receiver_post_code, note, receiver_detail_adress, 
     receiver_city, receiver_name, receiver_province, bill_type, receiver_phone, bill_content, 
     bill_header, pay_type, order_status, pay_status, delivery_time, updata_time, dalete_status, 
-    receive_time, freight_amount
+    receive_time, freight_amount, creat_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -45,21 +46,68 @@
     from order
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByUserId" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `order`
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="getPage" resultType="int" parameterType="map">
+        select count(*) from `order`
+        where user_id = #{userId}
+  </select>
+  <select id="getTimeOutOrders" resultMap="BaseResultMap">
+     SELECT
+            o.id,
+            o.order_sn,
+            o.user_id,
+            ot.id ot_id,
+            ot.product_name ot_product_name,
+            ot.product_quantity ot_product_quantity
+        FROM
+            `order`
+            left join order_item ot ON o.id = ot.order_id
+        where
+            ot.id = #{orderId}
+  </select>
+  <select id="selectByOrderNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from `order`
+    where order_no = #{orderNo}
+    limit 1
+  </select>
+  <update id="closeOrder">
+    update `order`
+    set order_status = #{orderStatus}, updata_time = now()
+    where  id in
+    <foreach collection="orderIds" item="item" index="index"
+             open="(" separator="," close=")">#{item}
+    </foreach>
+  </update>
+  <update id="updateOrderStatus">
+    update `order`
+    set order_status=#{status}
+    where id in
+    <foreach collection="ids" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </update>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from order
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Order" useGeneratedKeys="true">
     insert into `order` (order_no, product_id, user_id,
-      pay_time, product_name, total_price,
-      delivery_company, delivery_no, auto_confirm_day,
-      bill_receiver_email, receiver_post_code, note,
-      receiver_detail_adress, receiver_city, receiver_name,
-      receiver_province, bill_type, receiver_phone,
-      bill_content, bill_header, pay_type,
-      order_status, pay_status, delivery_time,
-      updata_time, dalete_status, receive_time,
-      freight_amount)
+      pay_time, product_name, total_price, 
+      delivery_company, delivery_no, auto_confirm_day, 
+      bill_receiver_email, receiver_post_code, note, 
+      receiver_detail_adress, receiver_city, receiver_name, 
+      receiver_province, bill_type, receiver_phone, 
+      bill_content, bill_header, pay_type, 
+      order_status, pay_status, delivery_time, 
+      updata_time, dalete_status, receive_time, 
+      freight_amount, creat_time)
     values (#{orderNo,jdbcType=VARCHAR}, #{productId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{payTime,jdbcType=TIMESTAMP}, #{productName,jdbcType=VARCHAR}, #{totalPrice,jdbcType=DECIMAL}, 
       #{deliveryCompany,jdbcType=VARCHAR}, #{deliveryNo,jdbcType=INTEGER}, #{autoConfirmDay,jdbcType=TIMESTAMP}, 
@@ -69,7 +117,7 @@
       #{billContent,jdbcType=VARCHAR}, #{billHeader,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, 
       #{orderStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, #{deliveryTime,jdbcType=TIMESTAMP}, 
       #{updataTime,jdbcType=TIMESTAMP}, #{daleteStatus,jdbcType=INTEGER}, #{receiveTime,jdbcType=TIMESTAMP}, 
-      #{freightAmount,jdbcType=DECIMAL})
+      #{freightAmount,jdbcType=DECIMAL}, #{creatTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Order" useGeneratedKeys="true">
     insert into order
@@ -158,6 +206,9 @@
       <if test="freightAmount != null">
         freight_amount,
       </if>
+      <if test="creatTime != null">
+        creat_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderNo != null">
@@ -244,10 +295,13 @@
       <if test="freightAmount != null">
         #{freightAmount,jdbcType=DECIMAL},
       </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.eproject.entity.Order">
-    update order
+    update `order`
     <set>
       <if test="orderNo != null">
         order_no = #{orderNo,jdbcType=VARCHAR},
@@ -333,6 +387,9 @@
       <if test="freightAmount != null">
         freight_amount = #{freightAmount,jdbcType=DECIMAL},
       </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -365,7 +422,8 @@
       updata_time = #{updataTime,jdbcType=TIMESTAMP},
       dalete_status = #{daleteStatus,jdbcType=INTEGER},
       receive_time = #{receiveTime,jdbcType=TIMESTAMP},
-      freight_amount = #{freightAmount,jdbcType=DECIMAL}
+      freight_amount = #{freightAmount,jdbcType=DECIMAL},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -1,15 +1,19 @@
 package com.eproject.service.serverIm;
 
+import com.eproject.common.OrderStatusEnum;
 import com.eproject.common.PageQuery;
+import com.eproject.common.PageResult;
 import com.eproject.common.Result;
 import com.eproject.dao.*;
 import com.eproject.domain.ConfirmOrderResult;
 import com.eproject.domain.OrderDetail;
+import com.eproject.domain.ReceiverInfoParam;
 import com.eproject.entity.*;
 import com.eproject.service.OrderService;
 import com.eproject.service.UserReceiveAddressService;
 import com.eproject.util.NumberUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -96,7 +100,7 @@ public class OrderServiceIm implements OrderService {
         orderList.setReceiverProvince(address.getProvince());
         orderList.setReceiverDetailAdress(address.getDetailAddress());
         orderList.setReceiverCity(address.getCity());
-        orderList.setPayTime(new Date());
+        //orderList.setPayTime(new Date());
         //0->未确认；1->已确认
         orderList.setDaleteStatus(0);
         //生成订单号
@@ -126,8 +130,11 @@ public class OrderServiceIm implements OrderService {
     }
 
     @Override
-    public List<Order> getMyOrders(PageQuery pageQuery){
-        return null;
+    public PageResult getMyOrders(PageQuery pageQuery){
+        List<Order> orderList = orderDao.selectByUserId(pageQuery);
+        int total = orderDao.getPage(pageQuery);
+        PageResult pageResult = new PageResult(orderList, total, pageQuery.getLimit(), pageQuery.getPage());
+        return pageResult;
     }
 
     @Override
@@ -139,6 +146,107 @@ public class OrderServiceIm implements OrderService {
 //        cancelOrderSender.sendMessage(orderId, delayTimes);
         return delayTimes;
     }
+
+    @Override
+    public  int updateReceiverInfo(ReceiverInfoParam infoParam){
+        Order order = new Order();
+        order.setId(infoParam.getOrderId());
+        order.setReceiverName(infoParam.getName());
+        order.setReceiverPhone(infoParam.getPhoneNumber());
+        order.setReceiverPostCode(infoParam.getPostCode());
+        order.setReceiverProvince(infoParam.getProvince());
+        order.setReceiverDetailAdress(infoParam.getDetailAddress());
+        order.setReceiverCity(infoParam.getCity());
+        int count = orderDao.updateByPrimaryKey(order);
+        return count;
+    }
+
+    @Override
+    public Integer cancelTimeOutOrder(){
+        Integer count=0;
+        OrderSetting orderSetting = orderSettingDao.selectByPrimaryKey(1L);
+        //查询超时、未支付的订单及订单详情
+        List<OrderDetail> timeOutOrders =orderDao.getTimeOutOrders(orderSetting.getNormalOrderOvertime());
+        if (CollectionUtils.isEmpty(timeOutOrders)) {
+            return count;
+        }
+        //修改订单状态为交易取消
+        List<Integer> ids = new ArrayList<>();
+        for (OrderDetail timeOutOrder : timeOutOrders){
+            ids.add(timeOutOrder.getId());
+        }
+        orderDao.updateOrderStatus(ids,4);
+        for (OrderDetail timeOutOrder : timeOutOrders){
+            //解除订单商品库存锁定,释放商品数量
+        }
+        return timeOutOrders.size();
+    }
+
+    @Override
+    public String cancelOrder(String orderNo, Integer userId){
+        Order order = orderDao.selectByOrderNo(orderNo);
+        if (order != null){
+            //todo 验证是否是当前userId下的订单，否则报错
+            //todo 订单状态判断
+            if (orderDao.updateOrderStatus(Collections.singletonList(order.getId()),
+                    OrderStatusEnum.ORDER_CLOSED_BY_MALLUSER.getOrderStatus()) >0){
+                return Result.SUCCESS.getResult();
+            }
+            return Result.DB_ERROR.getResult();
+        }
+        return Result.ORDER_NOT_EXIST_ERROR.getResult();
+    }
+
+    @Override
+    public Integer paySuccess(Integer orderId, String payType){
+        //修改订单支付状态
+        Order order = new Order();
+        order.setId(orderId);
+        order.setPayStatus(1);
+        order.setPayType(payType);
+        order.setPayTime(new Date());
+        orderDao.updateByPrimaryKeySelective(order);
+        //恢复所有下单商品的锁定库存，扣减真实库存(暂未处理)
+        //OrderDetail orderDetail =
+        return 1;
+    }
+
+    @Override
+    public  String finishOrder(String orderNo, Integer userId){
+        Order order = orderDao.selectByOrderNo(orderNo);
+        if (order != null){
+            //todo 验证是否是当前userId下的订单，否则报错
+            //todo 订单状态判断
+           order.setOrderStatus((int) OrderStatusEnum.ORDER_SUCCESS.getOrderStatus());
+           order.setOrderStatus(4);
+           order.setUpdataTime(new Date());
+           if (orderDao.updateByPrimaryKeySelective(order) > 0){
+               return Result.SUCCESS.getResult();
+           }
+            return Result.DB_ERROR.getResult();
+        }
+        return Result.ORDER_NOT_EXIST_ERROR.getResult();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * 删除下单商品的购物车信息
      */

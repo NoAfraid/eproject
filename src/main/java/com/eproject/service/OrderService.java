@@ -1,8 +1,11 @@
 package com.eproject.service;
 
 import com.eproject.common.PageQuery;
+import com.eproject.common.PageResult;
 import com.eproject.domain.ConfirmOrderResult;
+import com.eproject.domain.ReceiverInfoParam;
 import com.eproject.entity.Order;
+import com.eproject.entity.UserReceiveAddress;
 
 import java.util.List;
 import java.util.Map;
@@ -24,31 +27,36 @@ public interface OrderService {
     /**
      * 查看我的订单列表
      */
-    List<Order> getMyOrders(PageQuery pageQuery);
+    PageResult getMyOrders(PageQuery pageQuery);
     /**
-     * 修改我的订单信息
+     * 修改订单地址信息
      */
-
-    /**
-     * 支付成功后的回调
-     */
+    int updateReceiverInfo(ReceiverInfoParam infoParam);
 
     /**
      * 自动取消超时订单
      */
+    Integer cancelTimeOutOrder();
 
-    /**
-     * 取消单个超时订单
-     */
 
     /**
      * 手动取消订单
      *
     */
+    String cancelOrder(String orderNo, Integer userId);
+    /**
+     * 支付成功后的回调
+     */
+    Integer paySuccess(Integer orderId,String payType);
 
     /**
      * 确认收货
      **/
+    String finishOrder(String orderNo, Integer userId);
+
+    /**
+     * 取消单个超时订单
+     */
 
     // 后台订单处理
     /**
