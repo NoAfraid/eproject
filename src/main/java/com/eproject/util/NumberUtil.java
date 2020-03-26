@@ -54,4 +54,16 @@ public class NumberUtil {
         buffer.append(num);
         return buffer.toString();
     }
+
+    /**
+     * 生成物流订单流水号
+     *
+     * @return
+     */
+    public static String genDeliveryNo() {
+        StringBuffer buffer = new StringBuffer(String.valueOf(System.currentTimeMillis()));
+        int num = genRandomNum(6);
+        buffer.append(num);
+        return buffer.toString();
+    }
 }

@@ -1,6 +1,7 @@
 package com.eproject.dao;
 
 import com.eproject.common.PageQuery;
+import com.eproject.domain.OrderDeliveryParam;
 import com.eproject.domain.OrderDetail;
 import com.eproject.entity.Order;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,6 +24,10 @@ public interface OrderDao {
     int getPage(PageQuery pageQuery);
 
     int updateByPrimaryKeySelective(Order record);
+
+    int updateByOrderStatus(@Param("id") List<Integer> id);
+
+    int updateByDeleteStatus(@Param("id") List<Integer> id);
 
     int updateByPrimaryKey(Order record);
 
@@ -48,4 +53,9 @@ public interface OrderDao {
      * @return
      */
     Order selectByOrderNo(String orderNo);
+
+    /**
+     * 批量发货
+     */
+    int delivery(@Param("list") List<OrderDeliveryParam> deliveryParamList);
 }

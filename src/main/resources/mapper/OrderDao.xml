@@ -10,7 +10,7 @@
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
     <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
     <result column="delivery_company" jdbcType="VARCHAR" property="deliveryCompany" />
-    <result column="delivery_no" jdbcType="INTEGER" property="deliveryNo" />
+    <result column="delivery_no" jdbcType="VARCHAR" property="deliveryNo" />
     <result column="auto_confirm_day" jdbcType="TIMESTAMP" property="autoConfirmDay" />
     <result column="bill_receiver_email" jdbcType="VARCHAR" property="billReceiverEmail" />
     <result column="receiver_post_code" jdbcType="VARCHAR" property="receiverPostCode" />
@@ -110,7 +110,7 @@
       freight_amount, creat_time)
     values (#{orderNo,jdbcType=VARCHAR}, #{productId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{payTime,jdbcType=TIMESTAMP}, #{productName,jdbcType=VARCHAR}, #{totalPrice,jdbcType=DECIMAL}, 
-      #{deliveryCompany,jdbcType=VARCHAR}, #{deliveryNo,jdbcType=INTEGER}, #{autoConfirmDay,jdbcType=TIMESTAMP}, 
+      #{deliveryCompany,jdbcType=VARCHAR}, #{deliveryNo,jdbcType=VARCHAR}, #{autoConfirmDay,jdbcType=TIMESTAMP},
       #{billReceiverEmail,jdbcType=VARCHAR}, #{receiverPostCode,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
       #{receiverDetailAdress,jdbcType=VARCHAR}, #{receiverCity,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR}, 
       #{receiverProvince,jdbcType=VARCHAR}, #{billType,jdbcType=VARCHAR}, #{receiverPhone,jdbcType=VARCHAR}, 
@@ -325,7 +325,7 @@
         delivery_company = #{deliveryCompany,jdbcType=VARCHAR},
       </if>
       <if test="deliveryNo != null">
-        delivery_no = #{deliveryNo,jdbcType=INTEGER},
+        delivery_no = #{deliveryNo,jdbcType=VARCHAR},
       </if>
       <if test="autoConfirmDay != null">
         auto_confirm_day = #{autoConfirmDay,jdbcType=TIMESTAMP},
@@ -393,6 +393,22 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateByOrderStatus" parameterType="com.eproject.entity.Order">
+    update `order`
+    set order_status = -3
+    where id in
+    <foreach collection="id" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </update>
+  <update id="updateByDeleteStatus" parameterType="com.eproject.entity.Order">
+    update `order`
+    set dalete_status = 1
+    where id in
+    <foreach collection="id" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </update>
   <update id="updateByPrimaryKey" parameterType="com.eproject.entity.Order">
     update order
     set order_no = #{orderNo,jdbcType=VARCHAR},
@@ -402,7 +418,7 @@
       product_name = #{productName,jdbcType=VARCHAR},
       total_price = #{totalPrice,jdbcType=DECIMAL},
       delivery_company = #{deliveryCompany,jdbcType=VARCHAR},
-      delivery_no = #{deliveryNo,jdbcType=INTEGER},
+      delivery_no = #{deliveryNo,jdbcType=VARCHAR},
       auto_confirm_day = #{autoConfirmDay,jdbcType=TIMESTAMP},
       bill_receiver_email = #{billReceiverEmail,jdbcType=VARCHAR},
       receiver_post_code = #{receiverPostCode,jdbcType=VARCHAR},
@@ -425,5 +441,34 @@
       freight_amount = #{freightAmount,jdbcType=DECIMAL},
       creat_time = #{creatTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="delivery">
+    update `order`
+    set delivery_no = case id
+    <foreach collection="list" item="item">
+      WHEN #{item.orderId} THEN #{item.deliveryNo}
+    </foreach>
+    END,
+    delivery_company = CASE id
+    <foreach collection="list" item="item">
+      WHEN #{item.orderId} THEN #{item.deliveryCompany}
+    </foreach>
+    END,
+    delivery_time = CASE id
+    <foreach collection="list" item="item">
+      WHEN #{item.orderId} THEN now()
+    </foreach>
+    END,
+    order_status = CASE id
+    <foreach collection="list" item="item">
+      WHEN #{item.orderId} THEN 2
+    </foreach>
+    END
+    WHERE
+    id IN
+    <foreach collection="list" item="item" separator="," open="(" close=")">
+      #{item.orderId}
+    </foreach>
+    AND order_status = 1
   </update>
 </mapper>

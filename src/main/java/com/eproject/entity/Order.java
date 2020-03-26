@@ -49,7 +49,7 @@ public class Order implements Serializable {
     /**
      * 快递单号
      */
-    private Integer deliveryNo;
+    private String deliveryNo;
 
     /**
      * 自动确认为时间
@@ -222,11 +222,11 @@ public class Order implements Serializable {
         this.deliveryCompany = deliveryCompany;
     }
 
-    public Integer getDeliveryNo() {
+    public String getDeliveryNo() {
         return deliveryNo;
     }
 
-    public void setDeliveryNo(Integer deliveryNo) {
+    public void setDeliveryNo(String deliveryNo) {
         this.deliveryNo = deliveryNo;
     }
 

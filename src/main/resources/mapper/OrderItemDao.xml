@@ -24,6 +24,30 @@
     from order_item
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="selectList" resultMap="BaseResultMap" parameterType="com.eproject.entity.OrderItem">
+        select
+        <include refid="Base_Column_List"/>
+        from order_item
+    </select>
+  <select id="selectItemList" resultMap="BaseResultMap" parameterType="com.eproject.entity.OrderItem">
+    select
+    <include refid="Base_Column_List"/>
+    from order_item
+    <where>
+      <if test="orderNo!=null and orderNo!=''">
+        and (order_no like CONCAT('%',#{orderNo},'%'))
+      </if>
+      <if test="productId!=null and productId!=''">
+        or (product_id like CONCAT('%',#{productId},'%'))
+      </if>
+      <if test="userId!=null and userId!=''">
+        or (user_id like CONCAT('%',#{userId},'%'))
+      </if>
+      <if test="id!=null and id!=''">
+        or (id like CONCAT('%',#{id},'%'))
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from order_item
     where id = #{id,jdbcType=INTEGER}
