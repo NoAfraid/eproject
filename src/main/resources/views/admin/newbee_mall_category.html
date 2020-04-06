@@ -7,17 +7,17 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-    <link rel="shortcut icon" href="../../css/admin/dist/img/favicon.ico"/>
-    <link rel="stylesheet" href="../../css/admin/dist/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="../../static/css/admin/dist/img/favicon.ico"/>
+    <link rel="stylesheet" href="../../static/css/admin/dist/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="../../css/admin/dist/css/ionicons.min.css">
-    <link rel="stylesheet" href="../../css/admin/dist/css/main.css">
-    <link rel="stylesheet" href="../../css/admin/plugins/bootstrap/css/bootstrap.css"/>
-    <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
-    <link rel="stylesheet" href="../../css/admin/plugins/jqgrid-5.3.0/ui.jqgrid-bootstrap4.css"/>
+    <link rel="stylesheet" href="../../static/css/admin/dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="../../static/css/admin/dist/css/main.css">
+    <link rel="stylesheet" href="../../static/css/admin/plugins/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../static/css/admin/plugins/sweetalert/sweetalert.css"/>
+    <link rel="stylesheet" href="../../static/css/admin/plugins/jqgrid-5.3.0/ui.jqgrid-bootstrap4.css"/>
     <!-- Theme style -->
-    <link rel="stylesheet" href="../../css/admin/dist/css/adminlte.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../static/css/grzx.css"/>
+    <link rel="stylesheet" href="../../static/css/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/grzx.css"/>
 </head>
 <header th:replace="admin/header::header-fragment">
 </header>
@@ -160,18 +160,24 @@
             <div class="container-fluid">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">轮播图管理</h3>
+                        <h3 class="card-title">分类管理</h3>
                     </div> <!-- /.card-body -->
                     <div class="card-body">
                         <div class="grid-btn">
-                            <button class="btn btn-info" onclick="carouselAdd()"><i
+                            <button class="btn btn-info" onclick="categoryAdd()"><i
                                     class="fa fa-plus"></i>&nbsp;新增
                             </button>
-                            <button class="btn btn-info" onclick="carouselEdit()"><i
+                            <button class="btn btn-info" onclick="categoryEdit()"><i
                                     class="fa fa-pencil-square-o"></i>&nbsp;修改
                             </button>
-                            <button class="btn btn-danger" onclick="deleteCarousel()"><i
+                            <button class="btn btn-danger" onclick="deleteCagegory()"><i
                                     class="fa fa-trash-o"></i>&nbsp;删除
+                            </button>
+                            <button class="btn btn-info" onclick="categoryManage()"><i
+                                    class="fa fa-list"></i>&nbsp;下级分类管理
+                            </button>
+                            <button class="btn btn-info" onclick="categoryBack()"><i
+                                    class="fa fa-backward"></i>&nbsp;返回
                             </button>
                         </div>
                         <br>
@@ -185,46 +191,34 @@
         <!-- /.content -->
         <div class="content">
             <!-- 模态框（Modal） -->
-            <div class="modal fade" id="carouselModal" tabindex="-1" role="dialog"
-                 aria-labelledby="carouselModalLabel">
+            <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
-                            <h6 class="modal-title" id="carouselModalLabel">Modal</h6>
+                            <h6 class="modal-title" id="categoryModalLabel">Modal</h6>
                         </div>
                         <div class="modal-body">
-                            <form id="indexConfigForm">
+                            <form id="categoryForm">
                                 <div class="form-group">
                                     <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
                                         错误信息展示栏。
                                     </div>
                                 </div>
+                                <input type="hidden" class="form-control" id="categoryId" name="categoryId">
+                                <input type="hidden" id="categoryLevel" th:value="${categoryLevel}">
+                                <input type="hidden" id="parentId" th:value="${parentId}">
+                                <input type="hidden" id="backParentId" th:value="${backParentId}">
                                 <div class="form-group">
-                                    <div class="col-sm-4">
-                                        <img id="carouselImg" src="/admin/dist/img/img-upload.png"
-                                             style="height: 64px;width: 64px;">
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <div class="col-sm-4">
-                                        <button class="btn btn-info" style="margin-bottom: 5px;"
-                                                id="uploadCarouselImage">
-                                            <i class="fa fa-picture-o"></i>&nbsp;上传轮播图
-                                        </button>
-                                    </div>
+                                    <label for="categoryName" class="control-label">分类名称:</label>
+                                    <input type="text" class="form-control" id="categoryName" name="categoryName"
+                                           placeholder="请输入分类名称" required="true">
                                 </div>
                                 <div class="form-group">
-                                    <label for="redirectUrl" class="control-label">跳转链接:</label>
-                                    <input type="text" class="form-control" id="redirectUrl" name="redirectUrl"
-                                           placeholder="请输入跳转链接" value="##">
-                                </div>
-                                <div class="form-group">
-                                    <label for="carouselRank" class="control-label">排序值:</label>
-                                    <input type="number" class="form-control" id="carouselRank" name="carouselRank"
-                                           placeholder="请输入排序值">
+                                    <label for="categoryName" class="control-label">排序值:</label>
+                                    <input type="number" class="form-control" id="categoryRank" name="categoryRank"
+                                           placeholder="请输入分类排序值" required="true">
                                 </div>
                             </form>
                         </div>
@@ -240,7 +234,7 @@
     </div>
     <!-- /.content-wrapper -->
     <!-- 引入页脚footer-fragment -->
-<!--    <div th:replace="admin/footer::footer-fragment"></div>-->
+    <div th:replace="admin/footer::footer-fragment"></div>
 </div>
 <!-- jQuery -->
 <script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
@@ -253,11 +247,10 @@
 <!-- jqgrid -->
 <script th:src="@{/admin/plugins/jqgrid-5.3.0/jquery.jqGrid.min.js}"></script>
 <script th:src="@{/admin/plugins/jqgrid-5.3.0/grid.locale-cn.js}"></script>
+
 <!-- sweetalert -->
 <script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
-<!-- ajaxupload -->
-<script th:src="@{/admin/plugins/ajaxupload/ajaxupload.js}"></script>
 <script th:src="@{/admin/dist/js/public.js}"></script>
-<script th:src="@{/admin/dist/js/newbee_mall_carousel.js}"></script>
+<script th:src="@{/admin/dist/js/newbee_mall_category.js}"></script>
 </body>
 </html>

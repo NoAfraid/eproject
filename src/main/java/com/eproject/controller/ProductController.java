@@ -72,7 +72,7 @@ public class ProductController {
      */
     @RequestMapping(value = "/list", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R List(@RequestParam Map<String, Object> result) {
+    public R List(@RequestBody Map<String, Object> result) {
         try {
             if (StringUtils.isEmpty(result.get("page")) || StringUtils.isEmpty(result.get("limit"))) {
                 return R.error(-1, "请求错误");

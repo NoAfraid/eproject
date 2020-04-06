@@ -2,8 +2,9 @@ package com.eproject.controller.commonController;
 
 import com.eproject.common.Contants;
 import com.eproject.common.R;
-import com.eproject.common.Result;
 import com.eproject.util.MallUtils;
+import com.eproject.util.Result;
+import com.eproject.util.ResultGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +29,7 @@ public class UploadController {
 
     @RequestMapping({"upload/file"})
     @ResponseBody
-    public R upload(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file) throws URISyntaxException{
+    public Result upload(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file) throws URISyntaxException{
         String fileName = file.getOriginalFilename();
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         //生成文件名称通用方法
@@ -50,12 +51,14 @@ public class UploadController {
 //                return R.error(-1,"文件已存在");
 //            }
             file.transferTo(destFile);
-            R resultSuccess = R.genSuccessResult();
+            Result resultSuccess = ResultGenerator.genSuccessResult();
             resultSuccess.setData(MallUtils.getHost(new URI(httpServletRequest.getRequestURL() + "")) + "/upload/" + newFileName);
-            return R.ok("上传成功");
+            //System.out.println(resultSuccess);
+            return resultSuccess;
         }catch (IOException e){
             e.printStackTrace();
-            return R.error(-1,"文件上传失败");
+            return ResultGenerator.genFailResult("文件上传失败");
+
         }
     }
 

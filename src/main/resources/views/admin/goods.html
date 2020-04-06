@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<header th:replace="admin/header::header-fragment">
-</header>
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,16 +6,17 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-    <link rel="shortcut icon" href="../../css/admin/dist/img/favicon.ico"/>
-    <link rel="stylesheet" href="../../css/admin/dist/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="../../static/css/admin/dist/img/favicon.ico"/>
+    <link rel="stylesheet" href="../../static/css/admin/dist/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="../../css/admin/dist/css/ionicons.min.css">
-    <link rel="stylesheet" href="../../css/admin/dist/css/main.css">
-    <link rel="stylesheet" href="../../css/admin/plugins/bootstrap/css/bootstrap.css"/>
-    <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
-    <link rel="stylesheet" href="../../css/admin/plugins/jqgrid-5.3.0/ui.jqgrid-bootstrap4.css"/>
+    <link rel="stylesheet" href="../../static/css/admin/dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="../../static/css/admin/dist/css/main.css">
+    <link rel="stylesheet" href="../../static/css/admin/plugins/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../static/css/admin/plugins/sweetalert/sweetalert.css"/>
+    <link rel="stylesheet" href="../../static/css/admin/plugins/jqgrid-5.3.0/ui.jqgrid-bootstrap4.css"/>
     <!-- Theme style -->
-    <link rel="stylesheet" href="../../css/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../../static/css/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/grzx.css"/>
 </head>
 <style>
     .ui-jqgrid tr.jqgrow td {
@@ -29,14 +27,15 @@
     }
 </style>
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
+<div class="wrapper" id="list">
+    <!-- 引入页面头header-fragment -->
     <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
         <!-- Left navbar links -->
-        <!--        <ul class="navbar-nav">-->
-        <!--            <li class="nav-item d-none d-sm-inline-block">-->
-        <!--                <a href="/admin/index" class="nav-link">Dashboard</a>-->
-        <!--            </li>-->
-        <!--        </ul>-->
+<!--        <ul class="navbar-nav">-->
+<!--            <li class="nav-item d-none d-sm-inline-block">-->
+<!--                <a href="/admin/index" class="nav-link">Dashboard</a>-->
+<!--            </li>-->
+<!--        </ul>-->
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
@@ -77,15 +76,15 @@
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
-                    <!--                    <li class="nav-header">Dashboard</li>-->
-                    <!--                    <li class="nav-item">-->
-                    <!--                        <a href="/admin/index" class="nav-link">-->
-                    <!--                            <i class="nav-icon fa fa-dashboard"></i>-->
-                    <!--                            <p>-->
-                    <!--                                Dashboard-->
-                    <!--                            </p>-->
-                    <!--                        </a>-->
-                    <!--                    </li>-->
+<!--                    <li class="nav-header">Dashboard</li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a href="/admin/index" class="nav-link">-->
+<!--                            <i class="nav-icon fa fa-dashboard"></i>-->
+<!--                            <p>-->
+<!--                                Dashboard-->
+<!--                            </p>-->
+<!--                        </a>-->
+<!--                    </li>-->
                     <li class="nav-item">
                         <a href="/admin/goods/edit" class="nav-link">
                             <i class="nav-icon fa fa-plus"></i>
@@ -197,45 +196,49 @@
             <div class="container-fluid">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">会员管理</h3>
+                        <h3 class="card-title">首页配置管理</h3>
                     </div> <!-- /.card-body -->
                     <div class="card-body">
                         <div class="grid-btn">
-                            <button class="btn btn-info" onclick="lockUser(0)"><i
-                                    class="fa fa-plus"></i>&nbsp;解除禁用
+                            <button class="btn btn-info" onclick="addGoods()"><i
+                                    class="fa fa-plus"></i>&nbsp;新增
                             </button>
-                            <button class="btn btn-danger" onclick="lockUser(1)"><i
-                                    class="fa fa-trash-o"></i>&nbsp;禁用账户
+                            <button class="btn btn-info" onclick="editGoods()"><i
+                                    class="fa fa-pencil-square-o"></i>&nbsp;修改
+                            </button>
+                            <button class="btn btn-success" onclick="putUpGoods()"><i
+                                    class="fa fa-arrow-up"></i>&nbsp;删除
+                            </button>
+                            <button class="btn btn-danger" onclick="putDownGoods()"><i
+                                    class="fa fa-arrow-down"></i>&nbsp;下架商品
                             </button>
                         </div>
-                        <div class="card-body">
-                            <table id="jqGrid" class="table table-bordered">
-                            </table>
-                            <div id="jqGridPager"></div>
-                        </div><!-- /.card-body -->
-                    </div>
-                </div><!-- /.container-fluid -->
-            </div>
+                        <table id="jqGrid" class="table table-bordered">
+                        </table>
+                        <div id="jqGridPager"></div>
+                    </div>><!-- /.card-body -->
+                </div>
+            </div><!-- /.container-fluid -->
         </div>
     </div>
-        <!-- /.content-wrapper -->
-        <!-- 引入页脚footer-fragment -->
-        <div th:replace="admin/footer::footer-fragment"></div>
-    </div>
-    <!-- jQuery -->
-    <script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script th:src="@{/admin/plugins/jQueryUI/jquery-ui.min.js}"></script>
-    <!-- Bootstrap 4 -->
-    <script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-    <!-- AdminLTE App -->
-    <script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
-    <!-- jqgrid -->
-    <script th:src="@{/admin/plugins/jqgrid-5.3.0/jquery.jqGrid.min.js}"></script>
-    <script th:src="@{/admin/plugins/jqgrid-5.3.0/grid.locale-cn.js}"></script>
-    <!-- sweetalert -->
-    <script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
-    <script th:src="@{/admin/dist/js/public.js}"></script>
-    <script th:src="@{/admin/dist/js/newbee_mall_user.js}"></script>
+</div>
+<!-- jQuery -->
+<script src="../../static/css/admin/plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="../../static/css/admin/plugins/jQueryUI/jquery-ui.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../static/css/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../static/css/admin/dist/js/adminlte.min.js"></script>
+<!-- jqgrid -->
+<script src="../../static/css/admin/plugins/jqgrid-5.3.0/jquery.jqGrid.min.js"></script>
+<script src="../../static/css/admin/plugins/jqgrid-5.3.0/grid.locale-cn.js"></script>
+
+<!-- sweetalert -->
+<script src="../../static/css/admin/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="../../static/css/admin/dist/js/public.js"></script>
+<!--<script src="../../../static/css/admin/dist/js/newbee_mall_goods.js"></script>-->
+<script src="../../static/js/vue.js"></script>
+<script src="../../static/js/admin_goods.js"></script>
 </body>
 </html>

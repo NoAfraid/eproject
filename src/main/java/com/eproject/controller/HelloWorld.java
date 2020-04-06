@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HelloWorld {
-    @RequestMapping("/")
-    @ResponseBody
+    @RequestMapping("/index")
+//    @ResponseBody
     public String hello(){
-        return "HelloWorld";
+        return "goods_edit";
     }
 }
 
