@@ -28,6 +28,7 @@ $(function () {
                     allowFileManager : true,
                     themeType: 'simple',
                     resizeType: 1,
+
                     afterCreate : function() {
                         this.sync();
                     },
