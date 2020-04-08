@@ -357,7 +357,7 @@ var pJS = function(tag_id, params){
 
     
 
-    /* if shape is image */
+    /* if shape is upload */
 
     var shape_type = pJS.particles.shape.type;
     if(typeof(shape_type) == 'object'){
@@ -1208,7 +1208,7 @@ var pJS = function(tag_id, params){
         });
 
     /* prepare to create img with colored svg */
-    var svg = new Blob([coloredSvgXml], {type: 'image/svg+xml;charset=utf-8'}),
+    var svg = new Blob([coloredSvgXml], {type: 'upload/svg+xml;charset=utf-8'}),
         DOMURL = window.URL || window.webkitURL || window,
         url = DOMURL.createObjectURL(svg);
 
@@ -1255,7 +1255,7 @@ var pJS = function(tag_id, params){
   };
 
   pJS.fn.vendors.exportImg = function(){
-    window.open(pJS.canvas.el.toDataURL('image/png'), '_blank');
+    window.open(pJS.canvas.el.toDataURL('upload/png'), '_blank');
   };
 
 
@@ -1294,7 +1294,7 @@ var pJS = function(tag_id, params){
       }
 
     }else{
-      console.log('Error pJS - No image.src');
+      console.log('Error pJS - No upload.src');
       pJS.tmp.img_error = true;
     }
 
@@ -1339,7 +1339,7 @@ var pJS = function(tag_id, params){
 
   pJS.fn.vendors.checkBeforeDraw = function(){
 
-    // if shape is image
+    // if shape is upload
     if(pJS.particles.shape.type == 'image'){
 
       if(pJS.tmp.img_type == 'svg' && pJS.tmp.source_svg == undefined){

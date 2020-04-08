@@ -13,12 +13,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   resources:
-    static-locations: classpath:/
-    cache:
-      period: 0
+        static-locations: classpath:/static, classpath:/upload
+        cache:
+          period: 0
 
-  thymeleaf:
-    cache: false
+#  thymeleaf:
+#    cache: false
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

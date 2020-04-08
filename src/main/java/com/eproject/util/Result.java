@@ -43,9 +43,9 @@ public class Result<T> implements Serializable {
     @Override
     public String toString() {
         return "Result{" +
-                "resultCode=" + resultCode +
+                "error=" + resultCode +
                 ", message='" + message + '\'' +
-                ", data=" + data +
+                ", url=" + data +
                 '}';
     }
 }

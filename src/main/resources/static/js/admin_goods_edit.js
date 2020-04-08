@@ -22,27 +22,43 @@ $(function () {
 
         mounted: function () {
             KindEditor.ready(function(K){
-                KindEditor.create('textarea[id="editor"]',{
+                window.editor = KindEditor.create('textarea[id="editor"]',{
+                    items: ['source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
+                        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'multiimage',
+                        'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+                        'anchor', 'link', 'unlink'],
                     uploadJson: '/admin/upload/file',
                     filePostName: 'file',
                     allowFileManager : true,
-                    themeType: 'simple',
-                    resizeType: 1,
-
+                    allowImageUpload:true,//允许上传图片
+                    // // filePostName: "imgFile",
+                    // // resizeType: 1,
+                    urlType: 'absolute',
+                    // formatUploadUrl:false,
+                    // // dir : "image",
+                    // // responseType: "json",
+                    // // fileManagerJson : '',
+                    // // formatUploadUrl: false,
                     afterCreate : function() {
                         this.sync();
                     },
                     afterBlur:function(){
                         this.sync();
+                    },
+                    afterUpload : function(data) {
+
                     }
                 })
             })
-
         },
         created: function() {},
         methods: {
             addProduct: function () {
-                this.product.detail=  $("#editor").val();
+                this.product.detail=  editor.html();
                 console.log(this.product)
                 // var product = this.$refs.editor.getContent()
                 alert(this.product.detail)

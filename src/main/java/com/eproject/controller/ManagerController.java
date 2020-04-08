@@ -1,6 +1,6 @@
 package com.eproject.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.eproject.common.R;
 import com.eproject.entity.Manager;
 import com.eproject.service.ManagerService;
 import org.springframework.stereotype.Controller;
@@ -18,14 +18,12 @@ public class ManagerController {
 
 //    @ResponseBody
 @RequestMapping(method= RequestMethod.POST, value = "/login",produces = "application/json;charset=UTF-8")
-    public String login(@RequestBody Manager manager){
+    public R login(@RequestBody Manager manager){
         Manager login = managerService.login(manager.getLoginName(),manager.getPassword());
-        JSONObject result = new JSONObject();
+//        JSONObject result = new JSONObject();
         if (login==null){
-            result.put("登录失败","-1");
-        }else {
-            result.put("登录成功",1);
+            return R.error("登录失败");
         }
-        return result.toJSONString();
+    return R.ok("登录成功");
     }
 }

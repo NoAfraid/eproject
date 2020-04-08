@@ -3171,7 +3171,7 @@ jQuery.event = {
 		},
 
 		load: {
-			// Prevent triggered image.load events from bubbling to window.load
+			// Prevent triggered upload.load events from bubbling to window.load
 			noBubble: true
 		},
 
