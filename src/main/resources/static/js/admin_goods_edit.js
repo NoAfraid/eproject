@@ -39,7 +39,6 @@ $(function () {
                     urlType: 'absolute',
                     // formatUploadUrl:false,
                     // // dir : "image",
-                    // // responseType: "json",
                     // // fileManagerJson : '',
                     // // formatUploadUrl: false,
                     afterCreate : function() {
