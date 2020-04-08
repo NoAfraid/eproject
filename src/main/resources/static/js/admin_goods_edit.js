@@ -35,7 +35,6 @@ $(function () {
                     filePostName: 'file',
                     allowFileManager : true,
                     allowImageUpload:true,//允许上传图片
-                    // // filePostName: "imgFile",
                     // // resizeType: 1,
                     urlType: 'absolute',
                     // formatUploadUrl:false,
