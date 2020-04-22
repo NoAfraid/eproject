@@ -1,5 +1,7 @@
 package com.eproject.service;
 
+import com.eproject.common.PageQuery;
+import com.eproject.common.PageResult;
 import com.eproject.common.R;
 import com.eproject.entity.Collect;
 import com.eproject.entity.Follow;
@@ -22,12 +24,12 @@ public interface UserService {
     /**
      * 获取用户信息
      */
-    List<User> selectUserInfo(User user);
+    User selectUserInfo(User user);
     /**
      * 修改用户信息
      *  并且返回最新的用户信息
      */
-    List<User> updateUserInfo(User user);
+    User updateUserInfo(User user);
 
     /**
      * 修改密码
@@ -63,12 +65,12 @@ public interface UserService {
     /**
      * 查看收藏内容
      */
-    List<Collect> selectInfo(Collect collect);
+    PageResult selectInfo(PageQuery pageQuery);
 
     /**
      * 查看关注内容
      */
-    List<Follow> selectFollowInfo(Follow follow);
+    PageResult selectFollowInfo(PageQuery pageQuery);
 
     /**
      * 退出登录

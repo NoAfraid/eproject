@@ -70,7 +70,8 @@ public class OrderServiceIm implements OrderService {
             orderItem.setProductPrice(cartList.getPrice());
             orderItem.setProductQuantity(cartList.getProductCount());
             orderItem.setUserId(cartList.getUserId());
-            orderItem.setProductAttr(cartList.getProductAttr());
+            orderItem.setOrderStatus(0);
+//            orderItem.setProductAttr(cartList.getProductAttr());
             orderItemList.add(orderItem);
         }
         //判断购物车中商品是否都有库存
@@ -96,13 +97,16 @@ public class OrderServiceIm implements OrderService {
         UserReceiveAddress address = userReceiveAddressService.getItem(order.getUserId());
         orderList.setReceiverName(address.getName());
         orderList.setReceiverPhone(address.getPhoneNumber());
-        orderList.setReceiverPostCode(address.getPostCode());
+//        orderList.setReceiverPostCode(address.getPostCode());
         orderList.setReceiverProvince(address.getProvince());
         orderList.setReceiverDetailAdress(address.getDetailAddress());
         orderList.setReceiverCity(address.getCity());
+//        orderList.setRegion(address.getCity());
         //orderList.setPayTime(new Date());
         //0->未确认；1->已确认
         orderList.setDaleteStatus(0);
+        //0->未支付；1->已支付
+        orderList.setOrderStatus(0);
         //生成订单号
         orderList.setOrderNo(NumberUtil.genOrderNo());
         //插入order表和order_item表
@@ -111,8 +115,10 @@ public class OrderServiceIm implements OrderService {
             //OrderItem orderItem = new OrderItem();
             orderItem.setOrderId(orderList.getId());
             orderItem.setOrderNo(orderList.getOrderNo());
+            orderItem.setOrderStatus(0);
             orderItem.setCreateTime(new Date());
             orderItem.setProductName(orderList.getProductName());
+            orderItem.setProductImg(orderItem.getProductImg());
             orderItem.setProductPrice(orderList.getTotalPrice());
             orderItem.setUserId(orderList.getUserId());
         }
@@ -131,7 +137,7 @@ public class OrderServiceIm implements OrderService {
 
     @Override
     public PageResult getMyOrders(PageQuery pageQuery){
-        List<Order> orderList = orderDao.selectByUserId(pageQuery);
+        List<OrderItem> orderList = orderItemDao.selectByUserId(pageQuery);
         int total = orderDao.getPage(pageQuery);
         PageResult pageResult = new PageResult(orderList, total, pageQuery.getLimit(), pageQuery.getPage());
         return pageResult;
@@ -149,6 +155,7 @@ public class OrderServiceIm implements OrderService {
 
     @Override
     public  int updateReceiverInfo(ReceiverInfoParam infoParam){
+        //前端修改
         Order order = new Order();
         order.setId(infoParam.getOrderId());
         order.setReceiverName(infoParam.getName());

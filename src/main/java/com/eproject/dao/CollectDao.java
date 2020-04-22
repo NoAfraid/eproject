@@ -1,5 +1,6 @@
 package com.eproject.dao;
 
+import com.eproject.common.PageQuery;
 import com.eproject.entity.Collect;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,7 +16,7 @@ public interface CollectDao {
 
     Collect selectByPrimaryKey(Integer id);
 
-    List<Collect> selectInfo(Collect collect);
+    List<Collect> selectInfo(PageQuery pageQuery);
 
     int selectByCollect(Integer id, Integer userId);
 

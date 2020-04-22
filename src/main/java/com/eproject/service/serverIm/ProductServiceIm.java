@@ -4,6 +4,7 @@ import com.eproject.common.PageQuery;
 import com.eproject.common.PageResult;
 import com.eproject.common.Result;
 import com.eproject.dao.ProductDao;
+import com.eproject.entity.Carouse;
 import com.eproject.entity.Product;
 import com.eproject.service.ProductService;
 import com.fasterxml.jackson.databind.util.BeanUtil;
@@ -35,6 +36,15 @@ public class ProductServiceIm implements ProductService {
         int total = productDao.getProductPage(pageQuery);
         PageResult pageResult = new PageResult(productList, total, pageQuery.getLimit(), pageQuery.getPage());
         return pageResult;
+    }
+
+    @Override
+    public Product getProductById(Integer id){
+        Product temp = productDao.selectByPrimaryKey(id);
+        if (temp == null){
+            return null;
+        }
+        return temp;
     }
 
     @Override
@@ -122,5 +132,25 @@ public class ProductServiceIm implements ProductService {
     @Override
     public Product selectProductById(Integer id){
         return productDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<Product> getProductForIndex(int number){
+        List<Product> carouseList = new ArrayList<>(number);
+        List<Product> list = productDao.selectProductListByNumber(number);
+        if (!CollectionUtils.isEmpty(list)){
+            return list;
+        }
+        return null;
+    }
+
+    @Override
+    public List<Product> getProductSaleForIndex(int number){
+        List<Product> carouseList = new ArrayList<>(number);
+        List<Product> list = productDao.getProductSaleForIndex(number);
+        if (!CollectionUtils.isEmpty(list)){
+            return list;
+        }
+        return null;
     }
 }

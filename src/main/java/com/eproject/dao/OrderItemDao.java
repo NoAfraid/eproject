@@ -19,6 +19,7 @@ public interface OrderItemDao {
 
     List<OrderItem> selectList(PageQuery pageQuery);
 
+    List<OrderItem> selectByUserId(PageQuery pageQuery);
     /**
      * 模糊查询订单
      * @param pageQuery

@@ -43,8 +43,16 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from order
+    from `order`
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.eproject.entity.Order">
+    select
+    <include refid="Base_Column_List"/>
+    from `order`
+  </select>
+  <select id="getOrderPage" resultType="int" parameterType="map">
+    select count(*) from `order`
   </select>
   <select id="selectByUserId" parameterType="Map" resultMap="BaseResultMap">
     select
@@ -410,7 +418,7 @@
     </foreach>
   </update>
   <update id="updateByPrimaryKey" parameterType="com.eproject.entity.Order">
-    update order
+    update `order`
     set order_no = #{orderNo,jdbcType=VARCHAR},
       product_id = #{productId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
@@ -442,6 +450,26 @@
       creat_time = #{creatTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateOrderInfo" parameterType="com.eproject.entity.Order">
+    update `order`
+    set
+      bill_receiver_email = #{billReceiverEmail,jdbcType=VARCHAR},
+      receiver_post_code = #{receiverPostCode,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      receiver_detail_adress = #{receiverDetailAdress,jdbcType=VARCHAR},
+      receiver_city = #{receiverCity,jdbcType=VARCHAR},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_province = #{receiverProvince,jdbcType=VARCHAR},
+      bill_type = #{billType,jdbcType=VARCHAR},
+      receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+      bill_content = #{billContent,jdbcType=VARCHAR},
+      bill_header = #{billHeader,jdbcType=VARCHAR},
+      updata_time = #{updataTime,jdbcType=TIMESTAMP},
+      freight_amount = #{freightAmount,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
   <update id="delivery">
     update `order`
     set delivery_no = case id
@@ -461,13 +489,44 @@
     END,
     order_status = CASE id
     <foreach collection="list" item="item">
-      WHEN #{item.orderId} THEN 2
+      WHEN #{item.orderId} THEN 3
     </foreach>
     END
     WHERE
     id IN
     <foreach collection="list" item="item" separator="," open="(" close=")">
       #{item.orderId}
+    </foreach>
+    AND order_status = 2
+  </update>
+
+  <update id="checkDone">
+    update `order`
+    set
+<!--    delivery_no = case id-->
+<!--    <foreach collection="list" item="item">-->
+<!--      WHEN #{item.orderId} THEN #{item.deliveryNo}-->
+<!--    </foreach>-->
+<!--    END,-->
+<!--    delivery_company = CASE id-->
+<!--    <foreach collection="list" item="item">-->
+<!--      WHEN #{item.orderId} THEN #{item.deliveryCompany}-->
+<!--    </foreach>-->
+<!--    END,-->
+<!--    delivery_time = CASE id-->
+<!--    <foreach collection="list" item="item">-->
+<!--      WHEN #{item.orderId} THEN now()-->
+<!--    </foreach>-->
+<!--    END,-->
+    order_status = CASE id
+    <foreach collection="list" item="item">
+      WHEN #{item} THEN 2
+    </foreach>
+    END
+    WHERE
+    id IN
+    <foreach collection="list" item="item" separator="," open="(" close=")">
+      #{item}
     </foreach>
     AND order_status = 1
   </update>

@@ -20,6 +20,7 @@ public class CarouseServiceIm implements CarouseService {
 
     @Override
     public int addCarouse(Carouse carouse){
+        carouse.setDeleteStatus(0);
         carouse.setCreatTime(new Date());
         int num = carouseDao.insert(carouse);
         if (num > 0){
@@ -42,9 +43,9 @@ public class CarouseServiceIm implements CarouseService {
         carouse.setCarouseRank(carouse.getCarouseRank());
         carouse.setRedirectUrl(carouse.getRedirectUrl());
         carouse.setProductImg(carouse.getProductImg());
-        carouse.setProductId(carouse.getProductId());
+//        carouse.setProductId(carouse.getProductId());
         carouse.setCarouseName(carouse.getCarouseName());
-        carouse.setManagerId(carouse.getManagerId());
+//        carouse.setManagerId(carouse.getManagerId());
         carouse.setUpdateTime(new Date());
         int count = carouseDao.updateByPrimaryKeySelective(carouse);
         if (count > 0){

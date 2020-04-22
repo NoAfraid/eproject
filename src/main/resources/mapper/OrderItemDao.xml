@@ -13,10 +13,11 @@
     <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="product_attr" jdbcType="VARCHAR" property="productAttr" />
+    <result column="order_status" jdbcType="INTEGER" property="orderStatus" />
   </resultMap>
   <sql id="Base_Column_List">
     id, order_id, user_id, product_id, product_name, order_no, product_img, product_price, 
-    product_quantity, create_time, product_attr
+    product_quantity, create_time, product_attr, order_status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -29,6 +30,12 @@
         <include refid="Base_Column_List"/>
         from order_item
     </select>
+  <select id="selectByUserId" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from order_item
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
   <select id="selectItemList" resultMap="BaseResultMap" parameterType="com.eproject.entity.OrderItem">
     select
     <include refid="Base_Column_List"/>
@@ -183,12 +190,12 @@
     insert into order_item (order_id, user_id, product_id,
     product_name, order_no, product_img,
     product_price, product_quantity, create_time,
-    product_attr) VALUES
+    product_attr, order_status) VALUES
     <foreach collection="list" item="item" separator="," index="index">
         (#{item.orderId,jdbcType=INTEGER}, #{item.userId,jdbcType=INTEGER}, #{item.productId,jdbcType=INTEGER},
         #{item.productName,jdbcType=VARCHAR}, #{item.orderNo,jdbcType=VARCHAR}, #{item.productImg,jdbcType=VARCHAR},
         #{item.productPrice,jdbcType=DECIMAL}, #{item.productQuantity,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP},
-        #{item.productAttr,jdbcType=VARCHAR})
+        #{item.productAttr,jdbcType=VARCHAR}, #{item.orderStatus,jdbcType=VARCHAR})
     </foreach>
   </insert>
 </mapper>

@@ -46,4 +46,8 @@ public interface ProductDao {
     List<Product> selectProductBySearchPage(PageQuery pageQuery);
 
     int selectTotalProductBySearch(PageQuery pageQuery);
+
+    List<Product> selectProductListByNumber(@Param("number") int number);
+
+    List<Product> getProductSaleForIndex(@Param("number") int number);
 }

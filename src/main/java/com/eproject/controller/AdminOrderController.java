@@ -3,14 +3,18 @@ package com.eproject.controller;
 import com.eproject.common.PageQuery;
 import com.eproject.common.R;
 import com.eproject.domain.OrderDeliveryParam;
+import com.eproject.domain.ReceiverInfoParam;
+import com.eproject.entity.Order;
+import com.eproject.entity.Product;
 import com.eproject.service.AdminOrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Array;
+import java.util.*;
 
 @Controller
 @ResponseBody
@@ -26,7 +30,7 @@ public class AdminOrderController {
      * */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/getList",produces = "application/json;charset=UTF-8")
-    public R getList(@RequestParam Map<String, Object> result){
+    public R getList(@RequestBody Map<String, Object> result){
         try {
             if (StringUtils.isEmpty(result.get("page")) || StringUtils.isEmpty(result.get("limit"))) {
                 return R.error(-1, "请求错误");
@@ -40,12 +44,57 @@ public class AdminOrderController {
     }
 
     /**
+     * 根据id获取商品信息
+     */
+    @RequestMapping(value = "/get", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public R getProductInfo(HttpServletRequest request, @RequestParam("id") Integer id){
+        Order info = adminOrderService.getOrderById(id);
+        if (info != null){
+            return R.ok().put("data",info);
+        }
+        return R.error("查询错误");
+    }
+
+    /**
+     * 修改订单信息
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/updateAddress",produces = "application/json;charset=UTF-8")
+    public R updateReceiverInfo(@RequestBody Order order){
+        //, @RequestParam("orderId") Integer orderId
+        int count = adminOrderService.updateReceiverDetailAddress(order);
+        if (count > 0){
+            return R.ok("修改成功");
+        }
+        return R.error(-1,"修改错误");
+    }
+
+    /**
+     * 批量发货
+     *
+     * */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/checkDone",produces = "application/json;charset=UTF-8")
+    public R checkDone(@RequestBody String [] ids){
+        List<String> orderId = new ArrayList<String>(ids.length);
+        Collections.addAll(orderId, ids);
+        System.out.println(orderId);
+        int count = adminOrderService.checkDone(ids);
+        if (count > 0){
+            return R.ok("配货成功");
+        }
+        return R.error(-1,"配货失败:商品未支付或已关闭");
+    }
+
+    /**
      * 批量发货
      *
      * */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/delivery",produces = "application/json;charset=UTF-8")
     public R delivery(@RequestBody List<OrderDeliveryParam> deliveryParamList){
+        //@RequestBody Integer[] ids
         int count = adminOrderService.delivery(deliveryParamList);
         if (count > 0){
             return R.ok("发货成功");
@@ -58,7 +107,7 @@ public class AdminOrderController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/closeOrder",produces = "application/json;charset=UTF-8")
-    public R closeOrder(@RequestParam("id") List<Integer> id){
+    public R closeOrder(@RequestBody Integer[] id){
         int count = adminOrderService.closeOrder(id);
         if (count > 0){
             return R.ok("关闭成功");
@@ -67,11 +116,11 @@ public class AdminOrderController {
     }
 
     /**
-     * 批量关闭订单
+     * 批量删除订单
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/deleteOrder",produces = "application/json;charset=UTF-8")
-    public R deleteOrder(@RequestParam("id") List<Integer> id){
+    public R deleteOrder(@RequestBody Integer[] id){
         int count = adminOrderService.delete(id);
         if (count > 0){
             return R.ok("删除成功");

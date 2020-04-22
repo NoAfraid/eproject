@@ -145,6 +145,7 @@
 	float: left;
 	width: 100%;
 	margin: 20px 0;
+	height: 100%;
 }
 .pagination {
     display: inline-block;
@@ -535,7 +536,7 @@
 .zxbt{
 	float: left;
 	width: 100%;
-	display:flex;
+	/*display:flex;*/
 	justify-content:center;
 	align-items:center;
 	margin-bottom: 20px;

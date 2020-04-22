@@ -1,0 +1,302 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>后台管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="shortcut icon" href="../css/admin/dist/img/favicon.ico"/>
+    <link rel="stylesheet" href="../css/admin/dist/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../css/admin/dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="../css/admin/dist/css/main.css">
+    <link rel="stylesheet" href="../css/admin/plugins/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../css/admin/plugins/sweetalert/sweetalert.css"/>
+    <link rel="stylesheet" href="../css/admin/plugins/jqgrid-5.3.0/ui.jqgrid-bootstrap4.css"/>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../css/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/grzx.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/zt.css"/>
+</head>
+<style>
+    .ui-jqgrid tr.jqgrow td {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+        padding-top: 2px;
+    }
+
+    a {
+        color: #1baeae;
+        text-decoration: none;
+        background-color: transparent;
+        -webkit-text-decoration-skip: objects;
+    }
+
+    a:hover {
+        color: white;
+        background-color: #1baeae;
+    }
+</style>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper" id="goodsList">
+    <!-- 引入页面头header-fragment -->
+    <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="/">
+                    <i class="fa fa-paper-plane">&nbsp;&nbsp;newbee-mall首页</i>
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user">&nbsp;&nbsp;作者</i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-user-o mr-2"></i> 姓名
+                        <span class="float-right text-muted text-sm">十三 / 13</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-user-secret mr-2"></i> 身份
+                        <span class="float-right text-muted text-sm">Java开发工程师</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-address-card mr-2"></i> 邮箱
+                        <span class="float-right text-muted text-sm">2449207463@qq.com</span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <!-- 引入工具栏sidebar-fragment -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <div class="sidebar">
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+<!--                    <li class="nav-header">Dashboard</li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a href="/admin/index" class="nav-link">-->
+<!--                            <i class="nav-icon fa fa-dashboard"></i>-->
+<!--                            <p>-->
+<!--                                Dashboard-->
+<!--                            </p>-->
+<!--                        </a>-->
+<!--                    </li>-->
+                    <li class="nav-item">
+                        <a href="/admin/goods/edit" class="nav-link">
+                            <i class="nav-icon fa fa-plus"></i>
+                            <p>
+                                商品信息
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-header">首页配置</li>
+                    <li class="nav-item">
+                        <a href="/admin/carousels"
+                           class="nav-link">
+                            <i class="nav-icon fa fa-file-image-o"></i>
+                            <p>
+                                轮播图配置
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/indexConfigs?configType=3"
+                           class="nav-link active">
+                            <i class="nav-icon fa fa-hand-o-up"></i>
+                            <p>
+                                热销商品配置
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/indexConfigs?configType=4"
+                           class="nav-link">
+                            <i class="nav-icon fa fa-hand-o-up"></i>
+                            <p>
+                                新品上线配置
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/indexConfigs?configType=5"
+                           class="nav-link">
+                            <i class="nav-icon fa fa-hand-o-up"></i>
+                            <p>
+                                为你推荐配置
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-header">管理模块</li>
+                    <li class="nav-item">
+                        <a href="/admin/categories?parentId=0&amp;categoryLevel=1&amp;backParentId=0"
+                           class="nav-link">
+                            <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
+                            <p>
+                                分类管理
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/goods" class="nav-link">
+                            <i class="fa fa-archive nav-icon" aria-hidden="true"></i>
+                            <p>
+                                商品管理
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/users" class="nav-link">
+                            <i class="fa fa-users nav-icon" aria-hidden="true"></i>
+                            <p>
+                                会员管理
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/orders" class="nav-link">
+                            <i class="fa fa-money nav-icon" aria-hidden="true"></i>
+                            <p>
+                                订单管理
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-header">系统管理</li>
+                    <li class="nav-item">
+                        <a href="/admin/profile"
+                           class="nav-link">
+                            <i class="fa fa-user-secret nav-icon"></i>
+                            <p>修改密码</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/logout" class="nav-link">
+                            <i class="fa fa-sign-out nav-icon"></i>
+                            <p>安全退出</p>
+                        </a>
+                    </li>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+    </aside>
+    <!-- Content Wrapper. Contains 图标content -->
+    <div class="content-wrapper">
+        <!-- Content Header (图标header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">首页配置管理</h3>
+                    </div> <!-- /.card-body -->
+                    <div class="card-body">
+                        <div class="grid-btn">
+                            <button class="btn btn-info" @click="addProduct"><i
+                                    class="fa fa-pencil-square-o"></i>&nbsp;添加商品
+                            </button>
+                            <div class="btn btn-info" @click="updateProduct"><i
+                                        class="fa fa-pencil-square-o"></i>&nbsp;修改商品</a>
+                            </div>
+<!--                            <a :href="'goods_edit.html?id='+msg">-->
+                            <button class="btn btn-success" @click="upProduct"><i
+                                    class="fa fa-arrow-up"></i>&nbsp;上架商品
+                            </button>
+                            <button class="btn btn-danger" @click="dnProduct"><i
+                                    class="fa fa-arrow-down"></i>&nbsp;下架商品
+                            </button>
+                            <button class="btn btn-success" @click="putProduct"><i
+                                    class="fa fa-arrow-up"></i>&nbsp;推荐商品
+                            </button>
+                            <button class="btn btn-danger" @click="downProduct"><i
+                                    class="fa fa-arrow-down"></i>&nbsp;取消推荐
+                            </button>
+                        </div>
+                        <div class="v1">
+                            <div class="v2">
+                                <table class="gridtable" >
+                                    <tr>
+                                        <td><label><input type="checkbox" id="checkAll"/></label></td>
+                                        <th>商品编号</th>
+                                        <th>商品名称</th>
+                                        <td>商品图片</td>
+                                        <th>商品库存</th>
+                                        <th>商品售价</th>
+                                        <th>商品状态</th>
+                                        <th>商品简介</th>
+                                        <th>推荐状态</th>
+                                        <th>
+                                            查看次数
+                                            <div class="ck">
+                                                <p></p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr class="gridtable" v-for="item in goodsList.list">
+                                        <td><input type="checkbox" v-model="msg" :value="item.id"/></td>
+                                        <td>{{item.productSn}}</td>
+                                        <td>{{item.productName}}</td>
+                                        <td><img :src="item.productImg"/></td>
+                                        <td>{{item.stock}}</td>
+                                        <td>{{item.price}}</td>
+                                        <td v-if="item.publishStatus == 1">销售中</td>
+                                        <td v-else="item.publishStatus == 0">已下架</td>
+                                        <td>{{item.description}}</td>
+                                        <td v-if="item.recomandStatus == 1">已推荐</td>
+                                        <td v-else="item.recomandStatus == 0">不推荐</td>
+                                        <td>
+                                            {{item.viewCount}}
+                                            <div class="ck">
+<!--                                                <a :href="'../advice-detail.html?item='+item.id+'&isCenter='+isCenter">查看</a>-->
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="fyq">
+<!--                             v-if="goodsList.list.length > 0"-->
+                            <div class="pagination">
+                                <li v-if="current > 1">
+                                    <a href="#" @click="current--;productList()">上一页</a>
+                                </li>
+                                <li v-if="current==1"><a class="banclick">上一页</a></li>
+
+                                <li v-for="index in indexs" >
+                                    <a :class="{'active': current == index}" @click="productList(index)">{{ index }}</a>
+                                </li>
+                                <li v-if="current!=pages"><a @click="current++;productList()">下一页</a></li>
+                                <li v-if="current == pages"><a class="banclick">下一页</a></li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="../js/jquery.js"></script>
+<!--<script src="../css/admin/dist/js/public.js"></script>-->
+<script src="../js/vue.js"></script>
+<script src="../js/admin_goods.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title><link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/css.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
+	</head>
+	<body>
+		<div id="zd">
+			<!--#include file="header.html"-->
+			<div class="bj1" id="center">
+				<div class="dk1" >
+					<div class="xsdh">
+						<div class="p1">
+							<a href="index.html"><p>首页</p></a>
+							<p>></p>
+						</div>
+						<div class="p1">
+							<a href="center.html"><p>个人中心</p></a>
+							<p>></p>
+						</div>
+						<div class="p1">
+							<p>个人资料</p>
+						</div>
+					</div>
+					<div class="grzx">
+						<div class="grzxdht">
+							<div class="gr">
+								<a href="center.html" class="hsys">个人资料</a>
+							</div>
+							<div class="gr">
+								<a href="collect.html">我的收藏</a>
+							</div>
+							<div class="gr">
+								<a href="follow.html">我的关注</a>
+							</div>
+							<div class="gr">
+								<a href="center/wdfensi.html">我的粉丝</a>
+							</div>
+							<div class="gr">
+								<a href="center/wdshangchuan.html">我的上传</a>
+							</div>
+							<div class="gr">
+								<a href="center/wdtiezi.html">我发表的帖子</a>
+							</div>
+							<div class="gr">
+								<a href="center/wdzhixun.html">我的咨询</a>
+							</div>
+							<div class="gr">
+								<a href="center/wdwujuan.html">我的参与的问卷</a>
+							</div>
+							<div class="gr">
+								<a href="xgmima.html">修改密码</a>
+							</div>
+							<div class="gr">
+								<a href="javascript:loginout()">退出</a>
+							</div>
+						</div>
+						<div class="grkj" id="user" v-cloak>
+							<div class="grzl" >
+								<div class="grzlbt">
+									<p>个人资料</p>
+								</div>
+								<div class="grzlnr">
+
+									<div class="xgzh" v-cloak>
+										<div class="zh">
+											<p>账号：</p>
+											<p>{{userInfo.phone}}</p>
+										</div>
+										<div class="zh">
+											<p>昵称：</p>
+											<input type="text" name="nick"  v-model.trim="userInfo.nick" maxlength="100"/>
+										</div>
+										<div class="zh">
+											<p>联系电话：</p>
+											<input type="text" name="contactPhone"   v-model="userInfo.phone" maxlength="20"/>
+										</div>
+										<div class="zh">
+											<p>性别：</p>
+											<select name="sex" v-model="userInfo.sex">
+												<option value="1">男</option>
+												<option value="2">女</option>
+											</select>
+										</div>
+										<div class="zh">
+											<p>用户名：</p>
+											<input type="text" name="contactPhone"   v-model="userInfo.username" maxlength="20"/>
+										</div>
+										<div class="zh">
+											<p>个性签名：</p>
+											<input type="text" name="contactPhone"   v-model="userInfo.personalizedSignature" maxlength="20"/>
+										</div>
+										<div class="an">
+											<input type="button" @click="updateUser" value="保存" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!--#include file="footer.html"-->
+		</div>
+		<script src="static/layer/layer.js"></script>
+		<script src="../../css/admin/plugins/jquery/jquery.min.js"></script>
+		<script src="../../js/vue.js"></script>
+<!--		<script src="../../js/jquery.form.js"></script>-->
+		<script src="../../js/mall/center.js"></script>
+	</body>
+</html>

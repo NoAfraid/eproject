@@ -61,6 +61,11 @@ public class OrderItem implements Serializable {
      */
     private String productAttr;
 
+    /**
+     * 订单状态 0->未确认；1->已确认
+     */
+    private Integer orderStatus;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -149,6 +154,14 @@ public class OrderItem implements Serializable {
 
     public void setProductAttr(String productAttr) {
         this.productAttr = productAttr;
+    }
+
+    public Integer getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @Override

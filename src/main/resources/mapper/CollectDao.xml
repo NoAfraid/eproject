@@ -24,7 +24,7 @@
     select
     <include refid="Base_Column_List"/>
     from collect
-    where user_id = #{userId}
+    where user_id = #{userId} and status = 1
   </select>
   <select id="selectByCollect" resultType="java.lang.Integer" parameterType="com.eproject.entity.Collect">
     select count(c.id)

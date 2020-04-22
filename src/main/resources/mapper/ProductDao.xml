@@ -18,6 +18,7 @@
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
     <result column="verify_status" jdbcType="INTEGER" property="verifyStatus" />
     <result column="publish_status" jdbcType="INTEGER" property="publishStatus" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, product_name, product_img, product_sn, detail, sale, stock, price, promote_price, 
@@ -107,6 +108,22 @@
             </if>
         </where>
     </select>
+  <select id="selectProductListByNumber" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from product
+    where delete_status = 0
+    order by id desc
+    limit #{number}
+  </select>
+  <select id="getProductSaleForIndex" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from product
+    where delete_status = 0
+    order by sale desc
+    limit #{number}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product
     where id = #{id,jdbcType=INTEGER}
@@ -230,9 +247,9 @@
   </insert>
   <insert id="saveProduct" parameterType="com.eproject.entity.Product" >
         insert into emall.product(product_name, product_img,product_sn,
-        detail, stock, price, promote_price, description,unit)
+        detail, stock, price, promote_price, description,unit,publish_status)
         values
-        (#{productName},#{productImg},#{productSn},#{detail},#{stock},#{price},#{promotePrice},#{description},#{unit})
+        (#{productName},#{productImg},#{productSn},#{detail},#{stock},#{price},#{promotePrice},#{description},#{unit},#{publishStatus})
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.eproject.entity.Product">
   update product
@@ -294,14 +311,16 @@
   </update>
   <update id="updateBySelective" parameterType="com.eproject.entity.Product">
     update product
-    set publish_status = #{publicStatus} where id in
+    set publish_status = #{publicStatus}
+    where publish_status != #{publicStatus} and id in
     <foreach collection="ids" item="id" open="(" separator="," close=")">
       #{id}
     </foreach>
   </update>
   <update id="updateByRecomandStatus" parameterType="com.eproject.entity.Product">
     update product
-    set recomand_status = #{recomandStatus} where id in
+    set recomand_status = #{recomandStatus}
+    where id in
     <foreach collection="ids" item="id" open="(" separator="," close=")">
       #{id}
     </foreach>

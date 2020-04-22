@@ -2,6 +2,7 @@ package com.eproject.controller;
 
 import com.eproject.annotation.LoginUser;
 import com.eproject.common.Contants;
+import com.eproject.common.PageQuery;
 import com.eproject.common.R;
 import com.eproject.common.Result;
 import com.eproject.entity.Collect;
@@ -62,7 +63,7 @@ public class UserController {
         String registerResult = userService.register(user);
         // 返回注册成功的信息
         if (Result.SUCCESS.getResult().equals(registerResult)){
-            return R.ok().put("注册成功","success");
+            return R.ok().put("data","注册成功");
         } else {
             return R.error(-1,"用户名已存在");
         }
@@ -78,7 +79,7 @@ public class UserController {
         //loginUser.getUsername().equals(user.getUsername()) ||loginUser.getPhone().equals(user.getPhone()
         if (loginUser != null){
             if (loginUser.getPassword().equals(MD5Encode.MD5Encode(user.getPassword(),"utf-8"))){
-                return R.ok().put("登录成功",1);
+                return R.ok().put("data","登录成功");
             }
         }
         return R.error(-1,"账号或者密码错误");
@@ -89,8 +90,8 @@ public class UserController {
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/selectInfo",produces = "application/json;charset=UTF-8")
     public R selectInfo(@RequestBody User userInfo){
-        List<User>  info = userService.selectUserInfo(userInfo);
-        if (info.size() <= 0){
+        User  info = userService.selectUserInfo(userInfo);
+        if (info == null){
             return R.error(-1,"查询异常");
         }
         return R.ok().put("data",info);
@@ -103,8 +104,8 @@ public class UserController {
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/updateUserInfo",produces = "application/json;charset=UTF-8")
     public R updateInfo(@RequestBody User updateInfo){
-        List<User>  info = userService.updateUserInfo(updateInfo);
-        if (info.size() <= 0){
+        User  info = userService.updateUserInfo(updateInfo);
+        if (info == null){
             return R.error(-1,"修改异常");
         }
         return R.ok().put("data",info);
@@ -114,26 +115,25 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/updatePassword/{id}",produces = "application/json;charset=UTF-8")
-    public R updatePassword(@RequestParam("originalPassword") String originalPassword,
-                            @RequestParam("newPassword") String newPassword,
+    public R updatePassword(@RequestBody Map<String,Object> map,
                             @PathVariable("id") Integer id,
                             HttpServletRequest request){
-        if (StringUtils.isEmpty(originalPassword)){
+        if (StringUtils.isEmpty((String)map.get("originalPassword"))){
             return R.error(-1,"原密码不能为空");
         }
-        if (StringUtils.isEmpty(newPassword)){
+        if (StringUtils.isEmpty((String)map.get("newPassword"))){
             return R.error(-1,"新密码不能为空");
         }
-        if (newPassword.equals(originalPassword)){
+        if (map.get("newPassword").equals(map.get("originalPassword"))){
             return R.error(-1,"新旧密码相同");
         }
-        if (!PasswordUtils.validatorPassord(newPassword)){
+        if (!PasswordUtils.validatorPassord((String)map.get("newPassword"))){
             return R.error(-1,"修改密码失败,密码必须是字母和数字的组合，并且长度大于等于6位");
         }
         //confirmPassword.equals(newPassword) 两次密码是否相同
         //获取登录名的ID
 //        Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
-        userService.updatePassword(id,originalPassword,newPassword);
+        userService.updatePassword(id,(String)map.get("originalPassword"),(String)map.get("newPassword"));
         return R.ok().put("修改成功",1);
     }
 
@@ -211,13 +211,13 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/cancelFollow",produces = "application/json;charset=UTF-8")
-    public R cancelFollow(@RequestParam("id") Integer id){
-        if (id == null){
-            return R.error(-1,"未关注该商品");
-        }
-        Follow follow = new Follow();
+    public R cancelFollow(@RequestBody Follow follow){
+        //if (id == null){
+        //  return R.error(-1,"未关注该商品");
+        //}
+        //Follow follow = new Follow();
         follow.setStatus(0);
-        int count = userService.updateFollowStatus(id, follow.getStatus());
+        int count = userService.updateFollowStatus(follow.getId(), follow.getStatus());
         if (count > 0) {
             return R.ok().put("已取消关注", count);
         } else {
@@ -231,13 +231,13 @@ public class UserController {
     */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/cancelCollect",produces = "application/json;charset=UTF-8")
-    public R cancelCollect(@RequestParam("id") Integer id){
-        if (id == null){
-            return R.error(-1,"未收藏该商品");
-        }
-        Collect collect = new Collect();
+    public R cancelCollect(@RequestBody Collect collect){
+//        if (id == null){
+//            return R.error(-1,"未收藏该商品");
+//        }
+//        Collect collect = new Collect();
         collect.setStatus(0);
-        int count = userService.updateCollectStatus(id, collect.getStatus());
+        int count = userService.updateCollectStatus(collect.getId(), collect.getStatus());
         if (count > 0) {
             return R.ok().put("已取消收藏", count);
         } else {
@@ -250,30 +250,34 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/searchCollect",produces = "application/json;charset=UTF-8")
-    public R searchCollect(@RequestBody Collect collect){
-        if (collect == null){
-            return R.error(-1,"未收藏该商品");
+    public R searchCollect(@RequestBody Map<String, Object> result){
+        try {
+            if (StringUtils.isEmpty(result.get("page")) || StringUtils.isEmpty(result.get("limit"))) {
+                return R.error(-1, "请求错误");
+            }
+            PageQuery pageQuery = new PageQuery(result);
+            return R.ok().put("data", userService.selectInfo(pageQuery));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error(-405, "查询列表失败，msg:" + e.getMessage());
         }
-        List<Collect> data = userService.selectInfo(collect);
-        if (data.size() <= 0){
-            return R.error(-1,"未收藏");
-        }
-        return R.ok().put("data",data);
     }
     /**
      * 查看关注内容
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/searchFollow",produces = "application/json;charset=UTF-8")
-    public R searchFollow(@RequestBody Follow follow){
-        if (follow == null){
-            return R.error(-1,"未关注该商品");
+    public R searchFollow(@RequestBody Map<String, Object> result){
+        try {
+            if (StringUtils.isEmpty(result.get("page")) || StringUtils.isEmpty(result.get("limit"))) {
+                return R.error(-1, "请求错误");
+            }
+            PageQuery pageQuery = new PageQuery(result);
+            return R.ok().put("data", userService.selectFollowInfo(pageQuery));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error(-405, "查询列表失败，msg:" + e.getMessage());
         }
-        List<Follow> data = userService.selectFollowInfo(follow);
-        if (data.size() <= 0){
-            return R.error(-1,"未关注");
-        }
-        return R.ok().put("data",data);
     }
 
     /**

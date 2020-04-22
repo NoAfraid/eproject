@@ -128,7 +128,7 @@ function validPassword(password) {
  * @returns {*}
  */
 function getSelectedRow() {
-    var grid = $("#jqGrid");
+    var grid = $("#msg");
     var rowKey = grid.getGridParam("selrow");
     if (!rowKey) {
         swal("请选择一条记录", {
@@ -151,7 +151,7 @@ function getSelectedRow() {
  * @returns {*}
  */
 function getSelectedRowWithoutAlert() {
-    var grid = $("#jqGrid");
+    var grid = $("#msg");
     var rowKey = grid.getGridParam("selrow");
     if (!rowKey) {
         return;

@@ -217,6 +217,20 @@
                         </table>
                         <div id="jqGridPager"></div>
                     </div>><!-- /.card-body -->
+                    <div class="fyq">
+                        <div class="pagination" v-if="fansList.length > 0">
+                            <li v-if="current > 1">
+                                <a href="#" @click="current--;findList()">上一页</a>
+                            </li>
+                            <li v-if="current==1"><a class="banclick">上一页</a></li>
+
+                            <li v-for="index in indexs" >
+                                <a :class="{'active': current == index}" @click="findList(index)">{{ index }}</a>
+                            </li>
+                            <li v-if="current!=pages"><a @click="current++;findList()">下一页</a></li>
+                            <li v-if="current == pages"><a class="banclick">下一页</a></li>
+                        </div>
+                    </div>
                 </div>
             </div><!-- /.container-fluid -->
         </div>

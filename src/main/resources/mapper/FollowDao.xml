@@ -24,7 +24,7 @@
     select
     <include refid="Base_Column_List"/>
     from follow
-    where user_id = #{userId}
+    where user_id = #{userId} and status = 1
   </select>
   <select id="selectByFollow" resultType="java.lang.Integer" parameterType="com.eproject.entity.Follow">
     select count(f.id)

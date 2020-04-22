@@ -51,7 +51,7 @@ public class UserReceiveAddressController {
     public R update(@RequestParam("id") Integer id,@RequestBody UserReceiveAddress address){
         int num = userReceiveAddressService.update(id,address);
         if (num > 0){
-            return R.ok().put("count",num);
+            return R.ok().put("data","修改成功");
         }
         return R.error(-1,"修改出错");
     }
@@ -64,7 +64,7 @@ public class UserReceiveAddressController {
     public R<List<UserReceiveAddress>> list(@RequestBody UserReceiveAddress address){
         List<UserReceiveAddress> addressList = userReceiveAddressService.list(address);
         if (addressList.size() >0){
-            return R.ok().put("addressList",addressList);
+            return R.ok().put("data",addressList);
         }
         return R.error(-1,"获取出错");
     }

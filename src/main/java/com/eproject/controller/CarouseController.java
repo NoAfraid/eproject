@@ -39,7 +39,7 @@ public class CarouseController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/getCarouseList",produces = "application/json;charset=UTF-8")
-    public R getCarouseList(@RequestParam Map<String, Object> result){
+    public R getCarouseList(@RequestBody Map<String, Object> result){
         try {
             if (StringUtils.isEmpty(result.get("page")) || StringUtils.isEmpty(result.get("limit"))) {
                 return R.error(-1, "请求错误");
@@ -70,7 +70,7 @@ public class CarouseController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/deleteCarouse",produces = "application/json;charset=UTF-8")
-    public R deleteCarouse(@RequestParam("ids") List<Integer> ids){
+    public R deleteCarouse(@RequestBody List<Integer> ids){
         int count = carouseService.deleteCarouse(ids);
         if (count > 0){
             return R.ok("删除成功");

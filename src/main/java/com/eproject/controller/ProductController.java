@@ -1,9 +1,11 @@
 package com.eproject.controller;
 
+import com.eproject.common.Contants;
 import com.eproject.common.PageQuery;
 import com.eproject.common.R;
 import com.eproject.entity.Product;
 import com.eproject.service.ProductService;
+import com.eproject.util.ResultGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.util.StringUtils;
@@ -86,6 +88,32 @@ public class ProductController {
     }
 
     /**
+     * 根据id获取商品信息
+     */
+    @GetMapping(value = "/get/{id}")
+//    @ResponseBody
+    public String getProductById(HttpServletRequest request,@PathVariable("id") Integer id){
+        Product info = productService.getProductById(id);
+        if (info != null){
+            request.setAttribute("goods",info);
+            request.setAttribute("path","goods-edit");
+            return "goods_edit";
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/get", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public R getProductInfo(HttpServletRequest request,@RequestParam("id") Integer id){
+        Product info = productService.getProductById(id);
+        if (info != null){
+            request.setAttribute("goods",info);
+            request.setAttribute("path","goods-edit");
+            return R.ok().put("data",info);
+        }
+        return R.error("查询错误");
+    }
+    /**
      * 修改商品信息
      */
     @RequestMapping(value = "/update", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
@@ -95,8 +123,8 @@ public class ProductController {
             return R.error(-1, "请选择一条记录");
         }
         String result = productService.updateProductInfo(product);
-        //return R.ok("修改成功");
-        return R.ok().put("result", result);
+        return R.ok("修改成功");
+//        return R.ok().put("result", result);
     }
 
     /**
@@ -135,15 +163,18 @@ public class ProductController {
     /**
      * 修改上下架状态
      */
-    @RequestMapping(value = "/update/publicStatus", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/publicStatus/{publicStatus}", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R updatePublicStatus(@RequestBody Integer[] ids, @RequestParam("publicStatus") int publicStatus) {
+    public R updatePublicStatus(@RequestBody Integer[] ids, @PathVariable("publicStatus") int publicStatus) {
         if (ids.length < 1) {
+            return R.error(-1, "参数异常");
+        }
+        if (publicStatus != Contants.SELL_STATUS_UP && publicStatus != Contants.SELL_STATUS_DOWN) {
             return R.error(-1, "参数异常");
         }
         int count = productService.updatePublicStatus(ids, publicStatus);
         if (count > 0) {
-            return R.ok().put("number", count);
+            return R.ok("修改成功");
         } else {
             return R.error(-1, "修改异常");
         }
@@ -152,9 +183,9 @@ public class ProductController {
     /**
      * 修改推荐状态
      */
-    @RequestMapping(value = "/update/recomandStatus", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/recomandStatus/{recomandStatus}", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R updateRecomandStatus(@RequestBody Integer[] ids, @RequestParam("recomandStatus") int recomandStatus) {
+    public R updateRecomandStatus(@RequestBody Integer[] ids, @PathVariable("recomandStatus") int recomandStatus) {
         if (ids.length < 1) {
             return R.error(-1, "参数异常");
         }

@@ -1,5 +1,7 @@
 package com.eproject.service.serverIm;
 
+import com.eproject.common.PageQuery;
+import com.eproject.common.PageResult;
 import com.eproject.common.R;
 import com.eproject.common.Result;
 import com.eproject.dao.CollectDao;
@@ -60,15 +62,15 @@ public class UserServiceIm implements UserService {
     }
 
     @Override
-    public List<User> selectUserInfo(User userInfo){
-        List<User> selectInfo = userDao.selectUserInfo(userInfo);
+    public User selectUserInfo(User userInfo){
+        User selectInfo = userDao.selectUserInfo(userInfo);
         return selectInfo;
     }
 
     @Override
-    public List<User> updateUserInfo(User updateUser){
+    public User updateUserInfo(User updateUser){
         userDao.updateUserInfo(updateUser);
-        List<User> UpdateUserInfo = userDao.selectUserInfo(updateUser);
+        User UpdateUserInfo = userDao.selectUserInfo(updateUser);
         return UpdateUserInfo;
     }
 
@@ -89,8 +91,8 @@ public class UserServiceIm implements UserService {
 
     @Override
     public String updatePic(User updateUserPic){
-        List<User> selectInfo = userDao.selectUserInfo(updateUserPic);
-        if (selectInfo.size() <=0){
+        User selectInfo = userDao.selectUserInfo(updateUserPic);
+        if (selectInfo == null){
             return Result.DATA_NOT_EXIST.getResult();
         }
         User updatePic = new User();
@@ -148,13 +150,19 @@ public class UserServiceIm implements UserService {
     }
 
     @Override
-    public List<Collect>  selectInfo(Collect collect){
-        return collectDao.selectInfo(collect);
+    public PageResult selectInfo(PageQuery pageQuery){
+        List<Collect> collectList = collectDao.selectInfo(pageQuery);
+        int total = collectList.size();
+        PageResult pageResult = new PageResult(collectList, total, pageQuery.getLimit(), pageQuery.getPage());
+        return pageResult;
     }
 
     @Override
-    public List<Follow>  selectFollowInfo(Follow follow){
-        return followDao.selectInfo(follow);
+    public PageResult selectFollowInfo(PageQuery pageQuery){
+        List<Follow> followList = followDao.selectInfo(pageQuery);
+        int total = followList.size();
+        PageResult pageResult = new PageResult(followList, total, pageQuery.getLimit(), pageQuery.getPage());
+        return pageResult;
     }
 
 }

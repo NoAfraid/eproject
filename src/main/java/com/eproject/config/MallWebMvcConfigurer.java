@@ -8,6 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MallWebMvcConfigurer implements WebMvcConfigurer {
 
+    /**
+     * 上传图片缓存
+     * @param registry
+     */
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/upload/**").addResourceLocations("file:" + Contants.FILE_UPLOAD_DIC);
         registry.addResourceHandler("/goods-img/**").addResourceLocations("file:" + Contants.FILE_UPLOAD_DIC);

@@ -6,12 +6,17 @@ import com.eproject.entity.Cart;
 import com.eproject.entity.User;
 import com.eproject.service.CartService;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @ResponseBody
@@ -64,13 +69,63 @@ public class CartController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/selectCartInfo",produces = "application/json;charset=UTF-8")
-    public R selectCartInfo(@RequestBody Cart cart){
+    public R selectCartInfo(@RequestBody Cart cart, HttpServletRequest request){
+        int itemsTotal = 0;
+        BigDecimal totalAmount = new BigDecimal("0");
         List<Cart> cartList = cartService.selectCartInfo(cart.getUserId());
-        if (cartList.size() > 0){
+        if (!CollectionUtils.isEmpty(cartList)){
+            itemsTotal = cartList.stream().mapToInt(Cart::getProductCount).sum();
+            for (Cart cartNum : cartList){
+                totalAmount = totalAmount.add(cartNum.getPrice().multiply(new BigDecimal(cartNum.getProductCount())));
+            }
+            request.setAttribute("itemsTotal",itemsTotal);
+            request.setAttribute("totalAmount",totalAmount);
             return R.ok().put("data",cartList);
         }
         return R.error(-1,"查询为空");
     }
+
+    /**
+     * 获取我的购物车中的列表数据
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/selectCartList",produces = "application/json;charset=UTF-8")
+    public R selectCartList(@RequestBody Cart cart, HttpServletRequest request){
+        int itemsTotal = 0;
+        BigDecimal totalAmount = new BigDecimal("0");
+        List<Cart> cartList = cartService.selectCartInfo(cart.getUserId());
+        if (!CollectionUtils.isEmpty(cartList)){
+            itemsTotal = cartList.stream().mapToInt(Cart::getProductCount).sum();
+            for (Cart cartNum : cartList){
+                totalAmount = totalAmount.add(cartNum.getPrice().multiply(new BigDecimal(cartNum.getProductCount())));
+            }
+            Map<String, Object> map=new HashMap<String,Object>();
+            map.put("itemsTotal",itemsTotal);
+            map.put("totalAmount",totalAmount);
+            return R.ok().put("data",map);
+        }
+        return R.error(-1,"查询为空");
+    }
+    /**
+     * 跳转到下单页
+     */
+//    @RequestMapping(method= RequestMethod.POST, value = "/selectCartList",produces = "application/json;charset=UTF-8")
+//    public R selectCartList(@RequestBody Cart cart, HttpServletRequest request){
+//        int itemsTotal = 0;
+//        BigDecimal totalAmount = new BigDecimal("0");
+//        List<Cart> cartList = cartService.selectCartInfo(cart.getUserId());
+//        if (!CollectionUtils.isEmpty(cartList)){
+//            itemsTotal = cartList.stream().mapToInt(Cart::getProductCount).sum();
+//            for (Cart cartNum : cartList){
+//                totalAmount = totalAmount.add(cartNum.getPrice().multiply(new BigDecimal(cartNum.getProductCount())));
+//            }
+//            Map<String, Object> map=new HashMap<String,Object>();
+//            map.put("itemsTotal",itemsTotal);
+//            map.put("totalAmount",totalAmount);
+//            return R.ok().put("data",map);
+//        }
+//        return R.error(-1,"查询为空");
+//    }
     /**
      * 批量删除购物车中的商品
      */

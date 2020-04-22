@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>newbee-mall | 后台管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="shortcut icon" href="../css/admin/dist/img/favicon.ico"/>
+    <link rel="stylesheet" href="../css/admin/dist/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../css/admin/dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="../css/admin/dist/css/main.css">
+    <link rel="stylesheet" href="../css/admin/plugins/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../css/admin/plugins/sweetalert/sweetalert.css"/>
+    <link rel="stylesheet" href="../css/admin/plugins/jqgrid-5.3.0/ui.jqgrid-bootstrap4.css"/>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../css/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/grzx.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/zt.css"/>
+</head>
+<!--<header th:replace="admin/header::header-fragment">-->
+<!--</header>-->
+<style>
+    .ui-jqgrid tr.jqgrow td {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+        padding-top: 2px;
+    }
+</style>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- 引入页面头header-fragment -->
+    <div th:replace="admin/header::header-nav"></div>
+    <!-- 引入工具栏sidebar-fragment -->
+    <div class="sidebar">
+        <!-- Sidebar Menu -->
+<!--        <nav class="mt-2">-->
+<!--            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"-->
+<!--                data-accordion="false">-->
+<!--                &lt;!&ndash; Add icons to the links using the .nav-icon class-->
+<!--                     with font-awesome or any other icon font library &ndash;&gt;-->
+<!--                &lt;!&ndash;                    <li class="nav-header">Dashboard</li>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <li class="nav-item">&ndash;&gt;-->
+<!--                &lt;!&ndash;                        <a href="/admin/index" class="nav-link">&ndash;&gt;-->
+<!--                &lt;!&ndash;                            <i class="nav-icon fa fa-dashboard"></i>&ndash;&gt;-->
+<!--                &lt;!&ndash;                            <p>&ndash;&gt;-->
+<!--                &lt;!&ndash;                                Dashboard&ndash;&gt;-->
+<!--                &lt;!&ndash;                            </p>&ndash;&gt;-->
+<!--                &lt;!&ndash;                        </a>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    </li>&ndash;&gt;-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/goods/edit" class="nav-link">-->
+<!--                        <i class="nav-icon fa fa-plus"></i>-->
+<!--                        <p>-->
+<!--                            商品信息-->
+<!--                        </p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-header">首页配置</li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/carousels"-->
+<!--                       class="nav-link">-->
+<!--                        <i class="nav-icon fa fa-file-image-o"></i>-->
+<!--                        <p>-->
+<!--                            轮播图配置-->
+<!--                        </p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/indexConfigs?configType=3"-->
+<!--                       class="nav-link active">-->
+<!--                        <i class="nav-icon fa fa-hand-o-up"></i>-->
+<!--                        <p>-->
+<!--                            热销商品配置-->
+<!--                        </p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/indexConfigs?configType=4"-->
+<!--                       class="nav-link">-->
+<!--                        <i class="nav-icon fa fa-hand-o-up"></i>-->
+<!--                        <p>-->
+<!--                            新品上线配置-->
+<!--                        </p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/indexConfigs?configType=5"-->
+<!--                       class="nav-link">-->
+<!--                        <i class="nav-icon fa fa-hand-o-up"></i>-->
+<!--                        <p>-->
+<!--                            为你推荐配置-->
+<!--                        </p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-header">管理模块</li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/categories?parentId=0&amp;categoryLevel=1&amp;backParentId=0"-->
+<!--                       class="nav-link">-->
+<!--                        <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>-->
+<!--                        <p>-->
+<!--                            分类管理-->
+<!--                        </p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/goods" class="nav-link">-->
+<!--                        <i class="fa fa-archive nav-icon" aria-hidden="true"></i>-->
+<!--                        <p>-->
+<!--                            商品管理-->
+<!--                        </p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/users" class="nav-link">-->
+<!--                        <i class="fa fa-users nav-icon" aria-hidden="true"></i>-->
+<!--                        <p>-->
+<!--                            会员管理-->
+<!--                        </p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/orders" class="nav-link">-->
+<!--                        <i class="fa fa-money nav-icon" aria-hidden="true"></i>-->
+<!--                        <p>-->
+<!--                            订单管理-->
+<!--                        </p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-header">系统管理</li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/profile"-->
+<!--                       class="nav-link">-->
+<!--                        <i class="fa fa-user-secret nav-icon"></i>-->
+<!--                        <p>修改密码</p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="/admin/logout" class="nav-link">-->
+<!--                        <i class="fa fa-sign-out nav-icon"></i>-->
+<!--                        <p>安全退出</p>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </nav>-->
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- Content Wrapper. Contains 图标content -->
+    <div class="content-wrapper" id="app">
+        <!-- Content Header (图标header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">轮播图管理</h3>
+                    </div> <!-- /.card-body -->
+                    <div class="card-body">
+                        <div class="grid-btn">
+                            <button class="btn btn-info" @click="carouselModal"><i
+                                    class="fa fa-plus"></i>&nbsp;新增
+                            </button>
+                            <button class="btn btn-info" @click="uodateCarousel"><i
+                                    class="fa fa-pencil-square-o"></i>&nbsp;修改
+                            </button>
+                            <button class="btn btn-danger" @click="deleteCarousel"><i
+                                    class="fa fa-trash-o"></i>&nbsp;删除
+                            </button>
+                        </div>
+                        <br>
+                        <div class="v1">
+                            <div class="v2">
+                                <table class="gridtable" >
+                                    <tr>
+                                        <td><label><input type="checkbox" id="checkAll"/></label></td>
+                                        <th>轮播图</th>
+                                        <th>轮播图名</th>
+                                        <td>跳转链接</td>
+                                        <th>排序权重</th>
+                                        <th>创建时间</th>
+                                        <th>更新时间</th>
+                                    </tr>
+                                    <tr class="gridtable" v-for="item in goodsList">
+                                        <td><input type="checkbox" v-model="msg" :value="item.id"/></td>
+                                        <td><img :src="item.productImg"/></td>
+                                        <td>{{item.carouseName}}</td>
+                                        <td>{{item.redirectUrl}}</td>
+                                        <td>{{item.carouseRank}}</td>
+                                        <td>{{dateFormat(item.creatTime)}}</td>
+                                        <td>{{dateFormat(item.updateTime)}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+        <div class="content">
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="carouselModal" tabindex="-1" role="dialog"
+                 aria-labelledby="carouselModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h6 class="modal-title" id="carouselModalLabel">Modal</h6>
+                        </div>
+                        <div class="modal-body">
+                            <form id="indexConfigForm">
+                                <div class="zxbt" style="display:flex;">
+                                    <p><span class="red">*</span>选择主图：</p>
+                                    <div class="xzsp">
+                                        <div @click="openImg">
+                                            <img  v-if="carousel.productImg==''" src="../css/admin/dist/img/img-upload.png"/>
+                                            <img id="image" :src="carousel.productImg" controls="controls" v-else>
+                                            <!--                                        您的浏览器不支持 video 标签-->
+                                            </img>
+                                        </div>
+                                        <form id="fileForm" enctype="multipart/form-data" method="post">
+                                            <input id="file" @change="preview" type="file" name="file" />
+                                        </form>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="redirectUrl" class="control-label">跳转链接:</label>
+                                    <input type="text" class="form-control" id="redirectUrl" v-model.trim="carousel.redirectUrl"
+                                           placeholder="请输入跳转链接" value="##">
+                                </div>
+                                <div class="form-group">
+                                    <label for="carouselRank" class="control-label">排序值:</label>
+                                    <input type="number" class="form-control" id="carouselRank" v-model.number="carousel.carouseRank"
+                                           placeholder="请输入排序值">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" @click="carouselAdd">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal -->
+        </div>
+        <div class="content">
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="updateCarouselModal" tabindex="-1" role="dialog"
+                 aria-labelledby="carouselModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h6 class="modal-title" id="updateCarouseModal">关闭</h6>
+                        </div>
+                        <div class="modal-body">
+                            <form id="indexConfigForm">
+                                <div class="zxbt" style="display:flex;">
+                                    <p><span class="red">*</span>选择主图：</p>
+                                    <div class="xzsp">
+                                        <div @click="openImg">
+                                            <img  v-if="carousel.productImg==''" src="../css/admin/dist/img/img-upload.png"/>
+                                            <img id="image" :src="carousel.productImg" controls="controls" v-else>
+                                            <!--                                        您的浏览器不支持 video 标签-->
+                                            </img>
+                                        </div>
+                                        <form id="fileForm" enctype="multipart/form-data" method="post">
+                                            <input id="file" @change="preview" type="file" name="file" />
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="redirectUrl" class="control-label">跳转链接:</label>
+                                    <input type="text" class="form-control" id="redirectUrl" v-model.trim="carousel.redirectUrl"
+                                           placeholder="请输入跳转链接" value="##">
+                                </div>
+                                <div class="form-group">
+                                    <label for="redirectUrl" class="control-label">轮播图名:</label>
+                                    <input type="text" class="form-control" id="carouseName" v-model.trim="carousel.carouseName"
+                                           placeholder="请输入轮播图名" value="##">
+                                </div>
+                                <div class="form-group">
+                                    <label for="carouselRank" class="control-label">排序值:</label>
+                                    <input type="number" class="form-control" id="carouselRank" v-model.number="carousel.carouseRank"
+                                           placeholder="请输入排序值">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" @click="updateCarousel">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal -->
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- 引入页脚footer-fragment -->
+<!--    <div th:replace="admin/footer::footer-fragment"></div>-->
+</div>
+<!-- jQuery -->
+<!--<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>-->
+<!--&lt;!&ndash; jQuery UI 1.11.4 &ndash;&gt;-->
+<script src="../js/jquery.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/admin_carsourel.js"></script>
+<script src="../js/jquery.form.js"></script>
+<!--<script src="../css/admin/plugins/jQueryUI/jquery-ui.min.js"></script>-->
+<!--&lt;!&ndash; Bootstrap 4 &ndash;&gt;-->
+<script src="../css/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!--&lt;!&ndash; AdminLTE App &ndash;&gt;-->
+<script src="../css/admin/dist/js/adminlte.min.js"></script>
+<!--&lt;!&ndash; jqgrid &ndash;&gt;-->
+<!--<script th:src="@{/admin/plugins/jqgrid-5.3.0/jquery.jqGrid.min.js}"></script>-->
+<!--<script th:src="@{/admin/plugins/jqgrid-5.3.0/grid.locale-cn.js}"></script>-->
+<!--&lt;!&ndash; sweetalert &ndash;&gt;-->
+<!--<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>-->
+<!--&lt;!&ndash; ajaxupload &ndash;&gt;-->
+<!--<script th:src="@{/admin/plugins/ajaxupload/ajaxupload.js}"></script>-->
+<!--<script th:src="@{/admin/dist/js/public.js}"></script>-->
+<!--<script src="../css/admin/plugins/jquery/jquery.min.js"></script>-->
+
+<!--<script src="../css/admin/plugins/sweetalert/sweetalert.min.js"></script>-->
+<!--<script src="../css/mall/js/bootstrap3.js"></script>-->
+<!--<script src="../css/admin/dist/js/public.js"></script>-->
+
+<!--<script type="text/javascript">-->
+<!--    function carouselModal() {-->
+<!--        $('#carouselModal').modal('show');-->
+<!--    }-->
+<!--</script>-->
+</body>
+</html>

@@ -1,0 +1,307 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>newbee-mall | 后台管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="shortcut icon" href="../css/admin/dist/img/favicon.ico"/>
+    <link rel="stylesheet" href="../css/admin/dist/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../css/admin/dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="../css/admin/dist/css/main.css">
+    <link rel="stylesheet" href="../css/admin/plugins/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../css/admin/plugins/sweetalert/sweetalert.css"/>
+    <link rel="stylesheet" href="../css/admin/plugins/jqgrid-5.3.0/ui.jqgrid-bootstrap4.css"/>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../css/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/grzx.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/zt.css"/>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <div class="sidebar">
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <!--                    <li class="nav-header">Dashboard</li>-->
+                    <!--                    <li class="nav-item">-->
+                    <!--                        <a href="/admin/index" class="nav-link">-->
+                    <!--                            <i class="nav-icon fa fa-dashboard"></i>-->
+                    <!--                            <p>-->
+                    <!--                                Dashboard-->
+                    <!--                            </p>-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                    <li class="nav-item">
+                        <a href="/admin/goods/edit" class="nav-link">
+                            <i class="nav-icon fa fa-plus"></i>
+                            <p>
+                                商品信息
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-header">首页配置</li>
+                    <li class="nav-item">
+                        <a href="/admin/carousels"
+                           class="nav-link">
+                            <i class="nav-icon fa fa-file-image-o"></i>
+                            <p>
+                                轮播图配置
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/indexConfigs?configType=3"
+                           class="nav-link active">
+                            <i class="nav-icon fa fa-hand-o-up"></i>
+                            <p>
+                                热销商品配置
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/indexConfigs?configType=4"
+                           class="nav-link">
+                            <i class="nav-icon fa fa-hand-o-up"></i>
+                            <p>
+                                新品上线配置
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/indexConfigs?configType=5"
+                           class="nav-link">
+                            <i class="nav-icon fa fa-hand-o-up"></i>
+                            <p>
+                                为你推荐配置
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-header">管理模块</li>
+                    <li class="nav-item">
+                        <a href="/admin/categories?parentId=0&amp;categoryLevel=1&amp;backParentId=0"
+                           class="nav-link">
+                            <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
+                            <p>
+                                分类管理
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/goods" class="nav-link">
+                            <i class="fa fa-archive nav-icon" aria-hidden="true"></i>
+                            <p>
+                                商品管理
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/users" class="nav-link">
+                            <i class="fa fa-users nav-icon" aria-hidden="true"></i>
+                            <p>
+                                会员管理
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/orders" class="nav-link">
+                            <i class="fa fa-money nav-icon" aria-hidden="true"></i>
+                            <p>
+                                订单管理
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-header">系统管理</li>
+                    <li class="nav-item">
+                        <a href="/admin/profile"
+                           class="nav-link">
+                            <i class="fa fa-user-secret nav-icon"></i>
+                            <p>修改密码</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/logout" class="nav-link">
+                            <i class="fa fa-sign-out nav-icon"></i>
+                            <p>安全退出</p>
+                        </a>
+                    </li>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <div class="content" id="editGoods">>
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">商品信息编辑</h3>
+                    </div>
+                    <div class="card-body">
+                        <!--                        <form id="goodsForm">-->
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>商品编号：</p>
+                            <input type="text" id="productSn" v-model.trim="product.productSn" placeholder="*请输入商品编号"
+                                   maxlength="30"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <input type="hidden" id="goodsId" name="goodsId">
+                            <p><span class="red">*</span>商品名称：</p>
+                            <input type="text" id="productName" v-model.trim="product.productName"
+                                   placeholder="*请输入商品名称" maxlength="30"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>商品简介：</p>
+                            <input type="text" id="description" v-model.trim="product.description"
+                                   placeholder="*请输入商品简介(100字以内)" maxlength="30"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>商品价格：</p>
+                            <input type="text" id="price" v-model.number="product.price" placeholder="*请输入商品价格"
+                                   maxlength="30"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>售卖价格：</p>
+                            <input type="text" id="promotePrice" v-model.number="product.promotePrice"
+                                   placeholder="*请输入商品售卖价" maxlength="30"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>商品库存：</p>
+                            <input type="text" id="stock" v-model.number="product.stock" placeholder="*请输入商品库存数"
+                                   maxlength="30"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>商品单位：</p>
+                            <input type="text" id="unit" v-model.trim="product.unit" placeholder="*请输入商品单位"
+                                   maxlength="30"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>是否上架：</p>
+                            <div class="xzsp">
+                                <div style="width: 100px;height: unset">
+                                    <input type="radio" name="publishStatus" v-model.number="product.publishStatus"
+                                           value="1" id="yes"/><label for="yes">是</label>
+                                    <input type="radio" name="publishStatus" v-model.number="product.publishStatus"
+                                           value="0" id="no"/><label for="no">否</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>选择主图：</p>
+                            <div class="xzsp">
+                                <div @click="openImg">
+                                    <img src="../../static/upload/xzsp.png" v-if="product.productImg==''"/>
+                                    <img id="image" :src="product.productImg" controls="controls"
+                                         style="width: 100%;height: 100%;" v-else>
+                                    <!--                                        您的浏览器不支持 video 标签-->
+                                    </img>
+                                </div>
+                                <form id="fileForm" enctype="multipart/form-data" method="post">
+                                    <input id="file" @change="preview" type="file" name="file" style="display: none;"/>
+                                </form>
+                                <div>
+                                    <button @click="openImg"
+                                            style="width: 56px; height: 28px; float: left; bottom: 0px;margin-top: 164px;margin-left: 12px;">
+                                        选择
+                                    </button>
+                                    <button @click="AjaxUpload"
+                                            style="width: 56px; height: 28px; float: left; bottom: 0px;margin-top: 164px;margin-left: 12px;">
+                                        上传
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <textarea id="editor" v-html="product.detail"
+                                      style="width: 100%; height: 750px;">{{product.detail}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <!-- 按钮 -->
+                            <input type="button" @click="updateProduct" value="保存商品" class="btn btn-info float-right"
+                                   style="margin-left: 5px;"/>
+
+                            <input type="button" @click="addProduct" value="返回商品列表" class="btn btn-info float-right"
+                                   style="margin-left: 5px;"/>
+                        </div>
+                        <!--                        </form>-->
+                    </div>
+
+                </div>
+            </div><!-- /.container-fluid -->
+        </div>
+        <!--        <div class="content">-->
+        <!--            &lt;!&ndash; 模态框（Modal） &ndash;&gt;-->
+        <!--            <div class="modal fade" id="goodsModal" tabindex="-1" role="dialog" aria-labelledby="goodsModalLabel">-->
+        <!--                <div class="modal-dialog" role="document">-->
+        <!--                    <div class="modal-content">-->
+        <!--                        <div class="modal-header">-->
+        <!--                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
+        <!--                                    aria-hidden="true">&times;</span></button>-->
+        <!--                            <h6 class="modal-title" id="goodsModalLabel">信息完善</h6>-->
+        <!--                        </div>-->
+        <!--                        <div class="modal-body">-->
+        <!--                            <form onsubmit="return false;">-->
+        <!--                                <div class="form-group">-->
+        <!--                                    <div class="col-sm-4">-->
+        <!--                                        <block if="${null == goods}">-->
+        <!--                                            <img id="goodsCoverImg" src="/admin/dist/img/img-upload.png"-->
+        <!--                                                 style="height: 64px;width: 64px;">-->
+        <!--                                        </block>-->
+        <!--                                        <th:block th:unless="${null == goods}">-->
+        <!--                                            <img id="goodsCoverImg" th:src="${goods.goodsCoverImg}"-->
+        <!--                                                 style="width:160px ;height: 160px;display:block;">-->
+        <!--                                        </th:block>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                                <br>-->
+        <!--                                <div class="form-group">-->
+        <!--                                    <div class="col-sm-4">-->
+        <!--                                        <button class="btn btn-info" style="margin-bottom: 5px;"-->
+        <!--                                                id="uploadGoodsCoverImg">-->
+        <!--                                            <i class="fa fa-picture-o"></i>&nbsp;上传商品主图-->
+        <!--                                        </button>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </form>-->
+        <!--                        </div>-->
+        <!--                        <div class="modal-footer">-->
+        <!--                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
+        <!--                            <button type="button" class="btn btn-primary" id="saveButton">确认</button>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            &lt;!&ndash; /.modal &ndash;&gt;-->
+        <!--        </div>-->
+    </div>
+</div>
+<script src="../css/admin/dist/js/public.js"></script>
+<script src="../css/admin/plugins/kindeditor-4.1.10/kindeditor-all-min.js"></script>
+<script src="../css/admin/plugins/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<!--<script src="../css/admin/plugins/jquery/jquery.min.js"></script>-->
+<script src="../js/vue.js"></script>
+<script src="../js/jquery.js"></script>
+<script src="../js/admin_goods_edit.js"></script>
+<script src="../js/jquery.form.js"></script>
+<!--<script src="../css/admin/plugins/jquery/jquery.min.js"></script>-->
+<!-- jQuery UI 1.11.4 -->
+<!--<script src="../css/admin/plugins/jQueryUI/jquery-ui.min.js"></script>-->
+<!-- Bootstrap 4 -->
+<!--<script src="../css/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>-->
+</body>
+</html>

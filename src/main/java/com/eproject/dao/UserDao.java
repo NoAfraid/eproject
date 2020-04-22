@@ -20,7 +20,7 @@ public interface UserDao {
 
     List<User> selectByPrimaryKey(User user);
 
-    List<User> selectUserInfo(User user);
+    User selectUserInfo(User user);
 
     User selectUser(Integer id);
 

@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 public class Product implements Serializable {
     private Integer id;
 
+    private Integer categoryId;
+
     /**
      * 产品名
      */
@@ -87,6 +89,14 @@ public class Product implements Serializable {
     private Integer publishStatus;
 
     private static final long serialVersionUID = 1L;
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
 
     public Integer getId() {
         return id;

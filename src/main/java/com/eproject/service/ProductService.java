@@ -20,6 +20,11 @@ public interface ProductService {
     PageResult getProductInfo(PageQuery pageQuery);
 
     /**
+     * 根据id获取信息
+     */
+    Product getProductById(Integer id);
+
+    /**
      * 修改商品信息
      */
     String updateProductInfo(Product product);
@@ -73,4 +78,20 @@ public interface ProductService {
      * 获取商品详情
      */
     Product selectProductById(Integer id);
+
+    /**
+     * 返回固定数量的首页配置商品对象(首页调用)
+     *
+     * @param number
+     * @return
+     */
+    List<Product> getProductForIndex(int number);
+
+    /**
+     * 返回固定数量的首页配置商品对象(首页调用)
+     *
+     * @param number
+     * @return
+     */
+    List<Product> getProductSaleForIndex(int number);
 }

@@ -52,7 +52,7 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/getOrderInfo",produces = "application/json;charset=UTF-8")
-    public R getOrderInfo(@RequestParam Map<String, Object> result){
+    public R getOrderInfo(@RequestBody Map<String, Object> result){
         try {
             if (StringUtils.isEmpty(result.get("page")) || StringUtils.isEmpty(result.get("limit"))) {
                 return R.error(-1, "请求错误");

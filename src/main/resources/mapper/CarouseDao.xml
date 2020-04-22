@@ -30,7 +30,6 @@
     from carouse
     where delete_status = 0
     order by carouse_rank desc
-
   </select>
   <select id="selectCarouseListByNumber" parameterType="int" resultMap="BaseResultMap">
     select
@@ -132,9 +131,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.eproject.entity.Carouse">
     update carouse
     <set>
-      <if test="carouseUrl != null">
-        carouse_url = #{carouseUrl,jdbcType=VARCHAR},
-      </if>
       <if test="redirectUrl != null">
         redirect_url = #{redirectUrl,jdbcType=VARCHAR},
       </if>
@@ -144,23 +140,11 @@
       <if test="carouseRank != null">
         carouse_rank = #{carouseRank,jdbcType=INTEGER},
       </if>
-      <if test="managerId != null">
-        manager_id = #{managerId,jdbcType=INTEGER},
-      </if>
-      <if test="productId != null">
-        product_id = #{productId,jdbcType=INTEGER},
-      </if>
       <if test="productImg != null">
         product_img = #{productImg,jdbcType=VARCHAR},
       </if>
-      <if test="creatTime != null">
-        creat_time = #{creatTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="deleteStatus != null">
-        delete_status = #{deleteStatus,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

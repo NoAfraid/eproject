@@ -1978,8 +1978,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 .input-group-lg > .input-group-append > select.btn:not([size]):not([multiple]) {
   height: calc(2.875rem + 2px);
 }
-
-.form-group {
+.form-group >>>.zxbt{
   margin-bottom: 1rem;
 }
 
@@ -4630,6 +4629,7 @@ input[type="button"].btn-block {
   padding-left: 0;
   list-style: none;
   border-radius: 0.25rem;
+  height: 100%;
 }
 
 .page-link {
@@ -6200,11 +6200,12 @@ button.bg-dark:focus {
 .rounded-0 {
   border-radius: 0 !important;
 }
-
 .clearfix::after {
-  display: block;
-  clear: both;
-  content: "";
+    display: block;
+    clear: both;
+    content: ".";
+    visibility: hidden;
+    height: 0;
 }
 
 .d-none {

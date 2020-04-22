@@ -1,5 +1,6 @@
 package com.eproject.dao;
 
+import com.eproject.common.PageQuery;
 import com.eproject.entity.Follow;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,7 +16,7 @@ public interface FollowDao {
 
     Follow selectByPrimaryKey(Integer id);
 
-    List<Follow> selectInfo(Follow follow);
+    List<Follow> selectInfo(PageQuery pageQuery);
 
     int selectByFollow(Integer id, Integer userId);
 

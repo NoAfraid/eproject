@@ -5,6 +5,9 @@ server:
     min-spare-threads: 10
   port: 8080
 
+#  servlet:
+#    context-path: /
+
 spring:
   datasource:
     username: root
@@ -13,9 +16,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   resources:
-        static-locations: classpath:/static, classpath:/upload
+        static-locations: classpath:/static/, classpath:/html/, classpath:/mall/, classpath:/upload
         cache:
           period: 0
+
+  mvc:
+    static-path-pattern: /**
 
 #  thymeleaf:
 #    cache: false

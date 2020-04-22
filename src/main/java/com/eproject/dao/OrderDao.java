@@ -21,15 +21,19 @@ public interface OrderDao {
 
     List<Order> selectByUserId(PageQuery pageQuery);
 
+    int getOrderPage(PageQuery pageQuery);
+
     int getPage(PageQuery pageQuery);
 
     int updateByPrimaryKeySelective(Order record);
 
-    int updateByOrderStatus(@Param("id") List<Integer> id);
+    int updateByOrderStatus(@Param("id") Integer[] id);
 
-    int updateByDeleteStatus(@Param("id") List<Integer> id);
+    int updateByDeleteStatus(@Param("id") Integer[] id);
 
     int updateByPrimaryKey(Order record);
+
+    int updateOrderInfo(Order order);
 
     /**
      * 获取超时订单
@@ -55,7 +59,17 @@ public interface OrderDao {
     Order selectByOrderNo(String orderNo);
 
     /**
+     * 批量配货
+     */
+    int checkDone(@Param("list") List<String> ids);
+
+    /**
      * 批量发货
      */
     int delivery(@Param("list") List<OrderDeliveryParam> deliveryParamList);
+
+    /**
+     * 获取订单信息
+     */
+    List<Order> selectList(PageQuery pageQuery);
 }
