@@ -13,6 +13,7 @@ var vm= new Vue({
         order: [],
     },
     mounted: function () {
+
         var accessToken = getCookie("accessToken");
         if (isEmpty(accessToken)) {
             alert("请登录");
