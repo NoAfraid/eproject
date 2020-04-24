@@ -76,111 +76,38 @@
         </ul>
     </nav>
     <!-- 引入工具栏sidebar-fragment -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <div class="sidebar">
-            <!-- Sidebar Menu -->
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
-                    <li class="nav-item">
-                        <a href="/admin/goods/edit" class="nav-link">
-                            <i class="nav-icon fa fa-plus"></i>
-                            <p>
-                                商品信息
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-header">首页配置</li>
-                    <li class="nav-item">
-                        <a href="/admin/carousels"
-                           class="nav-link">
-                            <i class="nav-icon fa fa-file-image-o"></i>
-                            <p>
-                                轮播图配置
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/indexConfigs?configType=3"
-                           class="nav-link active">
-                            <i class="nav-icon fa fa-hand-o-up"></i>
-                            <p>
-                                热销商品配置
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/indexConfigs?configType=4"
-                           class="nav-link">
-                            <i class="nav-icon fa fa-hand-o-up"></i>
-                            <p>
-                                新品上线配置
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/indexConfigs?configType=5"
-                           class="nav-link">
-                            <i class="nav-icon fa fa-hand-o-up"></i>
-                            <p>
-                                为你推荐配置
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-header">管理模块</li>
-                    <li class="nav-item">
-                        <a href="/admin/categories?parentId=0&amp;categoryLevel=1&amp;backParentId=0"
-                           class="nav-link">
-                            <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
-                            <p>
-                                分类管理
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/goods" class="nav-link">
-                            <i class="fa fa-archive nav-icon" aria-hidden="true"></i>
-                            <p>
-                                商品管理
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/users" class="nav-link">
-                            <i class="fa fa-users nav-icon" aria-hidden="true"></i>
-                            <p>
-                                会员管理
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/orders" class="nav-link">
-                            <i class="fa fa-money nav-icon" aria-hidden="true"></i>
-                            <p>
-                                订单管理
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-header">系统管理</li>
-                    <li class="nav-item">
-                        <a href="/admin/profile"
-                           class="nav-link">
-                            <i class="fa fa-user-secret nav-icon"></i>
-                            <p>修改密码</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/logout" class="nav-link">
-                            <i class="fa fa-sign-out nav-icon"></i>
-                            <p>安全退出</p>
-                        </a>
-                    </li>
-                    </li>
-                </ul>
-            </nav>
-            <!-- /.sidebar-menu -->
+    <div class="grzxdht">
+        <div class="gr">
+            <a href="center.html">个人资料</a>
         </div>
-    </aside>
+        <div class="gr">
+            <a href="collect.html">我的收藏</a>
+        </div>
+        <div class="gr">
+            <a class="hsys" href="follow.html">我的关注</a>
+        </div>
+        <!--					<div class="gr">-->
+        <!--						<a href="wdfensi.html">我的粉丝</a>-->
+        <!--					</div>-->
+        <div class="gr">
+            <a href="cart.html">我的购物车</a>
+        </div>
+        <div class="gr">
+            <a href="my_orders.html">我的订单</a>
+        </div>
+        <!--					<div class="gr">-->
+        <!--						<a href="wdzhixun.html">我的咨询</a>-->
+        <!--					</div>-->
+        <!--					<div class="gr">-->
+        <!--						<a href="wdwujuan.html">我参与的问卷</a>-->
+        <!--					</div>-->
+        <div class="gr">
+            <a href="xgmima.html">修改密码</a>
+        </div>
+        <div class="gr">
+            <a href="javascript:loginout()">退出</a>
+        </div>
+    </div>
     <!-- Content Wrapper. Contains 图标content -->
     <div class="content-wrapper">
         <!-- Content Header (图标header) -->
@@ -193,7 +120,7 @@
             <div class="container-fluid">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">首页配置管理</h3>
+                        <h3 class="card-title">我的订单</h3>
                     </div> <!-- /.card-body -->
                     <div class="card-body">
 <!--                        <div class="grid-btn">-->
@@ -290,6 +217,8 @@
 <!-- jQuery -->
 <script src="../../js/jquery.js"></script>
 <script src="../../js/vue.js"></script>
+<script src="../../js/md5.js"></script>
+<script src="../../js/common.js"></script>
 <script type="text/javascript" src="../../js/mall/my_orders.js"></script>
 </body>
 </html>

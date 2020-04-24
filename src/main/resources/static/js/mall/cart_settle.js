@@ -24,16 +24,32 @@ var vm = new Vue({
         }
     },
     mounted: function () {
-        this.addressList(3);
+        var accessToken = getCookie("accessToken");
+        if (isEmpty(accessToken)) {
+            alert("请登录");
+            window.location.href="login.html"
+        } else {
+            this.accessToken = accessToken;
+        }
+        this.addressList();
     },
     create:{},
     methods:{
-        addressList:function (id) {
+        addressList:function () {
+            var userId = getCookie("sessionId");
             var t={
-                userId:id
+                userId: userId
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/address/addressList",
                 contentType: "application/json;charset=utf-8",
@@ -50,12 +66,21 @@ var vm = new Vue({
             });
         },
 
-        saveOrder:function (id) {
+        saveOrder:function () {
+            var userId = getCookie("sessionId");
             var t={
-                userId:id
+                userId:userId
             }
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/order/generateOrder",
                 contentType: "application/json;charset=utf-8",

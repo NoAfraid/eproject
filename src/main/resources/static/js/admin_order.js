@@ -16,8 +16,13 @@ var vm = new Vue({
         }
     },
     mounted: function () {
-        // this.findList(1);
-        // this.advice();
+        var accessToken = getCookie("accessToken");
+        if (isEmpty(accessToken)) {
+            alert("请登录");
+            window.location.href="login.html"
+        } else {
+            this.accessToken = accessToken;
+        }
         this.ordersList(1);
         // this.updateProduct(17)
     },
@@ -30,7 +35,15 @@ var vm = new Vue({
                 page: page == null ? this.current : page
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url:  "http://localhost:8080/adminOrder/getList",
                 contentType: "application/json;charset=utf-8",
@@ -87,7 +100,15 @@ var vm = new Vue({
                 alert("请选择一条记录")
             }
             var formData = JSON.stringify(this.msg);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url:  "http://localhost:8080/adminOrder/checkDone",
                 contentType: "application/json;charset=utf-8",
@@ -129,7 +150,15 @@ var vm = new Vue({
                 alert("请选择一条记录")
             }
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url:  "http://localhost:8080/adminOrder/delivery",
                 contentType: "application/json;charset=utf-8",
@@ -167,7 +196,15 @@ var vm = new Vue({
                 alert("该商品已关闭")
             }
             var formData = JSON.stringify(this.msg);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url:  "http://localhost:8080/adminOrder/closeOrder",
                 contentType: "application/json;charset=utf-8",

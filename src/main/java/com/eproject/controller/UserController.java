@@ -13,6 +13,8 @@ import com.eproject.service.ProductService;
 import com.eproject.service.UserService;
 import com.eproject.util.MD5Encode;
 import com.eproject.util.PasswordUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +35,8 @@ import java.util.UUID;
 @ResponseBody
 @RequestMapping(method= RequestMethod.POST, value = "/user",produces = "application/json;charset=UTF-8")
 public class UserController {
+
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Resource
     private UserService userService;
@@ -79,7 +85,24 @@ public class UserController {
         //loginUser.getUsername().equals(user.getUsername()) ||loginUser.getPhone().equals(user.getPhone()
         if (loginUser != null){
             if (loginUser.getPassword().equals(MD5Encode.MD5Encode(user.getPassword(),"utf-8"))){
-                return R.ok().put("data","登录成功");
+//                return R.ok().put("data","登录成功");
+                Integer userId = loginUser.getId();
+                String token = "";
+                try {
+                    token = MD5Encode.EncoderByMd5(UUID.randomUUID().toString() + System.currentTimeMillis());
+                    log.info("======登录token：{}",token);
+                } catch (NoSuchAlgorithmException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    log.info("======生成token失败");
+                    return R.error(-1, "登录失败,生成token失败!");
+                } catch (UnsupportedEncodingException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    log.info("======生成token失败");
+                    return R.error(-1, "登录失败,生成token失败");
+                }
+                return R.ok().put("code", 0).put("data",loginUser).put("accessToken", token).put("sessionId",userId);
             }
         }
         return R.error(-1,"账号或者密码错误");
@@ -89,7 +112,10 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/selectInfo",produces = "application/json;charset=UTF-8")
-    public R selectInfo(@RequestBody User userInfo){
+    public R selectInfo(@RequestBody User userInfo, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
         User  info = userService.selectUserInfo(userInfo);
         if (info == null){
             return R.error(-1,"查询异常");
@@ -103,7 +129,10 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/updateUserInfo",produces = "application/json;charset=UTF-8")
-    public R updateInfo(@RequestBody User updateInfo){
+    public R updateInfo(@RequestBody User updateInfo, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
         User  info = userService.updateUserInfo(updateInfo);
         if (info == null){
             return R.error(-1,"修改异常");
@@ -115,9 +144,11 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/updatePassword/{id}",produces = "application/json;charset=UTF-8")
-    public R updatePassword(@RequestBody Map<String,Object> map,
-                            @PathVariable("id") Integer id,
-                            HttpServletRequest request){
+    public R updatePassword(@RequestBody Map<String,Object> map, @PathVariable("id") Integer id,
+                            HttpServletRequest request, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
         if (StringUtils.isEmpty((String)map.get("originalPassword"))){
             return R.error(-1,"原密码不能为空");
         }
@@ -142,7 +173,10 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/updatePic")//,produces = "application/json;charset=UTF-8"
-    public R updatePic( User user,@RequestParam("file") MultipartFile file){
+    public R updatePic( User user,@RequestParam("file") MultipartFile file, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
         try {
             //获取文件名，带扩展名
             String originFileName = file.getOriginalFilename();
@@ -176,7 +210,10 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/collect",produces = "application/json;charset=UTF-8")
-    public R collectInfo(@RequestBody User user, @RequestParam("id") Integer id){
+    public R collectInfo(@RequestBody User user, @RequestParam("id") Integer id, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
         int num =userService.selectCollectInfo(id,user.getId());
         //判断是否收藏过
         if (num == -1){
@@ -194,7 +231,10 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/follow",produces = "application/json;charset=UTF-8")
-    public R followInfo(@RequestBody User user, @RequestParam("id") Integer id){
+    public R followInfo(@RequestBody User user, @RequestParam("id") Integer id, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
         int num = userService.insertFollowInfo(id,user.getId());
         //判断是否收藏过
         if (num == -1){
@@ -211,7 +251,10 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/cancelFollow",produces = "application/json;charset=UTF-8")
-    public R cancelFollow(@RequestBody Follow follow){
+    public R cancelFollow(@RequestBody Follow follow, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
         //if (id == null){
         //  return R.error(-1,"未关注该商品");
         //}
@@ -231,7 +274,10 @@ public class UserController {
     */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/cancelCollect",produces = "application/json;charset=UTF-8")
-    public R cancelCollect(@RequestBody Collect collect){
+    public R cancelCollect(@RequestBody Collect collect, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
 //        if (id == null){
 //            return R.error(-1,"未收藏该商品");
 //        }
@@ -250,7 +296,10 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/searchCollect",produces = "application/json;charset=UTF-8")
-    public R searchCollect(@RequestBody Map<String, Object> result){
+    public R searchCollect(@RequestBody Map<String, Object> result, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
         try {
             if (StringUtils.isEmpty(result.get("page")) || StringUtils.isEmpty(result.get("limit"))) {
                 return R.error(-1, "请求错误");
@@ -267,7 +316,10 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/searchFollow",produces = "application/json;charset=UTF-8")
-    public R searchFollow(@RequestBody Map<String, Object> result){
+    public R searchFollow(@RequestBody Map<String, Object> result, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
         try {
             if (StringUtils.isEmpty(result.get("page")) || StringUtils.isEmpty(result.get("limit"))) {
                 return R.error(-1, "请求错误");

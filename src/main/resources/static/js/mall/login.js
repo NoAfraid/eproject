@@ -13,11 +13,12 @@ $(function () {
                 password: null,
                 phone: '',
             },
+            src:'',
             error: null
         },
 
         mounted: function () {
-
+            this.updateCode()
         },
         computed: {},
         methods: {
@@ -31,7 +32,15 @@ $(function () {
                     this.error = '请输入密码'; return;
                 }
                 var formData = JSON.stringify(this.user);
+                var now =  getNow("yyyyMMddHHmmss");
+                var sign  = signString(formData,now);
                 $.ajax({
+                    headers:{
+                        client:client,
+                        version:version,
+                        requestTime:now,
+                        sign:sign
+                    },
                     type: "post",
                     url: loginUrl,
                     contentType: "application/json;charset=utf-8",
@@ -39,7 +48,10 @@ $(function () {
                     data: formData,
                     success: function (result) {
                         if(result.code == 0) {
-                            alert(result.msg)
+                            setCookie("loginUser", JSON.stringify(result.data));
+                            setCookie("accessToken", result.accessToken);
+                            setCookie("sessionId",result.sessionId);
+                            window.location.href= 'index.html';
                         } else {
                             alert(result.msg)
                         }
@@ -47,6 +59,16 @@ $(function () {
                 })
             },
 
+
+            /**
+             * 验证码
+             */
+            updateCode: function () {
+                this.src='http://localhost:8080/common/mall/kaptcha?d='+new Date()*1
+            },
+            /**
+             * 注册
+             */
             registerDo: function () {
 
                 if ($.trim(this.register.username) == ''){
@@ -67,7 +89,8 @@ $(function () {
                     data: formData,
                     success: function (result) {
                         if(result.code == 0) {
-                            alert(result.msg)
+                            alert(result.msg);
+                            window.location.href= 'login.html';
                         } else {
                             alert(result.msg)
                         }

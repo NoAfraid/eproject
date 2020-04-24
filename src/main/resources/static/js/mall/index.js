@@ -9,6 +9,9 @@ var vm = new Vue({
         },
         hotProductList:[],
         carouselList:[],
+        vip:{
+            id:"",
+        },
         mark: 0,
     },
     mounted: function () {
@@ -99,6 +102,17 @@ var vm = new Vue({
             // var t = {
             //     id:1
             // };
+            // this.vip = getCookie("loginUser");
+            // var userId = this.vip.id;
+            // alert(userId)
+            // for (var i=0;i<this.vip.length;i++){
+            //     userId = this.vip[3]
+            //
+            // }
+            // alert(userId)
+            // console.log(userId)
+            // console.log(this.vip)
+            // alert(this.vip)
             var formData = JSON.stringify();
             $.ajax({
                 type: "post",

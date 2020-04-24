@@ -1,117 +1,119 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-		<link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
-		<link rel="stylesheet" type="text/css" href="../../css/css.css"/>
-		<link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
-	</head>
-	<body>
-		<div id="zd" >
-			<!--#include file="../header.html"-->
-			<div class="bj1" id="app" v-cloak>
-				<div class="dk1">
-					<div class="xsdh">
-						<div class="p1">
-							<a href="../index.html"><p>首页</p></a>
-							<p>></p>
-						</div>
-						<div class="p1">
-							<a href="center.html"><p>个人中心</p></a>
-							<p>></p>
-						</div>
-						<div class="p1">
-							<p>我关注的人</p>
-						</div>
-					</div>
-					<div class="grzx" v-cloak>
-						<div class="grzxdht">
-							<div class="gr">
-								<a href="center.html">个人资料</a>
-							</div>
-							<div class="gr">
-								<a href="collect.html">我的收藏</a>
-							</div>
-							<div class="gr">
-								<a class="hsys" href="follow.html">我关注的人</a>
-							</div>
-							<div class="gr">
-								<a href="wdfensi.html">我的粉丝</a>
-							</div>
-							<div class="gr">
-								<a href="wdshangchuan.html">我的上传</a>
-							</div>
-							<div class="gr">
-								<a href="wdtiezi.html">我发表的帖子</a>
-							</div>
-							<div class="gr">
-								<a href="wdzhixun.html">我的咨询</a>
-							</div>
-							<div class="gr">
-								<a href="wdwujuan.html">我参与的问卷</a>
-							</div>
-							<div class="gr">
-								<a href="xgmima.html">修改密码</a>
-							</div>
-							<div class="gr">
-								<a href="javascript:loginout()">退出</a>
-							</div>
-						</div>
-						<div class="wdsckj">
-							<div class="wdsc">
-								<div class="scbt">
-									<div class="wodi">
-<!--										<p>我的关注({{total}})</p>-->
-									</div>
-								</div>
-								<div class="v1" v-if="followList.list">
-									<div class="gzdrkj" v-for="f in followList.list">
-<!--										跳转链接-->
-<!--										<a :href="'../blog-center.html?vipId='+f.follow.id" class="wdfs">-->
-											<img src="../../upload/20200408_2259582.png" v-if="(f.productImg) == ''"/>
-											<img :src="f.productImg" v-else />
-											<p>{{f.productName}}</p>
-											<p>{{f.createTime}}</p>
-										</a>
-<!--										<div class="gztx">-->
-<!--											<img src="../../static/img/yh.png" v-if="$.trim(f.follow.pic) == ''"/>-->
-<!--											<img :src="baseURL + f.follow.pic" v-else/>-->
-<!--											<p>{{f.follow.nick}}</p>-->
-<!--										</div>-->
-										<div class="qxgz" @click="cancelFollow(f.id)" style="cursor: pointer">
-											<p class="gz" style="color: #BA2636;">取消关注</p>
-										</div>
-									</div>
-								</div>
-								<p v-else>暂无关注</p>
-							</div>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
+</head>
+<body>
+<div id="zd">
+    <!--#include file="../header.html"-->
+    <div class="bj1" id="app" v-cloak>
+        <div class="dk1">
+            <div class="xsdh">
+                <div class="p1">
+                    <a href="../index.html"><p>首页</p></a>
+                    <p>></p>
+                </div>
+                <div class="p1">
+                    <a href="center.html"><p>个人中心</p></a>
+                    <p>></p>
+                </div>
+                <div class="p1">
+                    <p>我关注的人</p>
+                </div>
+            </div>
+            <div class="grzx" v-cloak>
+                <div class="grzxdht">
+                    <div class="gr">
+                        <a href="center.html">个人资料</a>
+                    </div>
+                    <div class="gr">
+                        <a href="collect.html">我的收藏</a>
+                    </div>
+                    <div class="gr">
+                        <a class="hsys" href="follow.html">我的关注</a>
+                    </div>
+                    <!--					<div class="gr">-->
+                    <!--						<a href="wdfensi.html">我的粉丝</a>-->
+                    <!--					</div>-->
+                    <div class="gr">
+                        <a href="cart.html">我的购物车</a>
+                    </div>
+                    <div class="gr">
+                        <a href="my_orders.html">我的订单</a>
+                    </div>
+                    <!--					<div class="gr">-->
+                    <!--						<a href="wdzhixun.html">我的咨询</a>-->
+                    <!--					</div>-->
+                    <!--					<div class="gr">-->
+                    <!--						<a href="wdwujuan.html">我参与的问卷</a>-->
+                    <!--					</div>-->
+                    <div class="gr">
+                        <a href="xgmima.html">修改密码</a>
+                    </div>
+                    <div class="gr">
+                        <a href="javascript:loginout()">退出</a>
+                    </div>
+                </div>
+                <div class="wdsckj">
+                    <div class="wdsc">
+                        <div class="scbt">
+                            <div class="wodi">
+                                <!--										<p>我的关注({{total}})</p>-->
+                            </div>
+                        </div>
+                        <div class="v1" v-if="followList.list">
+                            <div class="gzdrkj" v-for="f in followList.list">
+                                <!--										跳转链接-->
+                                <!--										<a :href="'../blog-center.html?vipId='+f.follow.id" class="wdfs">-->
+                                <img src="../../upload/20200408_2259582.png" v-if="(f.productImg) == ''"/>
+                                <img :src="f.productImg" v-else/>
+                                <p>{{f.productName}}</p>
+                                <p>{{f.createTime}}</p>
+                                </a>
+                                <!--										<div class="gztx">-->
+                                <!--											<img src="../../static/img/yh.png" v-if="$.trim(f.follow.pic) == ''"/>-->
+                                <!--											<img :src="baseURL + f.follow.pic" v-else/>-->
+                                <!--											<p>{{f.follow.nick}}</p>-->
+                                <!--										</div>-->
+                                <div class="qxgz" @click="cancelFollow(f.id)" style="cursor: pointer">
+                                    <p class="gz" style="color: #BA2636;">取消关注</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p v-else>暂无关注</p>
+                    </div>
 
-						</div>
-						<div class="fyq">
-							<div class="pagination">
-								<li v-if="current > 1">
-									<a href="#" @click="current--;findList()">上一页</a>
-								</li>
-								<li v-if="current==1"><a class="banclick">上一页</a></li>
+                </div>
+                <div class="fyq">
+                    <div class="pagination">
+                        <li v-if="current > 1">
+                            <a href="#" @click="current--;findList()">上一页</a>
+                        </li>
+                        <li v-if="current==1"><a class="banclick">上一页</a></li>
 
-								<li v-for="index in indexs" >
-									<a :class="{'active': current == index}" @click="findList(index)">{{ index }}</a>
-								</li>
-								<li v-if="current!=pages"><a @click="current++;findList()">下一页</a></li>
-								<li v-if="current == pages"><a class="banclick">下一页</a></li>
-							</div>
-						</div>
-					</div>
-				</div>
+                        <li v-for="index in indexs">
+                            <a :class="{'active': current == index}" @click="findList(index)">{{ index }}</a>
+                        </li>
+                        <li v-if="current!=pages"><a @click="current++;findList()">下一页</a></li>
+                        <li v-if="current == pages"><a class="banclick">下一页</a></li>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-			</div>
-			<!--#include file="../footer.html"-->
-		</div>
-		<script src="../../js/jquery.js"></script>
-		<script src="../../js/vue.js"></script>
-		<script type="text/javascript" src="../../js/mall/follow.js"></script>
+    </div>
+    <!--#include file="../footer.html"-->
+</div>
+<script src="../../js/jquery.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../js/md5.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/mall/follow.js"></script>
 <!--        <script src="../../js/mall/center.js"></script>-->
 
-	</body>
+</body>
 </html>

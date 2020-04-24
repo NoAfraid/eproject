@@ -9,23 +9,34 @@ var vm = new Vue({
         total: 0
     },
     mounted: function () {
-        // var accessToken = getCookie("accessToken");
-        // if (isEmpty(accessToken)) {
-        // } else {
-        //     this.accessToken = accessToken;
-        // }
+        var accessToken = getCookie("accessToken");
+        if (isEmpty(accessToken)) {
+            alert("请登录");
+            window.location.href="login.html"
+        } else {
+            this.accessToken = accessToken;
+        }
         this.findList(1);
     },
     create:{},
     methods: {
         findList: function (page) {
+            var userId = getCookie("sessionId");
             var t = {
                 limit: this.limit,
                 page: page == null ? this.current : page,
-                userId: 3
+                userId: userId
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/user/searchCollect",
                 contentType: "application/json;charset=utf-8",
@@ -54,14 +65,15 @@ var vm = new Vue({
             var formData = JSON.stringify(t);
             // var now = getNow("yyyyMMddHHmmss");
             // var sign = signString(formData, now);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
-                // headers: {
-                //     client: client,
-                //     version: version,
-                //     requestTime: now,
-                //     sign: sign,
-                //     accessToken: this.accessToken
-                // },
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/user/cancelCollect",
                 contentType: "application/json;charset=utf-8",

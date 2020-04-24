@@ -83,14 +83,20 @@ public class OrderServiceIm implements OrderService {
         //数据库减去已买的商品数量
 
         //根据商品合计、运费计算应付金额
+
         Order orderList = new Order();
-        orderList.setTotalPrice(calcTotalAmount(orderItemList));
-        orderList.setFreightAmount(new BigDecimal(0));
-        //转化为订单信息并插入数据库
-        orderList.setUserId(order.getUserId());
-        orderList.setUserId(order.getUserId());
-        //支付方式：0->未支付；1->支付宝；2->微信
-        orderList.setPayType(order.getPayType());
+        for (Cart cartList : list){
+            orderList.setTotalPrice(calcTotalAmount(orderItemList));
+            orderList.setFreightAmount(new BigDecimal(0));
+            //转化为订单信息并插入数据库
+            orderList.setProductName(cartList.getProductName());
+            orderList.setProductId(cartList.getProductId());
+            orderList.setUserId(cartList.getUserId());
+//        orderList.setUserId(order.getUserId());
+            //支付方式：0->未支付；1->支付宝；2->微信
+            orderList.setPayType(order.getPayType());
+        }
+
         //订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
         orderList.setOrderStatus(order.getOrderStatus());
         //收货人信息：姓名、电话、邮编、地址
@@ -118,15 +124,16 @@ public class OrderServiceIm implements OrderService {
             orderItem.setOrderStatus(0);
             orderItem.setCreateTime(new Date());
             orderItem.setProductName(orderList.getProductName());
+            orderItem.setProductId(orderList.getProductId());
             orderItem.setProductImg(orderItem.getProductImg());
-            orderItem.setProductPrice(orderList.getTotalPrice());
+//            orderItem.setProductPrice(orderList.getTotalPrice());
             orderItem.setUserId(orderList.getUserId());
         }
         orderItemDao.insertList(orderItemList);
         //删除购物车中的下单商品
         User user = new User();
-        Product product = new Product();
-        deleteCartItemList(list,user,product);
+        List<Integer> productList = new ArrayList<>();
+        deleteCartItemList(list,order.getUserId(),productList);
         //发送延迟消息取消订单
         sendDelayMessageCancelOrder(order.getId());
         Map<String, Object> result = new HashMap<>();
@@ -205,10 +212,16 @@ public class OrderServiceIm implements OrderService {
     }
 
     @Override
-    public Integer paySuccess(Integer orderId, String payType){
+    public Order pay(String orderNo){
+        return orderDao.selectByOrderNo(orderNo);
+    }
+    @Override
+    public Integer paySuccess(String orderNo, String payType){
         //修改订单支付状态
+        Order o = orderDao.selectByOrderNo(orderNo);
         Order order = new Order();
-        order.setId(orderId);
+        order.setId(o.getId());
+        //order.setOrderNo(orderNo);
         order.setPayStatus(1);
         order.setPayType(payType);
         order.setPayTime(new Date());
@@ -257,12 +270,14 @@ public class OrderServiceIm implements OrderService {
     /**
      * 删除下单商品的购物车信息
      */
-    private void deleteCartItemList(List<Cart> cartList, User user,Product product) {
+    private void deleteCartItemList(List<Cart> cartList, Integer userId,List<Integer> productList) {
         List<Integer> ids = new ArrayList<>();
+        //List<Integer> productList = new ArrayList<>();
         for (Cart cart : cartList){
             ids.add(cart.getId());
+            productList.add(cart.getProductId());
         }
-        cartDao.updateDeleteStatus(user.getId(),product.getId(),ids);
+        cartDao.DeleteStatus(userId,productList,ids);
     }
     /**
      * 计算购物车中的商品价格

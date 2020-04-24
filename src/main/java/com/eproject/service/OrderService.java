@@ -45,9 +45,13 @@ public interface OrderService {
     */
     String cancelOrder(String orderNo, Integer userId);
     /**
+     * 去支付
+     */
+    Order pay(String orderNo);
+    /**
      * 支付成功后的回调
      */
-    Integer paySuccess(Integer orderId,String payType);
+    Integer paySuccess(String orderNo,String payType);
 
     /**
      * 确认收货

@@ -106,12 +106,24 @@ public class OrderController {
     }
 
     /**
+     * 去支付
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/pay",produces = "application/json;charset=UTF-8")
+    public R pay(@RequestBody Order order){
+        Order o = orderService.pay(order.getOrderNo());
+        if (o != null){
+            return R.ok().put("date",o);
+        }
+        return R.error(-1,"参数异常");
+    }
+    /**
      * 支付成功后的回调
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/paySuccess",produces = "application/json;charset=UTF-8")
-    public R paySuccess(@RequestParam("orderId") Integer orderId,@RequestParam("payType") String payType){
-        Integer count = orderService.paySuccess(orderId,payType);
+    public R paySuccess(@RequestBody Order o){
+        Integer count = orderService.paySuccess(o.getOrderNo(),o.getPayType());
         if (count > 0){
             return R.ok("支付成功");
         }

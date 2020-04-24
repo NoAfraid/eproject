@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="../../css/mall/styles/header.css">
     <link rel="stylesheet" href="../../css/mall/styles/order-detail.css">
     <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
 </head>
 <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
 <body>
@@ -60,14 +63,36 @@
     <div class="self-info center" id="app">
 
         <!-- sidebar -->
-        <div class="lfnav fl">
-            <div class="nav_title">个人中心</div>
-            <div class="title_list">
-                <ul>
-                    <li><a href="/personal">个人信息</a></li>
-                    <li><a href="/orders">我的订单</a></li>
-                    <li><a href="/logout">退出登录</a></li>
-                </ul>
+        <div class="grzxdht">
+            <div class="gr">
+                <a href="center.html">个人资料</a>
+            </div>
+            <div class="gr">
+                <a href="collect.html">我的收藏</a>
+            </div>
+            <div class="gr">
+                <a class="hsys" href="follow.html">我的关注</a>
+            </div>
+            <!--					<div class="gr">-->
+            <!--						<a href="wdfensi.html">我的粉丝</a>-->
+            <!--					</div>-->
+            <div class="gr">
+                <a href="cart.html">我的购物车</a>
+            </div>
+            <div class="gr">
+                <a href="my_orders.html">我的订单</a>
+            </div>
+            <!--					<div class="gr">-->
+            <!--						<a href="wdzhixun.html">我的咨询</a>-->
+            <!--					</div>-->
+            <!--					<div class="gr">-->
+            <!--						<a href="wdwujuan.html">我参与的问卷</a>-->
+            <!--					</div>-->
+            <div class="gr">
+                <a href="xgmima.html">修改密码</a>
+            </div>
+            <div class="gr">
+                <a href="javascript:loginout()">退出</a>
             </div>
         </div>
 
@@ -91,19 +116,96 @@
                                        class="btn btn-small btn-line-gray" title="取消订单">取消订单</a>
                                 </div>
                                 <div v-if="order.orderStatus==0">
-                                    <a onclick="payOrder()"
+                                    <a @click="payOrder(order.orderNo)"
                                        class="btn btn-small btn-primary" title="去支付">去支付</a>
                                 </div>
                                 <div v-if="order.orderStatus==3">
                                     <a onclick="finishOrder()"
                                        class="btn btn-small btn-primary" title="确认收货">确认收货</a>
-                                </div>>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="box-bd">
                         <div class="uc-order-item uc-order-item-pay">
                             <div class="order-detail">
+                                <div class="order-summary">
+                                    <div class="order-desc">
+                                        <div v-if="order.orderStatus==0">待支付</div>
+                                        <div v-if="order.orderStatus==1">已支付</div>
+                                        <div v-if="order.orderStatus==2">已配货</div>
+                                        <div v-if="order.orderStatus==3">已出库</div>
+                                        <div v-if="order.orderStatus==4">交易完成</div>
+                                        <div v-if="order.orderStatus < 0 ">交易已关闭~</div>
+
+                                    </div>
+<!--                                    <div>-->
+<!--                                        <div class="order-progress">-->
+<!--                                            <ol class="progress-list clearfix progress-list-5">-->
+<!--                                                <div v-if="order.orderStatus > 0">-->
+<!--                                                    <li class="step step-active">-->
+<!--                                                </div>-->
+<!--                                                <div v-if="order.orderStatus > 0">-->
+<!--                                                    <li class="step step-active">-->
+<!--                                                </div>-->
+<!--                                                <div class="progress"><span class="text">下单</span></div>-->
+<!--                                                <div class="info">-->
+<!--&lt;!&ndash;                                                    th:text="${#dates.format(orderDetailVO.createTime, 'yyyy-MM-dd HH:mm:ss')}"&ndash;&gt;-->
+<!--                                                    02月07日-->
+<!--                                                </div>-->
+<!--                                                </li>-->
+<!--                                                <div v-if="order.orderStatus<1">-->
+<!--                                                    <li class="step">-->
+<!--                                                </div>-->
+<!--                                                <div v-if="order.orderStatus==1">-->
+<!--                                                    <li class="step step-active">-->
+<!--                                                </div>-->
+<!--                                                <div v-if="order.orderStatus>1">-->
+<!--                                                    <li class="step step-done">-->
+<!--                                                </div>-->
+<!--                                                <div class="progress"><span class="text">付款</span></div>-->
+<!--                                                <div class="info"></div>-->
+<!--                                                </li>-->
+<!--                                                <div v-if="order.orderStatus<2">-->
+<!--                                                    <li class="step">-->
+<!--                                                </div>-->
+<!--                                                <div v-if="order.orderStatus==2">-->
+<!--                                                    <li class="step step-active">-->
+<!--                                                </div>-->
+<!--                                                <div v-if="order.orderStatus>2">-->
+<!--                                                    <li class="step step-done">-->
+<!--                                                </div>-->
+<!--                                                <div class="progress"><span class="text">配货</span></div>-->
+<!--                                                <div class="info"></div>-->
+<!--                                                </li>-->
+<!--                                                <div v-if="order.orderStatus<3">-->
+<!--                                                    <li class="step">-->
+<!--                                                </div>-->
+<!--                                                <div v-if="order.orderStatus==3">-->
+<!--                                                    <li class="step step-active">-->
+<!--                                                </div>-->
+<!--                                                <div v-if="order.orderStatus>3">-->
+<!--                                                    <li class="step step-done">-->
+<!--                                                </div>-->
+<!--                                                <div class="progress"><span class="text">出库</span></div>-->
+<!--                                                <div class="info"></div>-->
+<!--                                                </li>-->
+<!--                                                <div v-if="order.orderStatus<4">-->
+<!--                                                    <li class="step">-->
+<!--                                                </div>-->
+<!--                                                <div v-if="order.orderStatus==4">-->
+<!--                                                    <li class="step step-active">-->
+<!--                                                </div>-->
+<!--                                                <div v-if="order.orderStatus>4">-->
+<!--                                                    <li class="step step-last">-->
+<!--                                                </div>-->
+<!--                                                <div class="progress"><span class="text">交易成功</span></div>-->
+<!--                                                <div class="info"></div>-->
+<!--                                                </li>-->
+<!--                                            </ol>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                </div>
                                 <table class="order-items-table">
                                     <tbody v-for="(cartList,index) in cartList">
 
@@ -147,7 +249,7 @@
                                         </td>
                                     </tr>
                                     </tbody>
-                                </table>>
+                                </table>
                                 <div class="actions">
                                 </div>
                             </div>
@@ -197,6 +299,8 @@
 <!-- jQuery -->
 <script src="../../css/admin/plugins/jquery/jquery.min.js"></script>
 <script src="../../js/vue.js"></script>
+<script src="../../js/md5.js"></script>
+<script src="../../js/common.js"></script>
 <script src="../../js/mall/order_detail.js"></script>
 </body>
 </html>

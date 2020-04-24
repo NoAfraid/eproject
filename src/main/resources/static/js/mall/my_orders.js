@@ -5,26 +5,38 @@ var vm = new Vue({
         limit: 10,
         pages: 1,
         orderList: [],
-        total: 0
+        total: 0,
+        accessToken:'',
     },
     mounted: function () {
-        // var accessToken = getCookie("accessToken");
-        // if (isEmpty(accessToken)) {
-        // } else {
-        //     this.accessToken = accessToken;
-        // }
+        var accessToken = getCookie("accessToken");
+        if (isEmpty(accessToken)) {
+            alert("请登录");
+            window.location.href="login.html"
+        } else {
+            this.accessToken = accessToken;
+        }
         this.findList(1);
     },
     create:{},
     methods: {
         findList: function (page) {
+            var userId = getCookie("sessionId");
             var t = {
                 limit: this.limit,
                 page: page == null ? this.current : page,
-                userId: 3
+                userId: userId
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/order/getOrderInfo",
                 contentType: "application/json;charset=utf-8",
@@ -68,7 +80,15 @@ var vm = new Vue({
             var formData = JSON.stringify(t);
             // var now = getNow("yyyyMMddHHmmss");
             // var sign = signString(formData, now);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 // headers: {
                 //     client: client,
                 //     version: version,

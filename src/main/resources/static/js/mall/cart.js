@@ -34,6 +34,13 @@ var vm = new Vue({
         },
     },
     mounted: function () {
+        var accessToken = getCookie("accessToken");
+        if (isEmpty(accessToken)) {
+            alert("请登录");
+            window.location.href="login.html"
+        } else {
+            this.accessToken = accessToken;
+        }
         //先自启动
         this.findList(1)
         this.itemList(1)
@@ -47,13 +54,22 @@ var vm = new Vue({
          * @param page
          */
         findList: function (page) {
+            var userId = getCookie("sessionId");
             var t = {
                 limit: this.limit,
                 page: page == null ? this.current : page,
-                userId: 3
+                userId: userId
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/cart/selectCartInfo",
                 contentType: "application/json;charset=utf-8",
@@ -66,20 +82,31 @@ var vm = new Vue({
                         vm.total = result.data.totalCount;
                         vm.cartList = result.data;
                     } else {
-                        alert(result.pages);
+                        vm.cartList = result.data;
+                        alert(vm.cartList)
+                        alert(result.msg);
                     }
                 }
             });
         },
 
         itemList: function (page) {
+            var userId = getCookie("sessionId");
             var t = {
                 limit: this.limit,
                 page: page == null ? this.current : page,
-                userId: 3
+                userId: userId
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/cart/selectCartList",
                 contentType: "application/json;charset=utf-8",
@@ -92,7 +119,7 @@ var vm = new Vue({
                         vm.total = result.data.totalCount;
                         vm.item = result.data;
                     } else {
-                        alert(result.pages);
+                        alert(result.msg);
                     }
                 }
             });
@@ -109,7 +136,15 @@ var vm = new Vue({
                 productCount: this.cartList[index].productCount
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/cart/updateQuantity",
                 contentType: "application/json;charset=utf-8",
@@ -137,7 +172,15 @@ var vm = new Vue({
                 userId: userId,
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/cart/deleteCartInfo?ids=" + id,
                 contentType: "application/json;charset=utf-8",
@@ -170,7 +213,15 @@ var vm = new Vue({
                 userId:id
             }
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/address/addressList",
                 contentType: "application/json;charset=utf-8",
@@ -204,7 +255,15 @@ var vm = new Vue({
             // console.log(t.address)
             // this.updateAddressList.userId = "${session.userId}"
             var formData = JSON.stringify(this.updateAddressList);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/address/update?id="+id,
                 contentType: "application/json;charset=utf-8",

@@ -16,7 +16,14 @@ var vm = new Vue({
         total: 0
     },
     mounted: function () {
-        this.getUser()
+        var accessToken = getCookie("accessToken");
+        if (isEmpty(accessToken)) {
+            alert("请登录");
+            window.location.href="login.html"
+        } else {
+            this.accessToken = accessToken;
+        }
+        this.getUser();
         this.findList(1)
     },
     computed: {
@@ -47,11 +54,20 @@ var vm = new Vue({
     },
     methods: {
         getUser:function () {
+            var userId = getCookie("sessionId");
             var t = {
-                id:1
+                id:userId
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/user/selectInfo",
                 contentType: "application/json;charset=utf-8",
@@ -68,11 +84,20 @@ var vm = new Vue({
         },
 
         updateUser:function () {
+            var userId = getCookie("sessionId");
             var t = {
-                id:1
+                id:userId
             }
             var formData = JSON.stringify(this.userInfo);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/user/updateUserInfo",
                 contentType: "application/json;charset=utf-8",
@@ -90,13 +115,22 @@ var vm = new Vue({
         },
 
         findList: function (page) {
+            var userId = getCookie("sessionId");
             var t = {
                 limit: this.limit,
                 page: page == null ? this.current : page,
-                userId: 3
+                userId: userId
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/user/searchFollow",
                 contentType: "application/json;charset=utf-8",

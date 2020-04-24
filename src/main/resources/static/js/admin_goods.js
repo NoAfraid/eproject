@@ -15,8 +15,13 @@ console.log(id)
             product: [],
         },
         mounted: function () {
-            // this.findList(1);
-            // this.advice();
+            var accessToken = getCookie("accessToken");
+            if (isEmpty(accessToken)) {
+                alert("请登录");
+                window.location.href="login.html"
+            } else {
+                this.accessToken = accessToken;
+            }
             this.productList(1);
             // this.updateProduct(17)
         },
@@ -29,7 +34,15 @@ console.log(id)
                     page: page == null ? this.current : page
                 };
                 var formData = JSON.stringify(t);
+                var now =  getNow("yyyyMMddHHmmss");
+                var sign  = signString(formData,now);
                 $.ajax({
+                    headers:{
+                        client:client,
+                        version:version,
+                        requestTime:now,
+                        sign:sign
+                    },
                     type: "post",
                     url:  goodsUrl,
                     contentType: "application/json;charset=utf-8",
@@ -71,7 +84,15 @@ console.log(id)
              */
             upProduct: function () {
                 var formData = JSON.stringify(this.msg);
+                var now =  getNow("yyyyMMddHHmmss");
+                var sign  = signString(formData,now);
                 $.ajax({
+                    headers:{
+                        client:client,
+                        version:version,
+                        requestTime:now,
+                        sign:sign
+                    },
                     type: "post",
                     traditional: true,
                     url:  "http://localhost:8080/product/update/publicStatus/1",
@@ -91,7 +112,15 @@ console.log(id)
             },
             dnProduct: function () {
                 var formData = JSON.stringify(this.msg);
+                var now =  getNow("yyyyMMddHHmmss");
+                var sign  = signString(formData,now);
                 $.ajax({
+                    headers:{
+                        client:client,
+                        version:version,
+                        requestTime:now,
+                        sign:sign
+                    },
                     type: "post",
                     traditional: true,
                     url:  "http://localhost:8080/product/update/publicStatus/0",
@@ -115,7 +144,15 @@ console.log(id)
              */
             putProduct: function () {
                 var formData = JSON.stringify(this.msg);
+                var now =  getNow("yyyyMMddHHmmss");
+                var sign  = signString(formData,now);
                 $.ajax({
+                    headers:{
+                        client:client,
+                        version:version,
+                        requestTime:now,
+                        sign:sign
+                    },
                     type: "post",
                     traditional: true,
                     url:  "http://localhost:8080/product/update/recomandStatus/1",
@@ -135,7 +172,15 @@ console.log(id)
             },
             downProduct: function () {
                 var formData = JSON.stringify(this.msg);
+                var now =  getNow("yyyyMMddHHmmss");
+                var sign  = signString(formData,now);
                 $.ajax({
+                    headers:{
+                        client:client,
+                        version:version,
+                        requestTime:now,
+                        sign:sign
+                    },
                     type: "post",
                     traditional: true,
                     url:  "http://localhost:8080/product/update/recomandStatus/0",

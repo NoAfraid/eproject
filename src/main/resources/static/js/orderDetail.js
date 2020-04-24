@@ -13,6 +13,13 @@ var vm= new Vue({
         order: [],
     },
     mounted: function () {
+        var accessToken = getCookie("accessToken");
+        if (isEmpty(accessToken)) {
+            alert("请登录");
+            window.location.href="login.html"
+        } else {
+            this.accessToken = accessToken;
+        }
         this.orderDetail();
     },
     methods:{
@@ -25,7 +32,15 @@ var vm= new Vue({
                 id: id
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url:  "http://localhost:8080/adminOrder/get?id=" + id,
                 contentType: "application/json;charset=utf-8",
@@ -54,8 +69,15 @@ var vm= new Vue({
          */
         updateOrder: function () {
             var formData = JSON.stringify(this.orderList);
-            console.log(this.orderList)
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url:  "http://localhost:8080/adminOrder/updateAddress?id=" +id,
                 contentType: "application/json;charset=utf-8",

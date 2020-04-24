@@ -9,11 +9,13 @@
             showPassword: true
         },
         mounted: function () {
-            // var accessToken = getCookie("accessToken");
-            // if (isEmpty(accessToken)) {
-            // } else {
-            //     this.accessToken = accessToken;
-            // }
+            var accessToken = getCookie("accessToken");
+            if (isEmpty(accessToken)) {
+                alert("请登录");
+                window.location.href="login.html"
+            } else {
+                this.accessToken = accessToken;
+            }
         },
         computed: {},
         methods: {
@@ -35,7 +37,15 @@
                     originalPassword: this.originalPassword
                 }
                 var formData = JSON.stringify(t);
+                var now =  getNow("yyyyMMddHHmmss");
+                var sign  = signString(formData,now);
                 $.ajax({
+                    headers:{
+                        client:client,
+                        version:version,
+                        requestTime:now,
+                        sign:sign
+                    },
                     type: "post",
                     url: "http://localhost:8080/user/updatePassword/1",
                     contentType: "application/json;charset=utf-8",

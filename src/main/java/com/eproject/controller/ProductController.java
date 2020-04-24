@@ -1,8 +1,10 @@
 package com.eproject.controller;
 
+import com.eproject.annotation.LoginUser;
 import com.eproject.common.Contants;
 import com.eproject.common.PageQuery;
 import com.eproject.common.R;
+import com.eproject.entity.Manager;
 import com.eproject.entity.Product;
 import com.eproject.service.ProductService;
 import com.eproject.util.ResultGenerator;
@@ -30,7 +32,10 @@ public class ProductController {
      */
     @RequestMapping(value = "/add", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R add(@RequestBody(required = false) Product product) {
+    public R add(@RequestBody(required = false) Product product, @LoginUser Manager manager) {
+        if (manager == null){
+            return R.error(-1, "未登录");
+        }
         //@RequestParam("productName") String productName
         try {
             if (StringUtils.isEmpty(product.getProductName())) {
@@ -74,7 +79,10 @@ public class ProductController {
      */
     @RequestMapping(value = "/list", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R List(@RequestBody Map<String, Object> result) {
+    public R List(@RequestBody Map<String, Object> result, @LoginUser Manager manager) {
+        if (manager == null){
+            return R.error(-1, "未登录");
+        }
         try {
             if (StringUtils.isEmpty(result.get("page")) || StringUtils.isEmpty(result.get("limit"))) {
                 return R.error(-1, "请求错误");
@@ -92,7 +100,10 @@ public class ProductController {
      */
     @GetMapping(value = "/get/{id}")
 //    @ResponseBody
-    public String getProductById(HttpServletRequest request,@PathVariable("id") Integer id){
+    public String getProductById(HttpServletRequest request,@PathVariable("id") Integer id, @LoginUser Manager manager){
+        if (manager == null){
+            return "未登录";
+        }
         Product info = productService.getProductById(id);
         if (info != null){
             request.setAttribute("goods",info);
@@ -104,7 +115,10 @@ public class ProductController {
 
     @RequestMapping(value = "/get", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R getProductInfo(HttpServletRequest request,@RequestParam("id") Integer id){
+    public R getProductInfo(HttpServletRequest request,@RequestParam("id") Integer id, @LoginUser Manager manager){
+        if (manager == null){
+            return R.error(-1, "未登录");
+        }
         Product info = productService.getProductById(id);
         if (info != null){
             request.setAttribute("goods",info);
@@ -118,7 +132,10 @@ public class ProductController {
      */
     @RequestMapping(value = "/update", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R updateProduct(@RequestBody Product product) {
+    public R updateProduct(@RequestBody Product product, @LoginUser Manager manager) {
+        if (manager == null){
+            return R.error(-1, "未登录");
+        }
         if (Objects.isNull(product.getId())) {
             return R.error(-1, "请选择一条记录");
         }
@@ -132,7 +149,10 @@ public class ProductController {
      */
     @RequestMapping(value = "/delete", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R delete(@RequestBody Integer[] ids) {
+    public R delete(@RequestBody Integer[] ids, @LoginUser Manager manager) {
+        if (manager == null){
+            return R.error(-1, "未登录");
+        }
         if (ids.length < 1) {
             return R.error(-1, "参数异常");
         }
@@ -148,7 +168,10 @@ public class ProductController {
      */
     @RequestMapping(value = "/update/VerifyStatus", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R updateVerifyStstus(@RequestBody Integer[] ids, @RequestParam("verifyStatus") int verifyStatus) {
+    public R updateVerifyStstus(@RequestBody Integer[] ids, @RequestParam("verifyStatus") int verifyStatus, @LoginUser Manager manager) {
+        if (manager == null){
+            return R.error(-1, "未登录");
+        }
         if (ids.length < 1) {
             return R.error(-1, "参数异常");
         }
@@ -165,7 +188,10 @@ public class ProductController {
      */
     @RequestMapping(value = "/update/publicStatus/{publicStatus}", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R updatePublicStatus(@RequestBody Integer[] ids, @PathVariable("publicStatus") int publicStatus) {
+    public R updatePublicStatus(@RequestBody Integer[] ids, @PathVariable("publicStatus") int publicStatus, @LoginUser Manager manager) {
+        if (manager == null){
+            return R.error(-1, "未登录");
+        }
         if (ids.length < 1) {
             return R.error(-1, "参数异常");
         }
@@ -185,7 +211,10 @@ public class ProductController {
      */
     @RequestMapping(value = "/update/recomandStatus/{recomandStatus}", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R updateRecomandStatus(@RequestBody Integer[] ids, @PathVariable("recomandStatus") int recomandStatus) {
+    public R updateRecomandStatus(@RequestBody Integer[] ids, @PathVariable("recomandStatus") int recomandStatus, @LoginUser Manager manager) {
+        if (manager == null){
+            return R.error(-1, "未登录");
+        }
         if (ids.length < 1) {
             return R.error(-1, "参数异常");
         }
@@ -224,7 +253,10 @@ public class ProductController {
      */
     @RequestMapping(value = "/update/search", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R searchProduct(@RequestParam Map<String, Object> params, HttpServletRequest request){
+    public R searchProduct(@RequestParam Map<String, Object> params, HttpServletRequest request, @LoginUser Manager manager){
+        if (manager == null){
+            return R.error(-1, "未登录");
+        }
         if (StringUtils.isEmpty(params.get("page"))){
             params.put("page",1);
         }

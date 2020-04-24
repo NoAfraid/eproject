@@ -22,6 +22,8 @@ public interface CartDao {
 
     int updateDeleteStatus(Integer userId,Integer productId,@Param("ids") List<Integer> ids);
 
+    int DeleteStatus(Integer userId,List<Integer> productId,@Param("ids") List<Integer> ids);
+
     int clearCart(Integer userId);
 
     Cart selectProductExist(Integer userId,Integer productId);

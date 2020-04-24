@@ -24,6 +24,13 @@ var vm = new Vue({
     },
 
     mounted: function () {
+        var accessToken = getCookie("accessToken");
+        if (isEmpty(accessToken)) {
+            alert("请登录");
+            window.location.href="login.html"
+        } else {
+            this.accessToken = accessToken;
+        }
         KindEditor.ready(function (K) {
             window.editor = KindEditor.create('textarea[id="editor"]', {
                 items: ['source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
@@ -70,7 +77,15 @@ var vm = new Vue({
             // // var product = this.$refs.editor.getContent()
             // alert(this.product.detail)
             var formData = JSON.stringify(this.product);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: editGoods,
                 contentType: "application/json;charset=utf-8",
@@ -137,7 +152,15 @@ var vm = new Vue({
                 id: id
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url: "http://localhost:8080/product/get?id=" + id,
                 contentType: "application/json;charset=utf-8",

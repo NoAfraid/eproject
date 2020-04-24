@@ -82,7 +82,7 @@
     select
     <include refid="Base_Column_List"/>
     from `order`
-    where order_no = #{orderNo}
+    where order_no = #{orderNo} and order_status = 0
     limit 1
   </select>
   <update id="closeOrder">

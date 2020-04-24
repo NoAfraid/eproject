@@ -25,8 +25,13 @@ var vm = new Vue({
         }
     },
     mounted: function () {
-        // this.findList(1);
-        // this.advice();
+        var accessToken = getCookie("accessToken");
+        if (isEmpty(accessToken)) {
+            alert("请登录");
+            window.location.href="login.html"
+        } else {
+            this.accessToken = accessToken;
+        }
         this.carouselList(1);
         // this.updateProduct(17)
     },
@@ -39,7 +44,15 @@ var vm = new Vue({
                 page: page == null ? this.current : page
             };
             var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url:  "http://localhost:8080/carouse/getCarouseList",
                 contentType: "application/json;charset=utf-8",
@@ -137,7 +150,15 @@ var vm = new Vue({
          */
         carouselAdd: function () {
             var formData = JSON.stringify(this.carousel);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 url:  "http://localhost:8080/carouse/add",
                 contentType: "application/json;charset=utf-8",
@@ -163,7 +184,15 @@ var vm = new Vue({
             } else {
                 this.carousel.id = this.msg[0];
                 var formData = JSON.stringify(this.carousel);
+                var now =  getNow("yyyyMMddHHmmss");
+                var sign  = signString(formData,now);
                 $.ajax({
+                    headers:{
+                        client:client,
+                        version:version,
+                        requestTime:now,
+                        sign:sign
+                    },
                     type: "post",
                     url:  "http://localhost:8080/carouse/updateCarouse",
                     contentType: "application/json;charset=utf-8",
@@ -186,7 +215,15 @@ var vm = new Vue({
          */
         deleteCarousel: function () {
             var formData = JSON.stringify(this.msg);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
             $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
                 type: "post",
                 traditional: true,
                 url:  "http://localhost:8080/carouse/deleteCarouse",
