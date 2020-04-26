@@ -13,6 +13,11 @@ var vm = new Vue({
         }],
         num:{
             orderIds:[]
+        },
+        searchOrderList: {
+            orderNo:'',
+            userId:'',
+            productId:'',
         }
     },
     mounted: function () {
@@ -223,6 +228,34 @@ var vm = new Vue({
             })
         },
 
+        /**
+         * 模糊查询订单（orderNo，userId，productId）
+         */
+        searchOrder: function () {
+            var t = {
+                orderNo:this.searchOrderList.orderNo,
+                userId: this.searchOrderList.userId,
+                productId:this.searchOrderList.productId,
+                limit: this.limit,
+                // page: page == null ? this.current : page
+            };
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/adminOrder/searchOrder",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.orderList = result.data
+                        console.log(vm.orderList)
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        }
     },
     computed: {
         indexs: function(){

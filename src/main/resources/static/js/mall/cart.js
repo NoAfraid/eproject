@@ -285,31 +285,31 @@ var vm = new Vue({
          * @param id
          * @constructor
          */
-        subOrder:function () {
-            window.location.href = "order-detail.html";
-        }
-        // SuOrder:function (id) {
-        //     var t={
-        //         userId:3
-        //     }
-        //     var formData = JSON.stringify(t);
-        //     $.ajax({
-        //         type: "post",
-        //         url: "http://localhost:8080/order/generateOrder",
-        //         contentType: "application/json;charset=utf-8",
-        //         dataType: "json",
-        //         data: formData,
-        //         success: function (result) {
-        //             if (result.code == 0) {
-        //                 vm.order = result.data.order;
-        //                 alert(vm.order.orderNo);
-        //                 console.log(vm.order)
-        //             } else {
-        //                 alert(result.msg);
-        //             }
-        //         }
-        //     });
+        // subOrder:function () {
+        //     window.location.href = "order-detail.html";
         // }
+        SuOrder:function (orderNo) {
+            var userId = getCookie("sessionId");
+            var t={
+                userId:userId
+            }
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/order/generateOrder",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.order = result.data.order;
+                        window.location.href = "order-detail.html?orderNo="+vm.order.orderNo;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        }
 
     }
 

@@ -46,6 +46,8 @@
                 </div>
                 <!--                <th:block th:each="item : ${myShoppingCartItems}">-->
                 <div class="content2 center" v-for="(cartList,index) in cartList">
+                    <div class="sub_content fl ">
+                    </div>
                     <div class="sub_content fl " v-if="cartList == null">暂无商品</div>
                     <div class="sub_content cover fl"><img :src="cartList.productImg"></div>
                     <div class="sub_content fl ft20">{{cartList.productName}}</div>
@@ -101,6 +103,7 @@
 <!-- jQuery -->
 <script src="../../js/jquery.js"></script>
 <script src="../../js/vue.js"></script>
+<script src="../../js/md5.js"></script>
 <script src="../../js/common.js"></script>
 <script src="../../js/mall/cart.js"></script>
 </html>

@@ -82,8 +82,14 @@
     select
     <include refid="Base_Column_List"/>
     from `order`
-    where order_no = #{orderNo} and order_status = 0
+    where order_no = #{orderNo} and dalete_status = 0
     limit 1
+  </select>
+  <select id="selectByOrderNoList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from `order`
+    where order_no = #{orderNo} and dalete_status = 0
   </select>
   <update id="closeOrder">
     update `order`

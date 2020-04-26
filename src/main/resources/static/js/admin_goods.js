@@ -9,10 +9,14 @@ console.log(id)
             current: 1,
             limit: 10,
             pages: 1,
+            page:1,
             total: 0,
             goodsList: [],
             msg : [],
             product: [],
+            productL: {
+                productName: "",
+            },
         },
         mounted: function () {
             var accessToken = getCookie("accessToken");
@@ -198,6 +202,34 @@ console.log(id)
                     }
                 })
             },
+
+            /**
+             * 模糊查询商品
+             */
+            searchP: function (page) {
+                var t = {
+                    productName:this.productL.productName,
+                    limit: this.limit,
+                    // page: page == null ? this.current : page
+                };
+                alert(this.productL)
+                var formData = JSON.stringify(t);
+                $.ajax({
+                    type: "post",
+                    url: "http://localhost:8080/product/update/search",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    data: formData,
+                    success: function (result) {
+                        if (result.code == 0) {
+                            vm.goodsList = result.data
+                            console.log(vm.goodsList)
+                        } else {
+                            alert(result.msg)
+                        }
+                    }
+                })
+            }
         },
         computed: {
             indexs: function(){

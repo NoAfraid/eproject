@@ -1,3 +1,25 @@
+var id = getRequest();
+var orderNo = id['orderNo'];
+var payType = id['payType'];
+console.log(payType)
+function getRequest() {
+    var url = location.search; //获取url中"?"符后的字串
+    // alert(url)
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        // alert(strs)
+        for (var i = 0; i < strs.length; i++) {
+            theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            // alert(theRequest)
+        }
+    }
+    // alert(theRequest)
+    return theRequest;
+
+};
+
 var vm = new Vue({
     el:"#app",
     data: {
@@ -22,12 +44,7 @@ var vm = new Vue({
             city:'',
             detailAddress:'',
         },
-        order:{
-            orderNo:'',
-            orderStatus:'',
-            totalPrice:''
-
-        },
+        order:[],
         cartList:[],
         orderItemList:[],
         pay:{
@@ -44,7 +61,7 @@ var vm = new Vue({
         } else {
             this.accessToken = accessToken;
         }
-        // this.SuOrder(3);
+        this.getOrderInfo();
     },
     create:{},
     methods:{
@@ -53,40 +70,102 @@ var vm = new Vue({
          * @param id
          * @constructor
          */
-        // SuOrder:function (id) {
-        //     var userId = getCookie("sessionId");
-        //     var t={
-        //         userId:userId
-        //     }
-        //     var formData = JSON.stringify(t);
-        //     $.ajax({
-        //         type: "post",
-        //         url: "http://localhost:8080/order/generateOrder",
-        //         contentType: "application/json;charset=utf-8",
-        //         dataType: "json",
-        //         data: formData,
-        //         success: function (result) {
-        //             if (result.code == 0) {
-        //                 vm.order = result.data.order;
-        //                 vm.cartList = result.data.orderItemList;
-        //                 console.log(vm.order)
-        //                 console.log(vm.cartList)
-        //             } else {
-        //                 alert(result.msg);
-        //             }
-        //         }
-        //     });
-        // },
+        getOrderInfo:function () {
+            var userId = getCookie("sessionId");
+            var t={
+                orderNo:orderNo
+            };
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/order/getOrderByOrderNo",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.order = result.data.result;
+                        vm.cartList = result.data.orderItemList;
+                        // alert(vm.order.orderNo)
+                        console.log(vm.order)
+                        console.log(vm.cartList)
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+
+        /**
+         * 确认订单
+         */
+        finishOrder: function(orderNo){
+            var userId = getCookie("sessionId");
+            var t={
+                userId:userId,
+                orderNo: orderNo
+            };
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/order/finishOrder",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        // vm.order = result.data.result;
+                        // vm.cartList = result.data.orderItemList;
+                        // // alert(vm.order.orderNo)
+                        // console.log(vm.order)
+                        // console.log(vm.cartList)
+                        alert("已确认")
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+
+        /**
+         * 取消订单
+         */
+        cancelOrder: function(orderNo){
+            var userId = getCookie("sessionId");
+            var t={
+                userId:userId,
+                orderNo: orderNo
+            };
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/order/cancelOrder",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        // vm.order = result.data.result;
+                        // vm.cartList = result.data.orderItemList;
+                        // // alert(vm.order.orderNo)
+                        // console.log(vm.order)
+                        // console.log(vm.cartList)
+                        alert("已取消")
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
 
         /**
          * 去支付
          */
         payOrder: function (orderNo) {
-            // alert(orderNo)
             if (orderNo == ''){
                 alert("订单号为null！")
             }else {
-                window.location.href = "pay-select.html"
+                window.location.href = "pay-select.html?orderNo="+orderNo
                 // var t={
                 //     orderNo:orderNo
                 // }
@@ -116,19 +195,60 @@ var vm = new Vue({
          */
         payOrderType: function (payType) {
             if (payType == 1){
-                window.location.href = "pay.html"
+                window.location.href = "pay.html?orderNo="+orderNo +"&& payType =" +payType
             }
             if (payType == 2){
-                window.location.href = "wxpay.html"
+                window.location.href = "wxpay.html?orderNo="+orderNo
             }
+        },
+
+        /**
+         * 时间格式化
+         * @param time
+         * @returns {string}
+         */
+        dateFormat:function(time) {
+            var date=new Date(time);
+            var year=date.getFullYear();
+            /* 在日期格式中，月份是从0开始的，因此要加0
+             * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+             * */
+            var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+            var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+            var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+            var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+            var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
+            // 拼接
+            return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
         },
 
         /**
          * 支付成功
          */
         paySuccess: function () {
-            alert("支付成功")
-            window.location.href = "order-detail.html"
+            var t={
+                orderNo:orderNo,
+                payType: 1
+            }
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/order/paySuccess",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.pay = result.data;
+                        console.log(vm.pay);
+                        alert(result.msg);
+                        window.location.href = "order-detail.html?orderNo="+orderNo
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
         }
     }
 })

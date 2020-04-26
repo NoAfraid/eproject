@@ -32,4 +32,6 @@ public interface OrderItemDao {
     int updateByPrimaryKey(OrderItem record);
 
     int insertList(@Param("list")List<OrderItem> list);
+
+    List<OrderItem> selectByOrderNoList(String orderNo);
 }

@@ -5,6 +5,7 @@ import com.eproject.common.PageResult;
 import com.eproject.domain.ConfirmOrderResult;
 import com.eproject.domain.ReceiverInfoParam;
 import com.eproject.entity.Order;
+import com.eproject.entity.OrderItem;
 import com.eproject.entity.UserReceiveAddress;
 
 import java.util.List;
@@ -38,7 +39,11 @@ public interface OrderService {
      */
     Integer cancelTimeOutOrder();
 
-
+    /**
+     * 获取用户订单购物信息
+     */
+    List<Order> getOrderByOrderNo(String orderNo);
+    List<OrderItem> getByOrderNo(String orderNo);
     /**
      * 手动取消订单
      *

@@ -82,11 +82,11 @@
             </ul>
             <div class="fr">
                 <div class="search">
-                    <input class="text" type="text" id="keyword" autocomplete="off">
+                    <input class="text" type="text" id="keyword" autocomplete="off" v-model="productL.productName">
                     <div class="search_hot">
                     </div>
                 </div>
-                <div class="button iconfont icon-search" onclick="search()"></div>
+                <div class="button iconfont icon-search" @click="searchProduct"></div>
             </div>
         </div>
     </nav>
@@ -186,12 +186,12 @@
         <ul>
             <!-- 已配置新品则显示配置内容 -->
             <li v-for="(item, number) in productList">
-                <a href="##">
+                <a @click="productdetail(item.id)">
                     <!--                            th:href="@{'/goods/detail/'+${newGoods.goodsId}}"-->
                     <img :src="item.productImg" :alt="item.productName">
                     <p class="name" >{{item.productName}}</p>
-                    <p class="discount" >{{item.description}}</p>
-                    <p class="item_price" >{{item.promotePrice}}</p>
+                    <p class="discount">{{item.description}}</p>
+                    <p class="item_price">{{item.promotePrice}}</p>
                 </a>
             </li>
 <!--            <div v-if=" productList.length > 0">-->
@@ -227,7 +227,7 @@
                 </li>
                 <li>
                     <a href="##">
-                        <img src="./mall/image/sub_banner/air.jpg" alt=""/>
+                        <img src="../../css/mall/image/sub_banner/air.jpg" alt=""/>
                         <p class="name">空气净化器</p>
                         <p class="discount">大空间 快循环</p>
                         <p class="price">1099元起</p>
@@ -251,7 +251,7 @@
         <ul v-if="hotProductList.length > 0">
             <!-- 已配置推荐商品则显示配置内容 -->
                     <li v-for="item in hotProductList">
-                        <a href="##">
+                        <a @click="productdetail(item.id)">
                             <!--                            th:href="@{'/goods/detail/'+${newGoods.goodsId}}"-->
                             <img :src="item.productImg" :alt="item.productName">
                             <p class="name" >{{item.productName}}</p>

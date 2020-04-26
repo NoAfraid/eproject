@@ -119,10 +119,10 @@ public class ProductServiceIm implements ProductService {
                    products.setProductName(productName);
                }
                //截取描述的前30字符
-               if (description.length() > 30){
-                   description = products.getDescription();
-                   products.setDescription(description);
-               }
+//               if (description.length() > 30){
+//                   description = products.getDescription();
+//                   products.setDescription(description);
+//               }
            }
         }
         PageResult result = new PageResult(productList, total, pageQuery.getLimit(), pageQuery.getPage());

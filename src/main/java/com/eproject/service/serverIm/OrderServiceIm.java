@@ -92,6 +92,7 @@ public class OrderServiceIm implements OrderService {
             orderList.setProductName(cartList.getProductName());
             orderList.setProductId(cartList.getProductId());
             orderList.setUserId(cartList.getUserId());
+            orderList.setCreatTime(new Date());
 //        orderList.setUserId(order.getUserId());
             //支付方式：0->未支付；1->支付宝；2->微信
             orderList.setPayType(order.getPayType());
@@ -195,10 +196,39 @@ public class OrderServiceIm implements OrderService {
         }
         return timeOutOrders.size();
     }
+    /**
+     * 获取用户订单购物信息
+     */
+    @Override
+    public List<Order> getOrderByOrderNo(String orderNo){
+        List<Order> orderList = orderDao.selectByOrderNoList(orderNo);
+        if (orderList.size() > 0 ){
+            return orderList;
+        }
+        return null;
+    }
+    @Override
+    public List<OrderItem> getByOrderNo(String orderNo){
+        List<OrderItem> orderItemList = orderItemDao.selectByOrderNoList(orderNo);
+        if (orderItemList.size() > 0 ){
+            return orderItemList;
+        }
+        return null;
+    }
+    /**
+     *
+     * @param orderNo
+     * @param userId
+     * @return
+     */
 
     @Override
     public String cancelOrder(String orderNo, Integer userId){
         Order order = orderDao.selectByOrderNo(orderNo);
+        List<OrderItem> orderItem = orderItemDao.selectByOrderNoList(orderNo);
+//        if (orderItem.size() > 0 ){
+//
+//        }
         if (order != null){
             //todo 验证是否是当前userId下的订单，否则报错
             //todo 订单状态判断
@@ -219,12 +249,21 @@ public class OrderServiceIm implements OrderService {
     public Integer paySuccess(String orderNo, String payType){
         //修改订单支付状态
         Order o = orderDao.selectByOrderNo(orderNo);
+        OrderItem OI = new OrderItem();
+        List<OrderItem> orderItem = orderItemDao.selectByOrderNoList(orderNo);
+        for (OrderItem item: orderItem){
+            OI.setId(item.getId());
+            OI.setOrderStatus(1);
+            orderItemDao.updateByPrimaryKeySelective(OI);
+        }
         Order order = new Order();
         order.setId(o.getId());
+        order.setOrderStatus(1);
         //order.setOrderNo(orderNo);
         order.setPayStatus(1);
         order.setPayType(payType);
         order.setPayTime(new Date());
+
         orderDao.updateByPrimaryKeySelective(order);
         //恢复所有下单商品的锁定库存，扣减真实库存(暂未处理)
         //OrderDetail orderDetail =
@@ -234,6 +273,13 @@ public class OrderServiceIm implements OrderService {
     @Override
     public  String finishOrder(String orderNo, Integer userId){
         Order order = orderDao.selectByOrderNo(orderNo);
+        OrderItem OI = new OrderItem();
+        List<OrderItem> orderItem = orderItemDao.selectByOrderNoList(orderNo);
+        for (OrderItem item: orderItem){
+            OI.setId(item.getId());
+            OI.setOrderStatus(4);
+            orderItemDao.updateByPrimaryKeySelective(OI);
+        }
         if (order != null){
             //todo 验证是否是当前userId下的订单，否则报错
             //todo 订单状态判断

@@ -1,16 +1,16 @@
 var vm = new Vue({
-    el:"#content",
-    data:{
-        productList:{
-            productName:'',
-            productImg:'',
-            promotePrice:'',
-            description:'',
+    el: "#content",
+    data: {
+        productList: {
+            productName: '',
+            productImg: '',
+            promotePrice: '',
+            description: '',
         },
-        hotProductList:[],
-        carouselList:[],
-        vip:{
-            id:"",
+        hotProductList: [],
+        carouselList: [],
+        productL: {
+            productName: "",
         },
         mark: 0,
     },
@@ -74,7 +74,7 @@ var vm = new Vue({
         /**
          * 轮播图配置
          */
-        carousel:function () {
+        carousel: function () {
             // var t = {
             //     id:1
             // };
@@ -83,10 +83,10 @@ var vm = new Vue({
                 type: "post",
                 url: "http://localhost:8080/index/getCarouseForIndex",
                 contentType: "application/json;charset=utf-8",
-                dataType : "json",
+                dataType: "json",
                 data: formData,
                 success: function (result) {
-                    if(result.code == 0) {
+                    if (result.code == 0) {
                         vm.carouselList = result.data
                     } else {
                         alert(result.msg)
@@ -98,7 +98,7 @@ var vm = new Vue({
         /**
          * 新品商品配置
          */
-        product:function () {
+        product: function () {
             // var t = {
             //     id:1
             // };
@@ -118,10 +118,10 @@ var vm = new Vue({
                 type: "post",
                 url: "http://localhost:8080/index/getProductForIndex",
                 contentType: "application/json;charset=utf-8",
-                dataType : "json",
+                dataType: "json",
                 data: formData,
                 success: function (result) {
-                    if(result.code == 0) {
+                    if (result.code == 0) {
                         vm.productList = result.data
                     } else {
                         alert(result.msg)
@@ -133,7 +133,7 @@ var vm = new Vue({
         /**
          * 新品商品配置
          */
-        hotProduct:function () {
+        hotProduct: function () {
             // var t = {
             //     id:1
             // };
@@ -142,10 +142,10 @@ var vm = new Vue({
                 type: "post",
                 url: "http://localhost:8080/index/getProductSaleForIndex",
                 contentType: "application/json;charset=utf-8",
-                dataType : "json",
+                dataType: "json",
                 data: formData,
                 success: function (result) {
-                    if(result.code == 0) {
+                    if (result.code == 0) {
                         vm.hotProductList = result.data
                     } else {
                         alert(result.msg)
@@ -154,52 +154,69 @@ var vm = new Vue({
             })
         },
 
-        updateUser:function () {
-            var t = {
-                id:1
-            }
-            var formData = JSON.stringify(this.userInfo);
-            $.ajax({
-                type: "post",
-                url: "http://localhost:8080/user/updateUserInfo",
-                contentType: "application/json;charset=utf-8",
-                dataType : "json",
-                data: formData,
-                success: function (result) {
-                    if(result.code == 0) {
-                        vm.userInfo = result.data;
-                        alert(result.msg)
-                    } else {
-                        alert(result.msg)
-                    }
-                }
-            })
+        /**
+         * 跳转到商品详情页
+         * @param id
+         */
+        productdetail: function (id) {
+            // var userId = getCookie("sessionId");
+            // var t = {
+            //     limit: this.limit,
+            //     page: page == null ? this.current : page,
+            //     userId: userId
+            // };
+            // var formData = JSON.stringify(t);
+            // var now =  getNow("yyyyMMddHHmmss");
+            // var sign  = signString(formData,now);
+            // $.ajax({
+            // headers:{
+            //     client:client,
+            //     version:version,
+            //     requestTime:now,
+            //     sign:sign
+            // },
+            // type: "post",
+            // url: "http://localhost:8080/product/product/detail/"+id,
+            // contentType: "application/json;charset=utf-8",
+            // dataType: "json",
+            // // data: formData,
+            // success: function (result) {
+            //     if (result.code == 0) {
+            console.log(id)
+            window.location.href = "product_detail.html?id="+id;
+
+            //     vm.detail = result.data;
+            //     console.log(vm.detail)
+            // } else {
+            //     alert(result.msg);
+            // }
+            // }
+            // });
         },
 
-        findList: function (page) {
-            var t = {
-                limit: this.limit,
-                page: page == null ? this.current : page,
-                userId: 3
-            };
-            var formData = JSON.stringify(t);
+        /**
+         * 模糊查询商品
+         */
+        searchProduct: function () {
+            // var t = {
+            //     this
+            // };
+            var formData = JSON.stringify(this.productL);
             $.ajax({
                 type: "post",
-                url: "http://localhost:8080/user/searchFollow",
+                url: "http://localhost:8080/product/update/search?page=1&limit=1",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 data: formData,
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.current = result.current;
-                        vm.pages = result.pages;
-                        vm.total = result.total;
-                        vm.followList = result.data;
+                        vm.productL = result.data
+                        console.log(vm.productL)
                     } else {
-                        alert(result.msg);
+                        alert(result.msg)
                     }
                 }
-            });
-        },
+            })
+        }
     }
 });

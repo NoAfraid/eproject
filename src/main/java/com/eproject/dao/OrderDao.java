@@ -58,6 +58,7 @@ public interface OrderDao {
      */
     Order selectByOrderNo(String orderNo);
 
+    List<Order> selectByOrderNoList(String orderNo);
     /**
      * 批量配货
      */

@@ -75,9 +75,11 @@ public class AdminOrderServiceIm implements AdminOrderService {
     }
 
     @Override
-    public List<OrderItem> selectItemInfo(PageQuery pageQuery){
+    public PageResult selectItemInfo(PageQuery pageQuery){
         List<OrderItem> itemList = orderItemDao.selectItemList(pageQuery);
-        return itemList;
+        int total =itemList.size();
+        PageResult result = new PageResult(itemList, total, pageQuery.getLimit(), pageQuery.getPage());
+        return result;
     }
 
     @Override

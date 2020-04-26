@@ -33,15 +33,17 @@ public class CartController {
     @RequestMapping(method= RequestMethod.POST, value = "/insert",produces = "application/json;charset=UTF-8")
     public R insertCart(@RequestBody Cart cart, HttpSession httpSession){
         //获取用户session
-        User user = (User) httpSession.getAttribute(Contants.MALL_USER_SESSION_KEY);
+//        User user = (User) httpSession.getAttribute(httpSession.getId());
         //正式用
-        //cart.setUserId(user.getId());
+//        cart.setUserId(user.getId());
         //测试的用
         cart.setUserId(cart.getUserId());
+        cart.setProductId(cart.getId());
+        cart.setProductCount(cart.getProductCount());
         //判断数量
         int num = cartService.add(cart);
         if (num > 0){
-            return R.ok().put("count",num);
+            return R.ok().put("data","添加成功");
         }
         //if (num == -2){
         //    return R.error(-2,"超过最大购买数量");

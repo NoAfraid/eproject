@@ -25,9 +25,10 @@
     </h1>
 
     <div class="mod-ct" id="app">
-        <div class="order">
+        <div class="order" >
         </div>
-        <div class="amount" id="money">￥
+        <div class="amount" id="money" v-for="(item, index) in order" :key="index">
+            ￥<span class="money"><em>{{item.totalPrice}}.00</em>元</span>
 <!--            <th:block th:text="${totalPrice+'.00'}"></th:block>-->
         </div>
         <div class="qrcode-img-wrapper" data-role="qrPayImgWrapper">
@@ -46,9 +47,8 @@
             <div class="time-item" id="msg">
                 <h1>支付完成后，将跳转至订单详情</h1>
             </div>
-            <div class="time-item">
-                <h1>订单:
-<!--                th:value="${orderNo}"     <th:block th:text="${orderNo}"></th:block>-->
+            <div class="time-item" v-for="(item, index) in order" :key="index">
+                <h1>订单号:{{item.orderNo}}
                 </h1>
             </div>
             <input type="hidden" id="orderNoValue">

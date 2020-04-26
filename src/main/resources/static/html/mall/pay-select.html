@@ -15,16 +15,16 @@
     <div class="container confirm-box" id="app">
         <form target="_blank" action="#" id="J_payForm" method="post">
             <div class="section section-order">
-                <div class="order-info clearfix">
-                    <div class="fl">
+                <div class="order-info clearfix" v-for="(item, index) in order" :key="index">
+                    <div class="fl" >
                         <h2 class="title">订单提交成功！去付款咯～</h2>
                         <input type="hidden" id="orderNoValue">
-                        <p class="order-time" id="J_deliverDesc">订单号：{{order.orderNo}}
+                        <p class="order-time" id="J_deliverDesc">订单号：{{item.orderNo}}
                         </p>
                     </div>
                     <div class="fr">
                         <p class="total">
-                            应付总额：<span class="money"><em>{{order.totalPrice}}.00</em>元</span>
+                            应付总额：<span class="money"><em>{{item.totalPrice}}.00</em>元</span>
                         </p>
                     </div>
                 </div>

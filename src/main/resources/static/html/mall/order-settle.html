@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../../css/mall/styles/order-detail.css">
     <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/css.css"/>
+<!--    <link rel="stylesheet" type="text/css" href="../../css/css.css"/>-->
     <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
 </head>
 <body>
@@ -71,7 +71,7 @@
                 <a href="collect.html">我的收藏</a>
             </div>
             <div class="gr">
-                <a class="hsys" href="follow.html">我的关注</a>
+                <a href="follow.html">我的关注</a>
             </div>
             <!--					<div class="gr">-->
             <!--						<a href="wdfensi.html">我的粉丝</a>-->
@@ -216,8 +216,8 @@
                             <div class="box-hd">
                                 <h1 class="title">填写并核对订单信息</h1>
                                 <div class="more clearfix">
-                                    <div class="actions" v-for="(cartList,index) in cartList">
-                                        <a id="saveOrder" @click="subOrder(cartList.userId)" class="btn btn-small btn-primary" title="提交订单">提交订单</a>
+                                    <div class="actions">
+                                        <a id="saveOrder" @click="SuOrder" class="btn btn-small btn-primary" title="提交订单">提交订单</a>
                                     </div>
                                 </div>
                                 <!--                        <div v-if="order == null" style="visibility: hidden">暂无订单号</div>-->

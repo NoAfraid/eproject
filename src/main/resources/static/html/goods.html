@@ -207,7 +207,22 @@
                         <h3 class="card-title">首页配置管理</h3>
                     </div> <!-- /.card-body -->
                     <div class="card-body">
+
                         <div class="grid-btn">
+<!--                            <div class="fr">-->
+<!--                                <div class="search">-->
+<!--                                    <input class="text" type="text" id="keyword" autocomplete="off" v-model="productL.productName">-->
+<!--                                    <div class="search_hot">-->
+<!--                                    </div>-->
+<!--                                    <div class="button iconfont icon-search" @click="searchProduct"></div>-->
+<!--                                </div>-->
+<!--                                <div class="button iconfont icon-search" @click="searchProduct"></div>-->
+<!--                            </div>-->
+                            <button  >
+                                <input class="text" type="text" id="keyword" autocomplete="off" v-model="productL.productName">
+                            </button>
+                            <button @click="searchP">搜索商品</button>
+                            &nbsp;&nbsp;
                             <button class="btn btn-info" @click="addProduct"><i
                                     class="fa fa-pencil-square-o"></i>&nbsp;添加商品
                             </button>

@@ -164,7 +164,7 @@ public class ProductController {
     }
 
     /**
-     * 修改审核状态
+     * 修改审核状态（前端未做）
      */
     @RequestMapping(value = "/update/VerifyStatus", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
@@ -227,7 +227,7 @@ public class ProductController {
     }
 
     /**
-     * 修改库存数
+     * 修改库存数(前端未实现)
      */
     @RequestMapping(value = "/update/stock", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
@@ -235,25 +235,25 @@ public class ProductController {
         Integer result = productService.updateStock(ids,goods);
         // 获取库存数
         // goods.setStock(productService.selectIdList());
-        return R.ok().put("success",result);
+        return R.ok().put("data",result);
     }
     /**
-     * 修改销售量
+     * 修改销售量(前端未实现)
      * @param id
      */
     @RequestMapping(value = "/update/sale", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public R updateSale(@RequestBody Integer[] id) {
         Integer result = productService.updateSaleNumber(id);
-        return R.ok().put("success",result);
+        return R.ok().put("data",result);
     }
 
     /**
-     * 根据商品名称或者货号模糊查询
+     * 根据商品名称或者货号模糊查询(前端未实现)
      */
     @RequestMapping(value = "/update/search", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R searchProduct(@RequestParam Map<String, Object> params, HttpServletRequest request, @LoginUser Manager manager){
+    public R searchProduct(@RequestBody Map<String, Object> params, HttpServletRequest request, @LoginUser Manager manager){
         if (manager == null){
             return R.error(-1, "未登录");
         }
@@ -289,9 +289,9 @@ public class ProductController {
      * 获取商品详情
      * @PathVariable 占位符，截取URL的一部分
      */
-    @RequestMapping(value = "/product/detail/{id}", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(value = "/product/detail", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R productDetail(@PathVariable("id") Integer id){
+    public R productDetail(@RequestParam("id") Integer id){
         Product product = productService.selectProductById(id);
         if (product == null){
             return R.error(-1,"参数错误，查询为空");

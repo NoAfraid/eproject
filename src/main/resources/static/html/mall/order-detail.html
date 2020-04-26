@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../../css/mall/styles/order-detail.css">
     <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/css.css"/>
+<!--    <link rel="stylesheet" type="text/css" href="../../css/css.css"/>-->
     <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
 </head>
 <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
@@ -71,7 +71,7 @@
                 <a href="collect.html">我的收藏</a>
             </div>
             <div class="gr">
-                <a class="hsys" href="follow.html">我的关注</a>
+                <a  href="follow.html">我的关注</a>
             </div>
             <!--					<div class="gr">-->
             <!--						<a href="wdfensi.html">我的粉丝</a>-->
@@ -97,7 +97,7 @@
         </div>
 
         <div class="intro fr">
-            <div class="uc-box uc-main-box">
+            <div class="uc-box uc-main-box" v-for="(item, index) in order" :key="index">
                 <div class="uc-content-box order-view-box">
                     <div class="box-hd">
                         <h1 class="title">订单详情
@@ -106,21 +106,21 @@
                         </h1>
                         <div class="more clearfix">
                             <h2 class="subtitle">订单号：
-                                <div v-if="order != null">{{order.orderNo}}</div>
+                                <div v-if="order != null">{{item.orderNo}}</div>
                                 <span class="tag tag-subsidy"></span>
                             </h2>
                             <div class="actions">
                                 <input type="hidden" id="orderNoValue">
-                                <div v-if="order.orderStatus>0 && order.orderStatus<3">
-                                    <a onclick="cancelOrder()"
+                                <div v-if="item.orderStatus>0 && item.orderStatus<3">
+                                    <a @click="cancelOrder(item.orderNo)"
                                        class="btn btn-small btn-line-gray" title="取消订单">取消订单</a>
                                 </div>
-                                <div v-if="order.orderStatus==0">
-                                    <a @click="payOrder(order.orderNo)"
+                                <div v-if="item.orderStatus==0">
+                                    <a @click="payOrder(item.orderNo)"
                                        class="btn btn-small btn-primary" title="去支付">去支付</a>
                                 </div>
-                                <div v-if="order.orderStatus==3">
-                                    <a onclick="finishOrder()"
+                                <div v-if="item.orderStatus==3">
+                                    <a @click="finishOrder(item.orderNo)"
                                        class="btn btn-small btn-primary" title="确认收货">确认收货</a>
                                 </div>
                             </div>
@@ -131,80 +131,66 @@
                             <div class="order-detail">
                                 <div class="order-summary">
                                     <div class="order-desc">
-                                        <div v-if="order.orderStatus==0">待支付</div>
-                                        <div v-if="order.orderStatus==1">已支付</div>
-                                        <div v-if="order.orderStatus==2">已配货</div>
-                                        <div v-if="order.orderStatus==3">已出库</div>
-                                        <div v-if="order.orderStatus==4">交易完成</div>
-                                        <div v-if="order.orderStatus < 0 ">交易已关闭~</div>
+                                        <div v-if="item.orderStatus==0">请尽快完成支付~</div>
+                                        <div v-if="item.orderStatus==1">您已支付成功,请耐心等耐商家发货</div>
+                                        <div v-if="item.orderStatus==2">仓库正在紧急配货中~</div>
+                                        <div v-if="item.orderStatus==3">订单已出库正在快马加鞭向您奔来~</div>
+                                        <div v-if="item.orderStatus==4">交易完成</div>
+                                        <div v-if="item.orderStatus < 0 ">交易已关闭~</div>
 
                                     </div>
-<!--                                    <div>-->
-<!--                                        <div class="order-progress">-->
-<!--                                            <ol class="progress-list clearfix progress-list-5">-->
-<!--                                                <div v-if="order.orderStatus > 0">-->
-<!--                                                    <li class="step step-active">-->
-<!--                                                </div>-->
-<!--                                                <div v-if="order.orderStatus > 0">-->
-<!--                                                    <li class="step step-active">-->
-<!--                                                </div>-->
-<!--                                                <div class="progress"><span class="text">下单</span></div>-->
-<!--                                                <div class="info">-->
-<!--&lt;!&ndash;                                                    th:text="${#dates.format(orderDetailVO.createTime, 'yyyy-MM-dd HH:mm:ss')}"&ndash;&gt;-->
-<!--                                                    02月07日-->
-<!--                                                </div>-->
-<!--                                                </li>-->
-<!--                                                <div v-if="order.orderStatus<1">-->
-<!--                                                    <li class="step">-->
-<!--                                                </div>-->
-<!--                                                <div v-if="order.orderStatus==1">-->
-<!--                                                    <li class="step step-active">-->
-<!--                                                </div>-->
-<!--                                                <div v-if="order.orderStatus>1">-->
-<!--                                                    <li class="step step-done">-->
-<!--                                                </div>-->
-<!--                                                <div class="progress"><span class="text">付款</span></div>-->
-<!--                                                <div class="info"></div>-->
-<!--                                                </li>-->
-<!--                                                <div v-if="order.orderStatus<2">-->
-<!--                                                    <li class="step">-->
-<!--                                                </div>-->
-<!--                                                <div v-if="order.orderStatus==2">-->
-<!--                                                    <li class="step step-active">-->
-<!--                                                </div>-->
-<!--                                                <div v-if="order.orderStatus>2">-->
-<!--                                                    <li class="step step-done">-->
-<!--                                                </div>-->
-<!--                                                <div class="progress"><span class="text">配货</span></div>-->
-<!--                                                <div class="info"></div>-->
-<!--                                                </li>-->
-<!--                                                <div v-if="order.orderStatus<3">-->
-<!--                                                    <li class="step">-->
-<!--                                                </div>-->
-<!--                                                <div v-if="order.orderStatus==3">-->
-<!--                                                    <li class="step step-active">-->
-<!--                                                </div>-->
-<!--                                                <div v-if="order.orderStatus>3">-->
-<!--                                                    <li class="step step-done">-->
-<!--                                                </div>-->
-<!--                                                <div class="progress"><span class="text">出库</span></div>-->
-<!--                                                <div class="info"></div>-->
-<!--                                                </li>-->
-<!--                                                <div v-if="order.orderStatus<4">-->
-<!--                                                    <li class="step">-->
-<!--                                                </div>-->
-<!--                                                <div v-if="order.orderStatus==4">-->
-<!--                                                    <li class="step step-active">-->
-<!--                                                </div>-->
-<!--                                                <div v-if="order.orderStatus>4">-->
-<!--                                                    <li class="step step-last">-->
-<!--                                                </div>-->
-<!--                                                <div class="progress"><span class="text">交易成功</span></div>-->
-<!--                                                <div class="info"></div>-->
-<!--                                                </li>-->
-<!--                                            </ol>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
+                                    <div>
+                                        <div class="order-progress">
+                                            <ol class="progress-list clearfix progress-list-5">
+                                                <li class="step step-active" v-if=" item.orderStatus >0"  >
+                                                    <div class="progress"><span class="text">下单</span></div>
+                                                    <div class="info">
+                                                        {{dateFormat(item.creatTime)}}
+                                                    </div>
+                                                </li>
+                                                <li class="step step-active">
+                                                    <div v-if="item.orderStatus >=1" class="progress"><span class="text">付款</span></div>
+                                                    <div class="info">
+                                                        {{dateFormat(item.payTime)}}
+                                                    </div>
+                                                </li>
+                                                <li v-if=" item.orderStatus <2" class="step">
+                                                    <div class="progress"><span class="text">配货</span></div>
+                                                    <div class="info"></div>
+                                                </li>
+                                                <li v-else-if="item.orderStatus >=2" class="step step-active">
+                                                    <div class="progress"><span class="text">配货</span></div>
+                                                    <div class="info"></div>
+                                                </li>
+                                                <li v-else-if="item.orderStatus >2" class="step step-done">
+                                                    <div class="progress"><span class="text">配货</span></div>
+                                                    <div class="info"></div>
+                                                </li><li v-if=" item.orderStatus <3" class="step">
+                                                <div class="progress"><span class="text">出库</span></div>
+                                                <div class="info"></div>
+                                            </li>
+                                                <li v-else-if="item.orderStatus >=3" class="step step-active">
+                                                    <div class="progress"><span class="text">出库</span></div>
+                                                    <div class="info"></div>
+                                                </li>
+                                                <li v-else-if="item.orderStatus >3" class="step step-done">
+                                                    <div class="progress"><span class="text">出库</span></div>
+                                                    <div class="info"></div>
+                                                </li><li v-if=" item.orderStatus <4" class="step">
+                                                <div class="progress"><span class="text">交易成功</span></div>
+                                                <div class="info"></div>
+                                            </li>
+                                                <li v-else-if="item.orderStatus ==4" class="step step-active">
+                                                    <div class="progress"><span class="text">交易成功</span></div>
+                                                    <div class="info"></div>
+                                                </li>
+                                                <li v-else-if="item.orderStatus >4" class="step step-done">
+                                                    <div class="progress"><span class="text">交易成功</span></div>
+                                                    <div class="info"></div>
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
                                 </div>
                                 <table class="order-items-table">
                                     <tbody v-for="(cartList,index) in cartList">
@@ -240,12 +226,12 @@
                                     <tbody>
                                     <tr>
                                         <th>联系人：</th>
-                                        <td v-if="order.receiverName == ''">请选择收货人</td>
-                                        <td v-else-if="order.receiverName != ''">{{order.receiverName}} {{order.receiverPhone}}</td>
+                                        <td v-if="item.receiverName == ''">请选择收货人</td>
+                                        <td v-else-if="item.receiverName != ''">{{item.receiverName}} {{item.receiverPhone}}</td>
                                         <th></th>
                                         <th>收货地址：</th>
-                                        <td class="user_address_label" v-if="order.receiverDetailAdress == null">暂无收货地址</td>
-                                        <td v-else>{{order.receiverProvince}} {{order.receiverCity}} {{order.receiverDetailAdress}}
+                                        <td class="user_address_label" v-if="item.receiverDetailAdress == null">暂无收货地址</td>
+                                        <td v-else>{{item.receiverProvince}} {{item.receiverCity}} {{item.receiverDetailAdress}}
                                         </td>
                                     </tr>
                                     </tbody>
@@ -259,8 +245,11 @@
                                     <tbody>
                                     <tr>
                                         <th>支付方式：</th>
-<!--                                        <td th:text="${orderDetailVO.payTypeString==null?'在线支付':orderDetailVO.payTypeString}">-->
-                                            在线支付
+                                        <td v-if="item.payType ==1">
+                                            支付宝支付
+                                        </td>
+                                        <td v-else-if="item.payType ==2">
+                                            微信支付
                                         </td>
                                     </tr>
                                     </tbody>
@@ -273,7 +262,7 @@
                                     <tbody>
                                     <tr>
                                         <th>商品总价：</th>
-                                        <td><span class="num">{{order.totalPrice}}.00</span>元</td>
+                                        <td><span class="num">{{item.totalPrice}}.00</span>元</td>
                                     </tr>
                                     <tr>
                                         <th>运费：</th>
@@ -281,7 +270,7 @@
                                     </tr>
                                     <tr>
                                         <th class="total">应付金额：</th>
-                                        <td><span class="num">{{order.totalPrice}}.00</span>元</td>
+                                        <td><span class="num">{{item.totalPrice}}.00</span>元</td>
                                     </tr>
                                     </tbody>
                                 </table>

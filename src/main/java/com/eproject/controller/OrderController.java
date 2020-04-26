@@ -6,10 +6,7 @@ import com.eproject.common.R;
 import com.eproject.common.Result;
 import com.eproject.domain.ConfirmOrderResult;
 import com.eproject.domain.ReceiverInfoParam;
-import com.eproject.entity.Cart;
-import com.eproject.entity.Order;
-import com.eproject.entity.User;
-import com.eproject.entity.UserReceiveAddress;
+import com.eproject.entity.*;
 import com.eproject.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -17,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -37,6 +36,19 @@ public class OrderController {
         return R.ok().put("data", confirmOrderResult);
     }
 
+    /**
+     * 根据订单单号获取购物信息
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/getOrderByOrderNo",produces = "application/json;charset=UTF-8")
+    public R getOrderByOrderNo(@RequestBody Order order){
+        List<Order> result = orderService.getOrderByOrderNo(order.getOrderNo());
+        List<OrderItem> orderItemList = orderService.getByOrderNo(order.getOrderNo());
+        Map<String, Object> map=new HashMap<String, Object>();
+        map.put("result",result);
+        map.put("orderItemList",orderItemList);
+        return R.ok().put("data", map);
+    }
     /**
      * 根据提交信息生成订单
      */
@@ -94,11 +106,11 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/cancelOrder",produces = "application/json;charset=UTF-8")
-    public R cancelOrder(@RequestParam("orderNo") String orderNo,@RequestParam("userId") Integer userId, HttpSession httpSession){
+    public R cancelOrder(@RequestBody Order order, HttpSession httpSession){
         //获取session中的user
         User user =  (User) httpSession.getAttribute(Contants.MALL_USER_SESSION_KEY);
         //测试用的Order中的user_id,实际用的是user.getId()
-        String cancelOrderResult = orderService.cancelOrder(orderNo,userId);
+        String cancelOrderResult = orderService.cancelOrder(order.getOrderNo(),order.getUserId());
         if (Result.SUCCESS.getResult().equals(cancelOrderResult)){
             return R.ok("已取消");
         }
@@ -135,13 +147,11 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/finishOrder",produces = "application/json;charset=UTF-8")
-    public R finishOrder(@RequestParam("orderNo") String orderNo,
-                         @RequestParam("userId") Integer userId,
-                         HttpSession httpSession){
+    public R finishOrder(@RequestBody Order o,HttpSession httpSession){
         //获取session中的user
-        User user =  (User) httpSession.getAttribute(Contants.MALL_USER_SESSION_KEY);
+        //User user =  (User) httpSession.getAttribute(Contants.MALL_USER_SESSION_KEY);
         //测试用的Order中的user_id,实际用的是user.getId()
-        String cancelOrderResult = orderService.finishOrder(orderNo,userId);
+        String cancelOrderResult = orderService.finishOrder(o.getOrderNo(),o.getUserId());
         if (Result.SUCCESS.getResult().equals(cancelOrderResult)){
             return R.ok("确认收货");
         }

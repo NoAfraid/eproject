@@ -46,7 +46,7 @@ public interface AdminOrderService {
     /**
      * 条件模糊查询订单，包括分页
      */
-    List<OrderItem> selectItemInfo(PageQuery pageQuery);
+    PageResult selectItemInfo(PageQuery pageQuery);
     /**
      * 修改订单收货人信息
      */
