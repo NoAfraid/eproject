@@ -2,6 +2,7 @@ var id = getRequest();
 var orderNo = id['orderNo'];
 var payType = id['payType'];
 console.log(payType)
+
 function getRequest() {
     var url = location.search; //获取url中"?"符后的字串
     // alert(url)
@@ -21,59 +22,116 @@ function getRequest() {
 };
 
 var vm = new Vue({
-    el:"#app",
+    el: "#app",
     data: {
         current: 1,
         limit: 10,
         pages: 1,
         orderList: [],
         total: 0,
-        totalPrice:'',
-        productList:{
-            productId:'',
-            productName:'',
-            productImg:'',
-            price:'',
-            productCount:'',
-            userId:'',
+        totalPrice: '',
+        productList: {
+            productId: '',
+            productName: '',
+            productImg: '',
+            price: '',
+            productCount: '',
+            userId: '',
         },
-        addressList:{
-            name:'',
-            phoneNumber:'',
-            province:'',
-            city:'',
-            detailAddress:'',
+        addressList: {
+            name: '',
+            phoneNumber: '',
+            province: '',
+            city: '',
+            detailAddress: '',
         },
-        order:[],
-        cartList:[],
-        orderItemList:[],
-        pay:{
-            orderNo:'',
-            orderStatus:'',
-            totalPrice:''
+        order: [],
+        cartList: [{}],
+        orderItemList: [],
+        pay: {
+            orderNo: '',
+            orderStatus: '',
+            totalPrice: ''
         },
+        user:{nick:''},
+        cart:{count:0}
     },
     mounted: function () {
         var accessToken = getCookie("accessToken");
         if (isEmpty(accessToken)) {
             alert("请登录");
-            window.location.href="login.html"
+            window.location.href = "login.html"
         } else {
             this.accessToken = accessToken;
         }
         this.getOrderInfo();
+        // this.paySuccess();
+        // this.getUserInfo();
+        // this.getCartInfo();
     },
-    create:{},
-    methods:{
+    create: {},
+    methods: {
+
+        // getUserInfo:function () {
+        //     this.vip = getCookie("loginUser");
+        //     var userId = getCookie("sessionId");
+        //     var t = {
+        //         id:userId
+        //     };
+        //     var formData = JSON.stringify(t);
+        //     $.ajax({
+        //         type: "post",
+        //         url: "http://localhost:8080/user/selectInfo",
+        //         contentType: "application/json;charset=utf-8",
+        //         dataType : "json",
+        //         data: formData,
+        //         success: function (result) {
+        //             if(result.code == 0) {
+        //                 vm.user = result.data
+        //                 console.log(vm.user.nick)
+        //             } else {
+        //                 alert(result.msg)
+        //             }
+        //         }
+        //     })
+        // },
+
+        /**
+         * 获取购物车信息
+         */
+        // getCartInfo: function () {
+        //     this.vip = getCookie("loginUser");
+        //     var userId = getCookie("sessionId");
+        //     var t = {
+        //         userId:userId
+        //     };
+        //     var formData = JSON.stringify(t);
+        //     $.ajax({
+        //         type: "post",
+        //         url: "http://localhost:8080/cart/count",
+        //         contentType: "application/json;charset=utf-8",
+        //         dataType : "json",
+        //         data: formData,
+        //         success: function (result) {
+        //             if(result.code == 0) {
+        //                 vm.cart = result.data
+        //                 console.log(vm.cart)
+        //             } else {
+        //                 alert(result.msg)
+        //             }
+        //         }
+        //     })
+        // },
         /**
          * 提交订单
          * @param id
          * @constructor
          */
-        getOrderInfo:function () {
+        getOrderInfo: function () {
+            this.vip = getCookie("loginUser");
             var userId = getCookie("sessionId");
-            var t={
-                orderNo:orderNo
+            var t = {
+                orderNo: orderNo
             };
             var formData = JSON.stringify(t);
             $.ajax({
@@ -97,12 +155,44 @@ var vm = new Vue({
         },
 
         /**
+         * 支付成功后修改库存
+         */
+        updateStock: function (productId, productQuantity) {
+            var t = [
+                 {
+                    id: productId,
+                    stock: productQuantity
+                },
+                {
+                    id: productId,
+                    stock: productQuantity
+                },
+            ]
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/product/update/stock",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.total = result.data;
+                        window.location.href = "order-detail.html?orderNo=" + orderNo
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+
+        /**
          * 确认订单
          */
-        finishOrder: function(orderNo){
+        finishOrder: function (orderNo) {
             var userId = getCookie("sessionId");
-            var t={
-                userId:userId,
+            var t = {
+                userId: userId,
                 orderNo: orderNo
             };
             var formData = JSON.stringify(t);
@@ -130,10 +220,10 @@ var vm = new Vue({
         /**
          * 取消订单
          */
-        cancelOrder: function(orderNo){
+        cancelOrder: function (orderNo) {
             var userId = getCookie("sessionId");
-            var t={
-                userId:userId,
+            var t = {
+                userId: userId,
                 orderNo: orderNo
             };
             var formData = JSON.stringify(t);
@@ -162,10 +252,10 @@ var vm = new Vue({
          * 去支付
          */
         payOrder: function (orderNo) {
-            if (orderNo == ''){
+            if (orderNo == '') {
                 alert("订单号为null！")
-            }else {
-                window.location.href = "pay-select.html?orderNo="+orderNo
+            } else {
+                window.location.href = "pay-select.html?orderNo=" + orderNo
                 // var t={
                 //     orderNo:orderNo
                 // }
@@ -194,11 +284,11 @@ var vm = new Vue({
          * 选择支付方式
          */
         payOrderType: function (payType) {
-            if (payType == 1){
-                window.location.href = "pay.html?orderNo="+orderNo +"&& payType =" +payType
+            if (payType == 1) {
+                window.location.href = "pay.html?orderNo=" + orderNo + "&& payType =" + payType
             }
-            if (payType == 2){
-                window.location.href = "wxpay.html?orderNo="+orderNo
+            if (payType == 2) {
+                window.location.href = "wxpay.html?orderNo=" + orderNo
             }
         },
 
@@ -207,27 +297,27 @@ var vm = new Vue({
          * @param time
          * @returns {string}
          */
-        dateFormat:function(time) {
-            var date=new Date(time);
-            var year=date.getFullYear();
+        dateFormat: function (time) {
+            var date = new Date(time);
+            var year = date.getFullYear();
             /* 在日期格式中，月份是从0开始的，因此要加0
              * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
              * */
-            var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
-            var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
-            var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
-            var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
-            var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
             // 拼接
-            return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
+            return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
         },
 
         /**
          * 支付成功
          */
         paySuccess: function () {
-            var t={
-                orderNo:orderNo,
+            var t = {
+                orderNo: orderNo,
                 payType: 1
             }
             var formData = JSON.stringify(t);
@@ -241,8 +331,9 @@ var vm = new Vue({
                     if (result.code == 0) {
                         vm.pay = result.data;
                         console.log(vm.pay);
-                        alert(result.msg);
-                        window.location.href = "order-detail.html?orderNo="+orderNo
+                        window.location.href = "order-detail.html?orderNo=" + orderNo
+                        // alert(result.msg);
+
                     } else {
                         alert(result.msg);
                     }

@@ -271,7 +271,7 @@
                                         <td v-else-if="item.payType == 0 && item.orderStatus > 0">微信支付</td>
                                         <td v-else-if="item.payType == -1 && item.orderStatus > 0">其他方式</td>
                                         <td v-if="item.creatTime == null">暂无</td>
-                                        <td v-else>{{item.creatTime}}</td>
+                                        <td v-else>{{dateFormat(item.creatTime)}}</td>
                                         <td v-if="item.deliveryCompany == null">暂无</td>
                                         <td v-else>{{item.deliveryCompany}}</td>
                                         <td>

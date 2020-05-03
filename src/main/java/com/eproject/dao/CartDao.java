@@ -26,6 +26,8 @@ public interface CartDao {
 
     int clearCart(Integer userId);
 
+    int count(Integer userId);
+
     Cart selectProductExist(Integer userId,Integer productId);
 
     int updateByPrimaryKey(Cart record);

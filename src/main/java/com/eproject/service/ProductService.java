@@ -59,13 +59,13 @@ public interface ProductService {
      * 修改库存数
      * @param ids
      */
-    int updateStock(Integer[] ids, Product goods);
+    int updateStock(List<Product> goods);
 
     /**
      * 修改销售数
      * @param id
      */
-    int updateSaleNumber(Integer[] id);
+    int updateSaleNumber(List<Product> goods);
 
     /**
      * 模糊查询

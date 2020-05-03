@@ -1,81 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eproject.dao.ProductDao">
-  <resultMap id="BaseResultMap" type="com.eproject.entity.Product">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="product_name" jdbcType="VARCHAR" property="productName" />
-    <result column="product_img" jdbcType="VARCHAR" property="productImg" />
-    <result column="product_sn" jdbcType="VARCHAR" property="productSn" />
-    <result column="detail" jdbcType="VARCHAR" property="detail" />
-    <result column="sale" jdbcType="INTEGER" property="sale" />
-    <result column="stock" jdbcType="INTEGER" property="stock" />
-    <result column="price" jdbcType="DECIMAL" property="price" />
-    <result column="promote_price" jdbcType="DECIMAL" property="promotePrice" />
-    <result column="sort" jdbcType="VARCHAR" property="sort" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="recomand_status" jdbcType="INTEGER" property="recomandStatus" />
-    <result column="unit" jdbcType="VARCHAR" property="unit" />
-    <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
-    <result column="verify_status" jdbcType="INTEGER" property="verifyStatus" />
-    <result column="publish_status" jdbcType="INTEGER" property="publishStatus" />
-    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.eproject.entity.Product">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="product_img" jdbcType="VARCHAR" property="productImg"/>
+        <result column="product_sn" jdbcType="VARCHAR" property="productSn"/>
+        <result column="detail" jdbcType="VARCHAR" property="detail"/>
+        <result column="sale" jdbcType="INTEGER" property="sale"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="promote_price" jdbcType="DECIMAL" property="promotePrice"/>
+        <result column="sort" jdbcType="VARCHAR" property="sort"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="recomand_status" jdbcType="INTEGER" property="recomandStatus"/>
+        <result column="unit" jdbcType="VARCHAR" property="unit"/>
+        <result column="delete_status" jdbcType="INTEGER" property="deleteStatus"/>
+        <result column="verify_status" jdbcType="INTEGER" property="verifyStatus"/>
+        <result column="publish_status" jdbcType="INTEGER" property="publishStatus"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, product_name, product_img, product_sn, detail, sale, stock, price, promote_price, 
     sort, description, recomand_status, unit, delete_status, verify_status, publish_status
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from product
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectById" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from product
-    where id in
-    <foreach collection="ids" item="id" open="(" separator="," close=")">
-      #{id}
-    </foreach>
-  </select>
-  <select id="selectProductList"  parameterType="Map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from product
-    <where>
-      <if test="productName != null and productName.trim() != ''">
-        and product_name like CONCAT('%','#{productName}','%')
-      </if>
-      <if test="publishStatus != null and publishStatus.trim() != ''">
-        and publish_status = #{publishStatus}
-      </if>
-    </where>
-    order by id desc
-    <if test="start != null and limit != null">
-        limit #{start},#{limit}
-    </if>
-  </select>
-  <select id="selectIdList"  parameterType="Map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from product
-    where id in
-    <foreach collection="ids" item="id" open="(" separator="," close=")">
-      #{id}
-    </foreach>
-  </select>
-  <select id="getProductPage" resultType="int" parameterType="map">
-    select count(*) from product
-    <where>
-      <if test="productName != null and productName.trim() != ''">
-        and product_name like CONCAT('%','#{productName}','%')
-      </if>
-      <if test="publishStatus != null and publishStatus.trim() != ''">
-        and publish_status = #{publishStatus}
-      </if>
-    </where>
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from product
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from product
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="selectProductList" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from product
+        <where>
+            <if test="productName != null and productName.trim() != ''">
+                and product_name like CONCAT('%','#{productName}','%')
+            </if>
+            <if test="publishStatus != null and publishStatus.trim() != ''">
+                and publish_status = #{publishStatus}
+            </if>
+        </where>
+        order by id desc
+        <if test="start != null and limit != null">
+            limit #{start},#{limit}
+        </if>
+    </select>
+    <select id="selectIdList" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from product
+        where id in
+        <foreach collection="goods" item="goods" open="(" separator="," close=")">
+            #{goods.id}
+        </foreach>
+    </select>
+    <select id="getProductPage" resultType="int" parameterType="map">
+        select count(*) from product
+        <where>
+            <if test="productName != null and productName.trim() != ''">
+                and product_name like CONCAT('%','#{productName}','%')
+            </if>
+            <if test="publishStatus != null and publishStatus.trim() != ''">
+                and publish_status = #{publishStatus}
+            </if>
+        </where>
+    </select>
     <select id="selectProductBySearchPage" parameterType="Map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -108,33 +108,34 @@
             </if>
         </where>
     </select>
-  <select id="selectProductListByNumber" parameterType="int" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from product
-    where delete_status = 0
-    order by id desc
-    limit #{number}
-  </select>
-  <select id="getProductSaleForIndex" parameterType="int" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from product
-    where delete_status = 0
-    order by sale desc
-    limit #{number}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectProductListByNumber" parameterType="int" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from product
+        where delete_status = 0
+        order by id desc
+        limit #{number}
+    </select>
+    <select id="getProductSaleForIndex" parameterType="int" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from product
+        where delete_status = 0
+        order by sale desc
+        limit #{number}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteBatch">
-    delete from product where id in
-    <foreach item="id" collection="array" open="(" separator="," close=")">
-      #{id}
-    </foreach>
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Product" useGeneratedKeys="true">
+    <delete id="deleteBatch">
+        delete from product where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Product"
+            useGeneratedKeys="true">
     insert into product (product_name, product_img, product_sn, 
       detail, sale, stock, 
       price, promote_price, sort, 
@@ -148,184 +149,185 @@
       #{deleteStatus,jdbcType=INTEGER}, #{verifyStatus,jdbcType=INTEGER}, #{publishStatus,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Product" useGeneratedKeys="true">
-    insert into product
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="productName != null">
-        product_name,
-      </if>
-      <if test="productImg != null">
-        product_img,
-      </if>
-      <if test="productSn != null">
-        product_sn,
-      </if>
-      <if test="detail != null">
-        detail,
-      </if>
-      <if test="sale != null">
-        sale,
-      </if>
-      <if test="stock != null">
-        stock,
-      </if>
-      <if test="price != null">
-        price,
-      </if>
-      <if test="promotePrice != null">
-        promote_price,
-      </if>
-      <if test="sort != null">
-        sort,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="recomandStatus != null">
-        recomand_status,
-      </if>
-      <if test="unit != null">
-        unit,
-      </if>
-      <if test="deleteStatus != null">
-        delete_status,
-      </if>
-      <if test="verifyStatus != null">
-        verify_status,
-      </if>
-      <if test="publishStatus != null">
-        publish_status,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="productName != null">
-        #{productName,jdbcType=VARCHAR},
-      </if>
-      <if test="productImg != null">
-        #{productImg,jdbcType=VARCHAR},
-      </if>
-      <if test="productSn != null">
-        #{productSn,jdbcType=VARCHAR},
-      </if>
-      <if test="detail != null">
-        #{detail,jdbcType=VARCHAR},
-      </if>
-      <if test="sale != null">
-        #{sale,jdbcType=INTEGER},
-      </if>
-      <if test="stock != null">
-        #{stock,jdbcType=INTEGER},
-      </if>
-      <if test="price != null">
-        #{price,jdbcType=DECIMAL},
-      </if>
-      <if test="promotePrice != null">
-        #{promotePrice,jdbcType=DECIMAL},
-      </if>
-      <if test="sort != null">
-        #{sort,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="recomandStatus != null">
-        #{recomandStatus,jdbcType=INTEGER},
-      </if>
-      <if test="unit != null">
-        #{unit,jdbcType=VARCHAR},
-      </if>
-      <if test="deleteStatus != null">
-        #{deleteStatus,jdbcType=INTEGER},
-      </if>
-      <if test="verifyStatus != null">
-        #{verifyStatus,jdbcType=INTEGER},
-      </if>
-      <if test="publishStatus != null">
-        #{publishStatus,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <insert id="saveProduct" parameterType="com.eproject.entity.Product" >
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Product"
+            useGeneratedKeys="true">
+        insert into product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null">
+                product_name,
+            </if>
+            <if test="productImg != null">
+                product_img,
+            </if>
+            <if test="productSn != null">
+                product_sn,
+            </if>
+            <if test="detail != null">
+                detail,
+            </if>
+            <if test="sale != null">
+                sale,
+            </if>
+            <if test="stock != null">
+                stock,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="promotePrice != null">
+                promote_price,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="recomandStatus != null">
+                recomand_status,
+            </if>
+            <if test="unit != null">
+                unit,
+            </if>
+            <if test="deleteStatus != null">
+                delete_status,
+            </if>
+            <if test="verifyStatus != null">
+                verify_status,
+            </if>
+            <if test="publishStatus != null">
+                publish_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null">
+                #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="productImg != null">
+                #{productImg,jdbcType=VARCHAR},
+            </if>
+            <if test="productSn != null">
+                #{productSn,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                #{detail,jdbcType=VARCHAR},
+            </if>
+            <if test="sale != null">
+                #{sale,jdbcType=INTEGER},
+            </if>
+            <if test="stock != null">
+                #{stock,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="promotePrice != null">
+                #{promotePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="recomandStatus != null">
+                #{recomandStatus,jdbcType=INTEGER},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteStatus != null">
+                #{deleteStatus,jdbcType=INTEGER},
+            </if>
+            <if test="verifyStatus != null">
+                #{verifyStatus,jdbcType=INTEGER},
+            </if>
+            <if test="publishStatus != null">
+                #{publishStatus,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <insert id="saveProduct" parameterType="com.eproject.entity.Product">
         insert into emall.product(product_name, product_img,product_sn,
         detail, stock, price, promote_price, description,unit,publish_status)
         values
         (#{productName},#{productImg},#{productSn},#{detail},#{stock},#{price},#{promotePrice},#{description},#{unit},#{publishStatus})
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.eproject.entity.Product">
-  update product
-  <set>
-    <if test="productName != null">
-      product_name = #{productName,jdbcType=VARCHAR},
-    </if>
-    <if test="productImg != null">
-      product_img = #{productImg,jdbcType=VARCHAR},
-    </if>
-    <if test="productSn != null">
-      product_sn = #{productSn,jdbcType=VARCHAR},
-    </if>
-    <if test="detail != null">
-      detail = #{detail,jdbcType=VARCHAR},
-    </if>
-    <if test="sale != null">
-      sale = #{sale,jdbcType=INTEGER},
-    </if>
-    <if test="stock != null">
-      stock = #{stock,jdbcType=INTEGER},
-    </if>
-    <if test="price != null">
-      price = #{price,jdbcType=DECIMAL},
-    </if>
-    <if test="promotePrice != null">
-      promote_price = #{promotePrice,jdbcType=DECIMAL},
-    </if>
-    <if test="sort != null">
-      sort = #{sort,jdbcType=VARCHAR},
-    </if>
-    <if test="description != null">
-      description = #{description,jdbcType=VARCHAR},
-    </if>
-    <if test="recomandStatus != null">
-      recomand_status = #{recomandStatus,jdbcType=INTEGER},
-    </if>
-    <if test="unit != null">
-      unit = #{unit,jdbcType=VARCHAR},
-    </if>
-    <if test="deleteStatus != null">
-      delete_status = #{deleteStatus,jdbcType=INTEGER},
-    </if>
-    <if test="verifyStatus != null">
-      verify_status = #{verifyStatus,jdbcType=INTEGER},
-    </if>
-    <if test="publishStatus != null">
-      publish_status = #{publishStatus,jdbcType=INTEGER},
-    </if>
-  </set>
-  where id = #{id,jdbcType=INTEGER}
-</update>
-  <update id="updateByExampleSelective" parameterType="com.eproject.entity.Product">
-    update product
-   set verify_status = #{verifyStatus} where id in
-   <foreach collection="ids" item="id" open="(" separator="," close=")">
-     #{id}
-   </foreach>
-  </update>
-  <update id="updateBySelective" parameterType="com.eproject.entity.Product">
-    update product
-    set publish_status = #{publicStatus}
-    where publish_status != #{publicStatus} and id in
-    <foreach collection="ids" item="id" open="(" separator="," close=")">
-      #{id}
-    </foreach>
-  </update>
-  <update id="updateByRecomandStatus" parameterType="com.eproject.entity.Product">
-    update product
-    set recomand_status = #{recomandStatus}
-    where id in
-    <foreach collection="ids" item="id" open="(" separator="," close=")">
-      #{id}
-    </foreach>
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.eproject.entity.Product">
+    <update id="updateByPrimaryKeySelective" parameterType="com.eproject.entity.Product">
+        update product
+        <set>
+            <if test="productName != null">
+                product_name = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="productImg != null">
+                product_img = #{productImg,jdbcType=VARCHAR},
+            </if>
+            <if test="productSn != null">
+                product_sn = #{productSn,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                detail = #{detail,jdbcType=VARCHAR},
+            </if>
+            <if test="sale != null">
+                sale = #{sale,jdbcType=INTEGER},
+            </if>
+            <if test="stock != null">
+                stock = #{stock,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="promotePrice != null">
+                promote_price = #{promotePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="recomandStatus != null">
+                recomand_status = #{recomandStatus,jdbcType=INTEGER},
+            </if>
+            <if test="unit != null">
+                unit = #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteStatus != null">
+                delete_status = #{deleteStatus,jdbcType=INTEGER},
+            </if>
+            <if test="verifyStatus != null">
+                verify_status = #{verifyStatus,jdbcType=INTEGER},
+            </if>
+            <if test="publishStatus != null">
+                publish_status = #{publishStatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByExampleSelective" parameterType="com.eproject.entity.Product">
+        update product
+        set verify_status = #{verifyStatus} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    <update id="updateBySelective" parameterType="com.eproject.entity.Product">
+        update product
+        set publish_status = #{publicStatus}
+        where publish_status != #{publicStatus} and id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    <update id="updateByRecomandStatus" parameterType="com.eproject.entity.Product">
+        update product
+        set recomand_status = #{recomandStatus}
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.eproject.entity.Product">
     update product
     set product_name = #{productName,jdbcType=VARCHAR},
       product_img = #{productImg,jdbcType=VARCHAR},
@@ -344,20 +346,65 @@
       publish_status = #{publishStatus,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateStock" parameterType="com.eproject.entity.Product">
-    update product
-    set stock = stock - 1
-    where stock - 1 > 0 and id in
-    <foreach collection="ids" item="id" open="(" separator="," close=")">
-      #{id}
-    </foreach>
-  </update>
-  <update id="updateSale" parameterType="com.eproject.entity.Product">
-    update product
-    set sale = sale + 1
-    where id in
-    <foreach collection="id" item="id" open="(" separator="," close=")">
-      #{id}
-    </foreach>
-  </update>
+    <update id="updateStock" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update product
+            <set>
+                <if test="item.stock != null">
+                    stock = stock - #{item.stock,jdbcType=INTEGER}
+                </if>
+            </set>
+            <where>id = #{item.id}</where>
+        </foreach>
+    </update>
+    <update id="updateSale" parameterType="com.eproject.entity.Product">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update product
+            <set>
+                <if test="item.stock != null">
+                    sale = sale + #{item.stock,jdbcType=INTEGER}
+                </if>
+            </set>
+            <where>
+                stock - #{item.stock,jdbcType=INTEGER} > 0
+                and id = #{item.id}
+            </where>
+        </foreach>
+    </update>
+
+    <update id="updateSkuStock">
+        UPDATE product
+        SET
+        stock = CASE id
+        <foreach collection="itemList" item="item">
+            WHEN #{item.productId} THEN stock - #{item.productQuantity}
+        </foreach>
+        END,
+        sale = CASE id
+        <foreach collection="itemList" item="item">
+            WHEN #{item.productId} THEN sale + #{item.productQuantity}
+        </foreach>
+        END
+        WHERE
+        id IN
+        <foreach collection="itemList" item="item" separator="," open="(" close=")">
+            #{item.productId}
+        </foreach>
+    </update>
+    <update id="updateStockAndSale" parameterType="com.eproject.entity.Product">
+        update product p, shu_stock shu
+        set
+        p.stock = shu.stock,
+        p.sale = shu.sale
+--         FROM
+--         product p
+--         LEFT JOIN shu_stock shu ON p.id = shu.product_id
+        where p.id = shu.product_id and p.id IN
+        <foreach collection="itemList" item="item" separator="," open="(" close=")">
+            #{item.productId}
+        </foreach>
+    </update>
+    <select id="selectNewProduct" parameterType="com.eproject.entity.Product" resultType="com.eproject.entity.Product">
+         select * FROM product ORDER BY id DESC LIMIT 0,1 ;
+    </select>
 </mapper>

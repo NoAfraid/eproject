@@ -71,4 +71,9 @@ public interface OrderService {
      * 发送延迟消息取消订单
      */
     int sendDelayMessageCancelOrder(Integer orderId);
+
+    /**
+     * 根据id获取信息
+     */
+    Order getOrderById(Integer id);
 }

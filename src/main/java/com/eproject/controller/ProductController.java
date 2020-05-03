@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -231,25 +232,26 @@ public class ProductController {
      */
     @RequestMapping(value = "/update/stock", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R updateStock(@RequestBody Integer[] ids,Product goods) {
-        Integer result = productService.updateStock(ids,goods);
+    public R updateStock(@RequestBody List<Product> goods) {
+        Integer result = productService.updateStock(goods);
+        Integer num = productService.updateSaleNumber(goods);
         // 获取库存数
         // goods.setStock(productService.selectIdList());
         return R.ok().put("data",result);
     }
     /**
      * 修改销售量(前端未实现)
-     * @param id
+     * @paramid
      */
     @RequestMapping(value = "/update/sale", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public R updateSale(@RequestBody Integer[] id) {
-        Integer result = productService.updateSaleNumber(id);
+    public R updateSale(@RequestBody List<Product> goods) {
+        Integer result = productService.updateSaleNumber(goods);
         return R.ok().put("data",result);
     }
 
     /**
-     * 根据商品名称或者货号模糊查询(前端未实现)
+     * 根据商品名称或者货号模糊查询
      */
     @RequestMapping(value = "/update/search", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody

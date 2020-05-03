@@ -35,6 +35,10 @@
     <include refid="Base_Column_List" />
     from order_item
     where user_id = #{userId,jdbcType=INTEGER}
+    order by create_time desc
+    <if test="start != null and limit != null">
+      limit #{start},#{limit}
+    </if>
   </select>
   <select id="selectByOrderNoList" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -60,6 +64,10 @@
         and (id like CONCAT('%',#{id},'%'))
       </if>
     </where>
+    order by id desc
+    <if test="start != null and limit != null">
+      limit #{start},#{limit}
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from order_item

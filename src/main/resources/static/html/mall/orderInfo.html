@@ -1,0 +1,145 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>newbee-mall | 后台管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="shortcut icon" href="../../css/admin/dist/img/favicon.ico"/>
+    <link rel="stylesheet" href="../../css/admin/dist/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../../css/admin/dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="../../css/admin/dist/css/main.css">
+    <link rel="stylesheet" href="../../css/admin/plugins/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
+    <link rel="stylesheet" href="../../css/admin/plugins/jqgrid-5.3.0/ui.jqgrid-bootstrap4.css"/>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../css/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div class="grzxdht">
+        <div class="gr">
+            <a href="center.html">个人资料</a>
+        </div>
+        <div class="gr">
+            <a href="collect.html">我的收藏</a>
+        </div>
+        <div class="gr">
+            <a href="follow.html">我的关注</a>
+        </div>
+        <!--					<div class="gr">-->
+        <!--						<a href="wdfensi.html">我的粉丝</a>-->
+        <!--					</div>-->
+        <div class="gr">
+            <a href="cart.html">我的购物车</a>
+        </div>
+        <div class="gr">
+            <a class="hsys" href="my_orders.html">我的订单</a>
+        </div>
+        <!--					<div class="gr">-->
+        <!--						<a href="wdzhixun.html">我的咨询</a>-->
+        <!--					</div>-->
+        <!--					<div class="gr">-->
+        <!--						<a href="wdwujuan.html">我参与的问卷</a>-->
+        <!--					</div>-->
+        <div class="gr">
+            <a href="xgmima.html">修改密码</a>
+        </div>
+        <div class="gr">
+            <a href="javascript:loginout()">退出</a>
+        </div>
+    </div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <div class="content" id="OrderDetail">>
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">商品信息编辑</h3>
+                    </div>
+                    <div class="card-body">
+                        <!--                       <form id="goodsForm">-->
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>订单编号：</p>
+                            <input type="text" id="orderNo" v-model.trim="orderList.orderNo" placeholder="*请输入商品编号"
+                                   maxlength="30"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>商品编号：</p>
+                            <input type="text" id="productSn" v-model.trim="orderList.productSn" placeholder="*请输入商品编号"/>
+                            <p><span class="red">*</span>商品名称：</p>
+                            <input type="text" id="productName" v-model.trim="orderList.productName" placeholder="*请输入商品名称"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>收件人姓名：</p>
+                            <input type="text" id="receiverName" v-model.trim="orderList.receiverName" placeholder="*请输入商品简介(100字以内)"/>
+                            <p><span class="red">*</span>收件人电话：</p>
+                            <input type="text" id="receiverPhone" v-model.number="orderList.receiverPhone" placeholder="*请输入商品价格"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>收件人省区：</p>
+                            <input type="text" id="receiverProvince" v-model.trim="orderList.receiverProvince" placeholder="*收件人信息">
+                            <p><span class="red">*</span>收件人城市：</p>
+                            <input type="text" id="receiverCity" v-model.trim="orderList.receiverCity" placeholder="*请输入商品售卖价">
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>收件人邮政编码：</p>
+                            <input type="text" v-model.trim="orderList.receiverPostCode" placeholder="*请输入商品价格">
+                            <p><span class="red">*</span>详细地址：</p>
+                            <input type="text" id="receiverDetailAdress" v-model.number="orderList.receiverDetailAdress" placeholder="*请输入商品价格"/>
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>发票抬头：</p>
+                            <input type="text" id="billHeader" v-model.trim="orderList.billHeader" placeholder="*发票信息">
+                            <p><span class="red">*</span>接收邮箱：</p>
+                            <input type="text" id="billReceiverEmail" v-model.trim="orderList.billReceiverEmail" placeholder="*请输入商品售卖价">
+                            <p><span class="red">*</span>发票内容：</p>
+                            <input type="text" v-model.trim="orderList.billContent" placeholder="*请输入商品价格">
+                        </div>
+                        <div class="zxbt" style="display:flex;">
+                            <p><span class="red">*</span>物流公司：</p>
+                            <input type="text" id="deliveryCompany" v-model.trim="orderList.deliveryCompany" placeholder="*物流信息">
+                            <p><span class="red">*</span>物流单号：</p>
+                            <input type="text" id="deliveryNo" v-model.trim="orderList.deliveryNo" placeholder="*请输入商品售卖价">
+                            <p><span class="red">*</span>运费：</p>
+                            <input type="text" v-model.trim="orderList.freightAmount" placeholder="*请输入商品价格">
+                        </div>
+                        <div class="form-group">
+<!--                            &lt;!&ndash; 按钮 &ndash;&gt;-->
+<!--                            <input type="button" @click="updateOrder" value="保存订单" class="btn btn-info float-right"-->
+<!--                                   style="margin-left: 5px;"/>-->
+
+                            <input type="button" @click="returnOrders" value="返回订单列表" class="btn btn-info float-right"
+                                   style="margin-left: 5px;"/>
+                        </div>
+                        <!--                        </form>-->
+                    </div>
+
+                </div>
+            </div><!-- /.container-fluid -->
+        </div>
+    </div>
+</div>
+<!--<script src="../css/admin/dist/js/public.js"></script>-->
+<!--<script src="../../css/admin/plugins/kindeditor-4.1.10/kindeditor-all.js"></script>-->
+<!--<script src="../../css/admin/plugins/kindeditor-4.1.10/lang/zh_CN.js"></script>-->
+<!--<script src="../css/admin/plugins/jquery/jquery.min.js"></script>-->
+<script src="../../js/jquery.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../js/md5.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/mall/orderInfo.js"></script>
+<script src="../../js/jquery.form.js"></script>
+</body>
+</html>

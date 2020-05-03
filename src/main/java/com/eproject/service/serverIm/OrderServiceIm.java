@@ -29,6 +29,15 @@ public class OrderServiceIm implements OrderService {
     private CartDao cartDao;
 
     @Resource
+    private ShuStockDao skuStockMapper;
+
+    @Resource
+    private PortalOrderDao portalOrderDao;
+
+    @Resource
+    private ProductDao productDao;
+
+    @Resource
     private UserReceiveAddressDao userReceiveAddressDao;
 
     @Resource
@@ -82,6 +91,8 @@ public class OrderServiceIm implements OrderService {
 
         //数据库减去已买的商品数量
 
+        //进行库存锁定
+        lockStock(list);
         //根据商品合计、运费计算应付金额
 
         Order orderList = new Order();
@@ -122,13 +133,13 @@ public class OrderServiceIm implements OrderService {
             //OrderItem orderItem = new OrderItem();
             orderItem.setOrderId(orderList.getId());
             orderItem.setOrderNo(orderList.getOrderNo());
-            orderItem.setOrderStatus(0);
+            //orderItem.setOrderStatus(0);
             orderItem.setCreateTime(new Date());
-            orderItem.setProductName(orderList.getProductName());
-            orderItem.setProductId(orderList.getProductId());
-            orderItem.setProductImg(orderItem.getProductImg());
-//            orderItem.setProductPrice(orderList.getTotalPrice());
-            orderItem.setUserId(orderList.getUserId());
+            //orderItem.setProductName(orderList.getProductName());
+            //orderItem.setProductId(orderList.getProductId());
+            //orderItem.setProductImg(orderItem.getProductImg());
+            //orderItem.setProductPrice(orderList.getTotalPrice());
+            //orderItem.setUserId(orderList.getUserId());
         }
         orderItemDao.insertList(orderItemList);
         //删除购物车中的下单商品
@@ -159,6 +170,15 @@ public class OrderServiceIm implements OrderService {
 //        //发送延迟消息
 //        cancelOrderSender.sendMessage(orderId, delayTimes);
         return delayTimes;
+    }
+
+    @Override
+    public Order getOrderById(Integer id){
+        Order temp = orderDao.selectByPrimaryKey(id);
+        if (temp == null){
+            return null;
+        }
+        return temp;
     }
 
     @Override
@@ -234,6 +254,8 @@ public class OrderServiceIm implements OrderService {
             //todo 订单状态判断
             if (orderDao.updateOrderStatus(Collections.singletonList(order.getId()),
                     OrderStatusEnum.ORDER_CLOSED_BY_MALLUSER.getOrderStatus()) >0){
+                //释放锁定的库存
+                portalOrderDao.releaseSkuStockLock(orderItem);
                 return Result.SUCCESS.getResult();
             }
             return Result.DB_ERROR.getResult();
@@ -265,9 +287,15 @@ public class OrderServiceIm implements OrderService {
         order.setPayTime(new Date());
 
         orderDao.updateByPrimaryKeySelective(order);
-        //恢复所有下单商品的锁定库存，扣减真实库存(暂未处理)
-        //OrderDetail orderDetail =
-        return 1;
+        //恢复所有下单商品的锁定库存，扣减真实库存
+        OrderDetail orderDetail = portalOrderDao.getDetail(o.getId());
+        List<OrderItem> od = orderDetail.getOrderItemList();
+        //
+        //productDao.updateSkuStock(od);
+        int count = portalOrderDao.updateSkuStock(od);
+        //将shu_stock 中的stock和sale赋值到product表中
+        productDao.updateStockAndSale(od);
+        return count;
     }
 
     @Override
@@ -311,6 +339,16 @@ public class OrderServiceIm implements OrderService {
 
 
 
+    /**
+     * 锁定下单商品的所有库存
+     */
+    private void lockStock(List<Cart> cartPromotionItemList) {
+        for (Cart cartPromotionItem : cartPromotionItemList) {
+            ShuStock skuStock = skuStockMapper.selectByPrimaryKey(cartPromotionItem.getProductId());
+            skuStock.setLockStock(skuStock.getLockStock() + cartPromotionItem.getProductCount());
+            skuStockMapper.updateByPrimaryKeySelective(skuStock);
+        }
+    }
 
 
     /**

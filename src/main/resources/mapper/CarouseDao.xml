@@ -30,6 +30,9 @@
     from carouse
     where delete_status = 0
     order by carouse_rank desc
+    <if test="start != null and limit != null">
+      limit #{start},#{limit}
+    </if>
   </select>
   <select id="selectCarouseListByNumber" parameterType="int" resultMap="BaseResultMap">
     select

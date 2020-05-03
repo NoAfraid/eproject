@@ -49,7 +49,7 @@
     where id = #{userId}
   </select>
   <select id="loginUser" resultMap="BaseResultMap" parameterType="com.eproject.entity.User">
-    select id,username, phone, password
+    select id,username, phone, password,nick
     from user
     <where>
       <if test="phone!= null and phone.trim() != ''">

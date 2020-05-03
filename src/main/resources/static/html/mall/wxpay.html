@@ -19,7 +19,7 @@
 </head>
 
 <body>
-<div class="body">
+<div class="body" id="app">
     <h1 class="mod-title">
         <span class="ico_log icon-wx-pay"></span>
     </h1>
@@ -27,8 +27,9 @@
     <div class="mod-ct">
         <div class="order">
         </div>
-        <div class="amount" id="money">￥
-            <th:block th:text="${totalPrice+'.00'}"></th:block>
+        <div class="amount" id="money" v-for="(item, index) in order" :key="index">
+            ￥<span class="money"><em>{{item.totalPrice}}.00</em>元</span>
+            <!--            <th:block th:text="${totalPrice+'.00'}"></th:block>-->
         </div>
         <div class="qrcode-img-wrapper">
             <div data-role="qrPayImg" class="qrcode-img-area">
@@ -44,12 +45,11 @@
 
         <div class="time-item" style="padding-top: 10px">
             <div class="time-item" id="msg"><h1>支付完成后，将跳转至订单详情</h1></div>
-            <div class="time-item">
-                <h1>订单:
-                    <th:block th:text="${orderNo}"></th:block>
+            <div class="time-item" v-for="(item, index) in order" :key="index">
+                <h1>订单号:{{item.orderNo}}
                 </h1>
             </div>
-            <input type="hidden" id="orderNoValue" th:value="${orderNo}">
+            <input type="hidden" id="orderNoValue">
         </div>
 
         <div class="tip">
@@ -58,7 +58,7 @@
                 <p id="showtext">打开微信 [扫一扫]</p>
             </div>
             <div class="tip-text">
-                <a @click="paySuccess"
+                <a @click="paySuccess(2)"
                    class="btn btn-small btn-success" title="支付成功">支付成功</a>
             </div>
         </div>

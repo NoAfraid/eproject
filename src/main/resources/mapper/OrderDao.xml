@@ -50,6 +50,10 @@
     select
     <include refid="Base_Column_List"/>
     from `order`
+    order by id desc
+    <if test="start != null and limit != null">
+      limit #{start},#{limit}
+    </if>
   </select>
   <select id="getOrderPage" resultType="int" parameterType="map">
     select count(*) from `order`

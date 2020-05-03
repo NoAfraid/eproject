@@ -14,7 +14,7 @@ var vm = new Vue({
         aList: [],
         updateAddressList:{
             //暂时赋值给userId
-            userId:3,
+            userId:'',
             name:'',
             phoneNumber:'',
             province:'',
@@ -32,6 +32,8 @@ var vm = new Vue({
         order:{
             orderNo:''
         },
+        user:{nick:''},
+        cart:{count:''},
     },
     mounted: function () {
         var accessToken = getCookie("accessToken");
@@ -42,12 +44,68 @@ var vm = new Vue({
             this.accessToken = accessToken;
         }
         //先自启动
-        this.findList(1)
-        this.itemList(1)
-        this.addressList(3)
+        this.findList(1);
+        this.itemList(1);
+        this.addressList(3);
+        this.getUserInfo();
+        this.getCartInfo();
     },
     create:{},
     methods: {
+
+        /**
+         * 获取用户信息
+         */
+        getUserInfo:function () {
+            this.vip = getCookie("loginUser");
+            var userId = getCookie("sessionId");
+            var t = {
+                id:userId
+            };
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/user/selectInfo",
+                contentType: "application/json;charset=utf-8",
+                dataType : "json",
+                data: formData,
+                success: function (result) {
+                    if(result.code == 0) {
+                        vm.user = result.data
+                        console.log(vm.user.nick)
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        },
+
+        /**
+         * 获取购物车数量信息
+         */
+        getCartInfo: function () {
+            this.vip = getCookie("loginUser");
+            var userId = getCookie("sessionId");
+            var t = {
+                userId:userId
+            };
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/cart/count",
+                contentType: "application/json;charset=utf-8",
+                dataType : "json",
+                data: formData,
+                success: function (result) {
+                    if(result.code == 0) {
+                        vm.cart = result.data
+                        console.log(vm.cart)
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        },
 
         /**
          * 购物车信息
@@ -82,8 +140,6 @@ var vm = new Vue({
                         vm.total = result.data.totalCount;
                         vm.cartList = result.data;
                     } else {
-                        vm.cartList = result.data;
-                        alert(vm.cartList)
                         alert(result.msg);
                     }
                 }
@@ -209,8 +265,9 @@ var vm = new Vue({
          *用户地址信息
          */
         addressList:function (id) {
+            var userId = getCookie("sessionId");
             var t={
-                userId:id
+                userId:userId
             }
             var formData = JSON.stringify(t);
             var now =  getNow("yyyyMMddHHmmss");

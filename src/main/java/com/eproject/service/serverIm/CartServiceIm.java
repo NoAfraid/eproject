@@ -35,6 +35,7 @@ public class CartServiceIm implements CartService {
             count = cartDao.insert(cart);
         }else {
             product.setUpdataTime(new Date());
+            product.setDeleteStatus(0);
             //统计商品数量
             product.setProductCount(product.getProductCount() + cart.getProductCount());
             cartDao.updateByPrimaryKey(product);
@@ -68,6 +69,8 @@ public class CartServiceIm implements CartService {
     public int deleteCart(Cart cart, List<Integer> ids){//Integer[] ids
         //deleteStatus(1删除，0保留)
         cart.setDeleteStatus(1);
+        //清空所保存的数量
+        cart.setProductCount(0);
         int num = cartDao.updateDeleteStatus(cart.getUserId(),cart.getProductId(),ids);
         return num;
     }
@@ -76,5 +79,15 @@ public class CartServiceIm implements CartService {
     public int clear(Integer userId){
         int num = cartDao.clearCart(userId);
         return num;
+    }
+
+    @Override
+    public int count(Integer userId){
+        List<Cart> cart = cartDao.selectCartInfo(userId);
+        if (cart.size()>0){
+            int count = cartDao.count(userId);
+            return count;
+        }
+        return 0;
     }
 }

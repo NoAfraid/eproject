@@ -3,10 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" href="../../css/mall/styles/header.css">
     <link rel="stylesheet" href="../../css/css.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
 </head>
+<header id="header">
+    <div class="center">
+        <ul class="fl">
+            <li><a href="index.html">Gis商城</a></li>
+        </ul>
+        <div class="fr">
+
+            <div class="user">
+                <ul class="selector">
+                    <li>
+                        <a href="center.html">
+                            个人中心
+                        </a>
+                    </li>
+                    <li>
+                        <a href="my_orders.html">
+                            我的订单
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:loginout()">
+                            退出登录
+                        </a>
+                    </li>
+                </ul>
+                <a href="##" class="username">
+                    十三
+                    <i class="iconfont icon-down"></i>
+                </a>
+            </div>
+            <div class="shopcart">
+                <a href="cart.html" style="color: white;"><i class="iconfont icon-cart"></i>
+                    购物车(
+                    0
+                    )</a>
+            </div>
+
+
+        </div>
+    </div>
+</header>
 <body>
 <div id="zd">
 
@@ -83,7 +125,7 @@
                                 </div>
                                 <div class="an">
                                     <div style="text-align: left;margin-bottom: 10px;">
-                                        <input type="checkbox" v
+                                        <input type="checkbox" v-model="showPassword"
 
                                         >显示密码
                                     </div>

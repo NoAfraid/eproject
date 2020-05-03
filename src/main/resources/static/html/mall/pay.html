@@ -59,8 +59,8 @@
             <div class="tip-text">
                 <p id="showtext">打开支付宝 [扫一扫]</p>
             </div>
-            <div class="tip-text">
-                <a @click="paySuccess"
+            <div class="tip-text" >
+                <a @click="paySuccess(1)"
                    class="btn btn-small btn-success" title="支付成功">支付成功</a>
             </div>
         </div>
@@ -76,6 +76,7 @@
 <script src="../../js/vue.js"></script>
 <script src="../../js/common.js"></script>
 <script src="../../js/mall/order_detail.js"></script>
+<!--<script src="../../js/mall/paySuccess.js"></script>-->
 <!--<script type="text/javascript">-->
 <!--    function payOrderSuccess() {-->
 <!--        var orderNo = $("#orderNoValue").val();-->

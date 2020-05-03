@@ -6,7 +6,7 @@
             newPassword: null,
             originalPassword: null,
             confirmPassword: null,
-            showPassword: true
+            showPassword: false
         },
         mounted: function () {
             var accessToken = getCookie("accessToken");

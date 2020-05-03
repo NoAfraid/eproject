@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
@@ -156,5 +157,18 @@ public class OrderController {
             return R.ok("确认收货");
         }
         return R.error(-1,"确认错误");
+    }
+
+    /**
+     * 根据id获取商品信息
+     */
+    @RequestMapping(value = "/get", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public R getOrderInfo(HttpServletRequest request, @RequestParam("id") Integer id){
+        Order info = orderService.getOrderById(id);
+        if (info != null){
+            return R.ok().put("data",info);
+        }
+        return R.error("查询错误");
     }
 }

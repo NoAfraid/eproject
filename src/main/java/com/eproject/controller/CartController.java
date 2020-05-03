@@ -154,6 +154,18 @@ public class CartController {
         return R.error(-1,"删除出错");
     }
     /**
+     * 统计个人购物车中的商品数量信息
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/count",produces = "application/json;charset=UTF-8")
+    public R count(@RequestBody Cart cart){
+        int count = cartService.count(cart.getUserId());
+        if (count > 0){
+            return R.ok().put("data",count);
+        }
+        return R.error(-1,"选择出错");
+    }
+    /**
      * 获取购物车中用于选择商品规格的商品信息
      */
 

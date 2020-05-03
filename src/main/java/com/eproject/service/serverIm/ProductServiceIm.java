@@ -4,8 +4,10 @@ import com.eproject.common.PageQuery;
 import com.eproject.common.PageResult;
 import com.eproject.common.Result;
 import com.eproject.dao.ProductDao;
+import com.eproject.dao.ShuStockDao;
 import com.eproject.entity.Carouse;
 import com.eproject.entity.Product;
+import com.eproject.entity.ShuStock;
 import com.eproject.service.ProductService;
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,23 @@ public class ProductServiceIm implements ProductService {
     @Resource
     private ProductDao productDao;
 
+    @Resource
+    private ShuStockDao shuStockDao;
+
     @Override
-    public String saveProduct(Product product){
-        if (productDao.saveProduct(product) > 0){
+    public String saveProduct(Product p){
+
+        if (productDao.saveProduct(p) > 0){
+            Product product = productDao.selectNewProduct(p);
+            ShuStock shuStock = new ShuStock();
+            shuStock.setProductId(product.getId());
+            shuStock.setPromotionPrice(p.getPromotePrice());
+            shuStock.setSkuCode(p.getProductSn());
+            shuStock.setStock(p.getStock());
+            shuStock.setPrice(p.getPrice());
+            shuStock.setPic(p.getProductImg());
+            shuStock.setLowStock(50);
+            shuStockDao.insertSelective(shuStock);
             return Result.SUCCESS.getResult();
         }
         return Result.ERROR.getResult();
@@ -84,8 +100,8 @@ public class ProductServiceIm implements ProductService {
     }
 
     @Override
-    public int updateStock(Integer[] ids, Product goods){
-        List<Product> product =  productDao.selectIdList(goods,ids);
+    public int updateStock(List<Product> goods){
+        List<Product> product =  productDao.selectIdList(goods);
         //转化为o数组对象
         Object[] o = product.toArray();
         for (int i=0; i<o.length; i++){
@@ -94,12 +110,12 @@ public class ProductServiceIm implements ProductService {
             int count = products.getStock();
             products.setStock(count < 0 ? 0 : count);
         }
-        return productDao.updateStock(ids);
+        return productDao.updateStock(goods);
     }
 
     @Override
-    public int updateSaleNumber(Integer[] id){
-        return productDao.updateSale(id);
+    public int updateSaleNumber(List<Product> goods){
+        return productDao.updateSale(goods);
     }
 
     @Override

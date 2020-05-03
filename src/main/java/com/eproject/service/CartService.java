@@ -26,6 +26,11 @@ public interface CartService {
      * 清空购物车
      */
     int clear(Integer userId);
+
+    /**
+     * 统计个人购物车中的商品数量信息
+     */
+    int count(Integer userId);
     /**
      * 获取购物车中用于选择商品规格的商品信息
      */

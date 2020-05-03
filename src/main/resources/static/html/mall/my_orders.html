@@ -47,7 +47,7 @@
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-                <a class="nav-link" href="/">
+                <a class="nav-link" href="index.html">
                     <i class="fa fa-paper-plane">&nbsp;&nbsp;newbee-mall首页</i>
                 </a>
             </li>
@@ -84,7 +84,7 @@
             <a href="collect.html">我的收藏</a>
         </div>
         <div class="gr">
-            <a class="hsys" href="follow.html">我的关注</a>
+            <a href="follow.html">我的关注</a>
         </div>
         <!--					<div class="gr">-->
         <!--						<a href="wdfensi.html">我的粉丝</a>-->
@@ -93,7 +93,7 @@
             <a href="cart.html">我的购物车</a>
         </div>
         <div class="gr">
-            <a href="my_orders.html">我的订单</a>
+            <a class="hsys" href="my_orders.html">我的订单</a>
         </div>
         <!--					<div class="gr">-->
         <!--						<a href="wdzhixun.html">我的咨询</a>-->
@@ -177,15 +177,11 @@
 
                                         <td>{{item.productPrice * item.productQuantity}}.00元</td>
                                         <td>{{dateFormat(item.createTime)}}</td>
-                                        <td>订单详情</td>
-<!--                                        <td v-if="item.recomandStatus == 1">已推荐</td>-->
-<!--                                        <td v-else="item.recomandStatus == 0">不推荐</td>-->
-<!--                                        <td>-->
-<!--                                            {{item.viewCount}}-->
-<!--                                            <div class="ck">-->
-<!--&lt;!&ndash;                                                <a :href="'../advice-detail.html?item='+item.id+'&isCenter='+isCenter">查看</a>&ndash;&gt;-->
-<!--                                            </div>-->
-<!--                                        </td>-->
+                                        <td>
+                                            <div class="ck">
+                                                <a :href="'order-detail.html?orderNo='+item.orderNo">查看详情</a>
+                                            </div>
+                                        </td>
 
                                     </tr>
                                 </table>
@@ -195,14 +191,14 @@
 <!--                             v-if="goodsList.list.length > 0"-->
                             <div class="pagination">
                                 <li v-if="current > 1">
-                                    <a href="#" @click="current--;productList()">上一页</a>
+                                    <a href="#" @click="current--;findList()">上一页</a>
                                 </li>
                                 <li v-if="current==1"><a class="banclick">上一页</a></li>
 
                                 <li v-for="index in indexs" >
-                                    <a :class="{'active': current == index}" @click="productList(index)">{{ index }}</a>
+                                    <a :class="{'active': current == index}" @click="findList(index)">{{ index }}</a>
                                 </li>
-                                <li v-if="current!=pages"><a @click="current++;productList()">下一页</a></li>
+                                <li v-if="current!=pages"><a @click="current++;findList()">下一页</a></li>
                                 <li v-if="current == pages"><a class="banclick">下一页</a></li>
                             </div>
                         </div>

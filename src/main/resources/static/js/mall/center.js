@@ -13,9 +13,11 @@ var vm = new Vue({
         limit: 10,
         pages: 1,
         followList: [],
-        total: 0
+        total: 0,
+        vip:'',
     },
     mounted: function () {
+        this.vip = getCookie("loginUser");
         var accessToken = getCookie("accessToken");
         if (isEmpty(accessToken)) {
             alert("请登录");
