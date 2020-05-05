@@ -2,10 +2,12 @@ package com.eproject.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * product
- * @author 
+ *
+ * @author
  */
 public class Product implements Serializable {
     private Integer id;
@@ -19,7 +21,6 @@ public class Product implements Serializable {
 
     /**
      * 产品图
-
      */
     private String productImg;
 
@@ -88,7 +89,15 @@ public class Product implements Serializable {
      */
     private Integer publishStatus;
 
+    /**
+     * 搜索次数
+     */
+    private Integer searchCount;
+
     private static final long serialVersionUID = 1L;
+
+//    public Product(Map<String, Object> params) {
+//    }
 
     public Integer getCategoryId() {
         return categoryId;
@@ -219,11 +228,19 @@ public class Product implements Serializable {
     }
 
     public Integer getPublishStatus() {
-        return publishStatus;
+        return searchCount;
     }
 
     public void setPublishStatus(Integer publishStatus) {
-        this.publishStatus = publishStatus;
+        this.searchCount = searchCount;
+    }
+
+    public Integer getSearchCount() {
+        return searchCount;
+    }
+
+    public void setSearchCount(Integer searchCount) {
+        this.searchCount = searchCount;
     }
 
     @Override
@@ -239,21 +256,23 @@ public class Product implements Serializable {
         }
         Product other = (Product) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getProductName() == null ? other.getProductName() == null : this.getProductName().equals(other.getProductName()))
-            && (this.getProductImg() == null ? other.getProductImg() == null : this.getProductImg().equals(other.getProductImg()))
-            && (this.getProductSn() == null ? other.getProductSn() == null : this.getProductSn().equals(other.getProductSn()))
-            && (this.getDetail() == null ? other.getDetail() == null : this.getDetail().equals(other.getDetail()))
-            && (this.getSale() == null ? other.getSale() == null : this.getSale().equals(other.getSale()))
-            && (this.getStock() == null ? other.getStock() == null : this.getStock().equals(other.getStock()))
-            && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
-            && (this.getPromotePrice() == null ? other.getPromotePrice() == null : this.getPromotePrice().equals(other.getPromotePrice()))
-            && (this.getSort() == null ? other.getSort() == null : this.getSort().equals(other.getSort()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getRecomandStatus() == null ? other.getRecomandStatus() == null : this.getRecomandStatus().equals(other.getRecomandStatus()))
-            && (this.getUnit() == null ? other.getUnit() == null : this.getUnit().equals(other.getUnit()))
-            && (this.getDeleteStatus() == null ? other.getDeleteStatus() == null : this.getDeleteStatus().equals(other.getDeleteStatus()))
-            && (this.getVerifyStatus() == null ? other.getVerifyStatus() == null : this.getVerifyStatus().equals(other.getVerifyStatus()))
-            && (this.getPublishStatus() == null ? other.getPublishStatus() == null : this.getPublishStatus().equals(other.getPublishStatus()));
+                && (this.getProductName() == null ? other.getProductName() == null : this.getProductName().equals(other.getProductName()))
+                && (this.getProductImg() == null ? other.getProductImg() == null : this.getProductImg().equals(other.getProductImg()))
+                && (this.getProductSn() == null ? other.getProductSn() == null : this.getProductSn().equals(other.getProductSn()))
+                && (this.getDetail() == null ? other.getDetail() == null : this.getDetail().equals(other.getDetail()))
+                && (this.getSale() == null ? other.getSale() == null : this.getSale().equals(other.getSale()))
+                && (this.getStock() == null ? other.getStock() == null : this.getStock().equals(other.getStock()))
+                && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
+                && (this.getPromotePrice() == null ? other.getPromotePrice() == null : this.getPromotePrice().equals(other.getPromotePrice()))
+                && (this.getSort() == null ? other.getSort() == null : this.getSort().equals(other.getSort()))
+                && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+                && (this.getRecomandStatus() == null ? other.getRecomandStatus() == null : this.getRecomandStatus().equals(other.getRecomandStatus()))
+                && (this.getUnit() == null ? other.getUnit() == null : this.getUnit().equals(other.getUnit()))
+                && (this.getDeleteStatus() == null ? other.getDeleteStatus() == null : this.getDeleteStatus().equals(other.getDeleteStatus()))
+                && (this.getVerifyStatus() == null ? other.getVerifyStatus() == null : this.getVerifyStatus().equals(other.getVerifyStatus()))
+                && (this.getPublishStatus() == null ? other.getPublishStatus() == null : this.getPublishStatus().equals(other.getPublishStatus()))
+                && (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
+                && (this.getSearchCount() == null ? other.getSearchCount() == null : this.getSearchCount().equals(other.getSearchCount()));
     }
 
     @Override
@@ -276,6 +295,8 @@ public class Product implements Serializable {
         result = prime * result + ((getDeleteStatus() == null) ? 0 : getDeleteStatus().hashCode());
         result = prime * result + ((getVerifyStatus() == null) ? 0 : getVerifyStatus().hashCode());
         result = prime * result + ((getPublishStatus() == null) ? 0 : getPublishStatus().hashCode());
+        result = prime * result + ((getCategoryId() == null) ? 0 : getCategoryId().hashCode());
+        result = prime * result + ((getSearchCount() == null) ? 0 : getSearchCount().hashCode());
         return result;
     }
 
@@ -301,6 +322,8 @@ public class Product implements Serializable {
         sb.append(", deleteStatus=").append(deleteStatus);
         sb.append(", verifyStatus=").append(verifyStatus);
         sb.append(", publishStatus=").append(publishStatus);
+        sb.append(", CategoryId=").append(categoryId);
+        sb.append(", searchCount=").append(searchCount);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

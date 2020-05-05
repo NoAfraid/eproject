@@ -2,18 +2,20 @@ package com.eproject.controller;
 
 import com.eproject.common.Contants;
 import com.eproject.common.IndexConfigTypeEnum;
+import com.eproject.common.PageQuery;
 import com.eproject.common.R;
 import com.eproject.entity.Carouse;
 import com.eproject.entity.Product;
 import com.eproject.service.CarouseService;
 import com.eproject.service.ProductService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @ResponseBody
@@ -63,5 +65,54 @@ public class IndexController {
             return R.ok().put("data",newProductList);
         }
         return R.error(-1,"获取错误");
+    }
+
+    /**
+     * 返回固定数量的热搜的产品对象(首页调用)
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/getProductForHotSearch",produces = "application/json;charset=UTF-8")
+    public R getProductForHotSearch(){
+        List<Product> HotSearchProductList = productService.getProductForHotSearch(Contants.INDEX_HOTSEARCH_NUMBER);
+        if (HotSearchProductList.size() > 0){
+            return R.ok().put("data",HotSearchProductList);
+        }
+        return R.error(-1,"获取错误");
+    }
+
+    @GetMapping(value = "/returnSearchPage")
+//    @ResponseBody
+    public String reSearchPage(){
+        return "search.html";
+    }
+    /**
+     * 搜索商品（搜索框搜索)
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/searchProductForIndex",produces = "application/json;charset=UTF-8")
+    public R searchProductForIndex(@RequestBody Map<String, Object> params, HttpServletResponse response){
+        response.setContentType("text/html;chatset=utf-8");
+        response.setCharacterEncoding("utf-8");
+        String productName = "";
+        String description = "";
+        String productSn = "";
+        //对keyword做去空格处理
+        if (params.containsKey("productName") && !StringUtils.isEmpty((params.get("productName") + "").trim())) {
+            productName = params.get("productName") + "";
+        }
+        params.put("productName",productName);
+
+        if (params.containsKey("description") && !StringUtils.isEmpty((params.get("description") + "").trim())) {
+            description = params.get("description") + "";
+        }
+        params.put("description",description);
+
+        if (params.containsKey("productSn") && !StringUtils.isEmpty((params.get("productSn") + "").trim())) {
+            productSn = params.get("productSn") + "";
+        }
+        params.put("productSn",productSn);
+        //封装商品数据
+//        Product product = new Product(params);
+        return R.ok().put("data",productService.searchProductForIndex(params));
     }
 }

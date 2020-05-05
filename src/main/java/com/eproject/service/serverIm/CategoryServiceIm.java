@@ -20,6 +20,7 @@ public class CategoryServiceIm implements CategoryService {
     @Override
     public int saveCategory(Category category){
         Category temp = categoryDao.selectByCategory(category);
+        category.setCreateTime(new Date());
         if (temp != null){
             return -1;
         }

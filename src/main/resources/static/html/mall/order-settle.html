@@ -6,75 +6,76 @@
     <link rel="stylesheet" href="../../css/mall/css/iconfont.css">
     <link rel="stylesheet" href="../../css/mall/css/common.css">
     <link rel="stylesheet" href="../../css/mall/styles/header.css">
-    <link rel="stylesheet" href="../../css/mall/css/bootstrap-modal.css">
     <link rel="stylesheet" href="../../css/mall/styles/order-detail.css">
     <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
-<!--    <link rel="stylesheet" type="text/css" href="../../css/css.css"/>-->
-    <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
+    <!--    <link rel="stylesheet" type="text/css" href="../../css/css.css"/>-->
+<!--    <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>-->
 </head>
+<link href="../../css/mall/css/bootstrap-modal.css" rel="stylesheet">
 <body>
+
 <!-- personal -->
-<div id="app">
-    <header id="header">
-        <div class="center">
-            <ul class="fl">
-                <li><a href="index.html">新蜂商城</a></li>
-                <li><a href="../goods_get.html">后台管理系统</a></li>
-                <!--            <li><a href="https://edu.csdn.net/course/detail/26258">课程视频</a></li>-->
-                <!--            <a href="https://juejin.im/book/5da2f9d4f265da5b81794d48?referrer=59199e22a22b9d0058279886">课程文档</a>-->
-                <!--            <li><a href="https://gitee.com/newbee-ltd/newbee-donate">捐赠</a></li>-->
-                <!--            <li><a href="https://github.com/newbee-ltd/newbee-mall/issues">问题反馈</a></li>-->
-                <!--            <li><a href="https://github.com/newbee-ltd/newbee-mall">GitHub 地址</a></li>-->
-                <!--            <li><a href="https://gitee.com/newbee-ltd/newbee-mall">码云Gitee 地址</a></li>-->
-            </ul>
-            <div class="fr">
-                <!--            <div >-->
-                <div class="user" v-if="vip !=null">
-                    <ul class="selector">
-                        <li>
-                            <a href="center.html">
-                                个人中心
-                            </a>
-                        </li>
-                        <li>
-                            <a href="my_orders.html">
-                                我的订单
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:loginout()">
-                                退出登录
-                            </a>
-                        </li>
-                    </ul>
-                    <a href="##" class="username">
-                        <div>{{user.nick}}</div>
-                        <i class="iconfont icon-down"></i>
-                    </a>
-                </div>
-                <div class="shopcart">
-                    <a href="cart.html" style="color: white;"><i class="iconfont icon-cart"></i>
-                        购物车(
-                        {{cart}}
-                        )</a>
-                </div>
-                <!--            </div>-->
-                <div v-if="vip==null">
-                    <ul class="login">
-                        <li><a href="login.html">登录</a></li>
-                        <li><a href="register.html">注册</a></li>
-                    </ul>
+<div id="personal">
+
+    <div class="self-info center" id="app">
+        <header id="header">
+            <div class="center">
+                <ul class="fl">
+                    <li><a href="index.html">新蜂商城</a></li>
+                    <li><a href="../goods_get.html">后台管理系统</a></li>
+                    <!--            <li><a href="https://edu.csdn.net/course/detail/26258">课程视频</a></li>-->
+                    <!--            <a href="https://juejin.im/book/5da2f9d4f265da5b81794d48?referrer=59199e22a22b9d0058279886">课程文档</a>-->
+                    <!--            <li><a href="https://gitee.com/newbee-ltd/newbee-donate">捐赠</a></li>-->
+                    <!--            <li><a href="https://github.com/newbee-ltd/newbee-mall/issues">问题反馈</a></li>-->
+                    <!--            <li><a href="https://github.com/newbee-ltd/newbee-mall">GitHub 地址</a></li>-->
+                    <!--            <li><a href="https://gitee.com/newbee-ltd/newbee-mall">码云Gitee 地址</a></li>-->
+                </ul>
+                <div class="fr">
+                    <!--            <div >-->
+                    <div class="user" v-if="vip !=null">
+                        <ul class="selector">
+                            <li>
+                                <a href="center.html">
+                                    个人中心
+                                </a>
+                            </li>
+                            <li>
+                                <a href="my_orders.html">
+                                    我的订单
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:loginout()">
+                                    退出登录
+                                </a>
+                            </li>
+                        </ul>
+                        <a href="##" class="username">
+                            <div>{{user.nick}}</div>
+                            <i class="iconfont icon-down"></i>
+                        </a>
+                    </div>
                     <div class="shopcart">
-                        <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>
-                            购物车(0)</a>
+                        <a href="cart.html" style="color: white;"><i class="iconfont icon-cart"></i>
+                            购物车(
+                            {{cart}}
+                            )</a>
+                    </div>
+                    <!--            </div>-->
+                    <div v-if="vip==null">
+                        <ul class="login">
+                            <li><a href="login.html">登录</a></li>
+                            <li><a href="register.html">注册</a></li>
+                        </ul>
+                        <div class="shopcart">
+                            <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>
+                                购物车(0)</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
-    <div class="self-info center">
-
+        </header>
         <!--         sidebar-->
         <div class="grzxdht">
             <div class="gr">
@@ -112,10 +113,20 @@
         <div class="intro fr">
             <div class="uc-box uc-main-box">
                 <div class="uc-content-box order-view-box">
+
+                    <div class="box-hd">
+                        <h1 class="title">填写并核对订单信息</h1>
+                        <div class="more clearfix">
+                            <div class="actions">
+                                <a id="saveOrder" @click="SuOrder" class="btn btn-small btn-primary" title="提交订单">提交订单</a>
+                            </div>
+                        </div>
+                        <!--                        <div v-if="order == null" style="visibility: hidden">暂无订单号</div>-->
+                        <!--                        <div style="float: left" v-else>订单号：{{order.orderNo}}</div>-->
+                    </div>
                     <div class="box-bd">
                         <div class="uc-order-item uc-order-item-pay">
                             <div class="order-detail">
-
                                 <div class="order-summary">
                                     <div class="order-progress">
                                         <ol class="progress-list clearfix progress-list-5">
@@ -225,16 +236,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="box-hd">
-                                <h1 class="title">填写并核对订单信息</h1>
-                                <div class="more clearfix">
-                                    <div class="actions">
-                                        <a id="saveOrder" @click="SuOrder" class="btn btn-small btn-primary" title="提交订单">提交订单</a>
-                                    </div>
-                                </div>
-                                <!--                        <div v-if="order == null" style="visibility: hidden">暂无订单号</div>-->
-                                <!--                        <div style="float: left" v-else>订单号：{{order.orderNo}}</div>-->
                             </div>
                         </div>
                     </div>

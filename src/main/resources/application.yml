@@ -20,6 +20,12 @@ spring:
         cache:
           period: 0
 
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
+
   mvc:
     static-path-pattern: /**
 

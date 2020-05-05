@@ -7,7 +7,7 @@ var vm = new Vue({
             promotePrice: '',
             description: '',
         },
-        hotProductList: [],
+        saleProductList: [],
         carouselList: [],
         productL: {
             productName: "",
@@ -15,7 +15,8 @@ var vm = new Vue({
         mark: 0,
         vip:[],
         user:{nick:''},
-        cart:{count:0}
+        cart:{count:0},
+        hotProductList:{},
     },
     mounted: function () {
         var swiper = new Swiper('.swiper-container', {
@@ -48,6 +49,7 @@ var vm = new Vue({
         this.hotProduct();
         this.getUserInfo();
         this.getCartInfo();
+        this.Hotproduct();
     },
     computed: {
         indexs: function () {
@@ -97,7 +99,7 @@ var vm = new Vue({
                         vm.user = result.data
                         console.log(vm.user.nick)
                     } else {
-                        alert(result.msg)
+                        // alert(result.msg)
                     }
                 }
             })
@@ -157,21 +159,6 @@ var vm = new Vue({
          * 新品商品配置
          */
         product: function () {
-            // var t = {
-            //     id:1
-            // };
-            // this. vip = getCookie("loginUser");
-            // alert(this.vip)
-            // var userId = this.vip.id;
-            // alert(userId)
-            // for (var i=0;i<this.vip.length;i++){
-            //     userId = this.vip[3]
-            //
-            // }
-            // alert(userId)
-            // console.log(userId)
-            // console.log(this.vip)
-            // alert(this.vip)
             var formData = JSON.stringify();
             $.ajax({
                 type: "post",
@@ -182,6 +169,27 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.productList = result.data
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        },
+
+        /**
+         * 热搜商品
+         */
+        Hotproduct: function () {
+            var formData = JSON.stringify();
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/index/getProductForHotSearch",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.hotProductList = result.data
                     } else {
                         alert(result.msg)
                     }
@@ -205,7 +213,7 @@ var vm = new Vue({
                 data: formData,
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.hotProductList = result.data
+                        vm.saleProductList = result.data
                     } else {
                         alert(result.msg)
                     }
@@ -256,26 +264,16 @@ var vm = new Vue({
         /**
          * 模糊查询商品
          */
-        searchProduct: function () {
-            // var t = {
-            //     this
-            // };
-            var formData = JSON.stringify(this.productL);
-            $.ajax({
-                type: "post",
-                url: "http://localhost:8080/product/update/search?page=1&limit=1",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                data: formData,
-                success: function (result) {
-                    if (result.code == 0) {
-                        vm.productL = result.data
-                        console.log(vm.productL)
-                    } else {
-                        alert(result.msg)
-                    }
-                }
-            })
+        searchProductList: function (productName) {
+
+            // this.productL.productName = productName;
+            window.location.href = encodeURI("search.html?keyword="+ (this.productL.productName));
+
+        },
+        searchProduc: function (productName) {
+            this.productL.productName = productName;
+            window.location.href = encodeURI("search.html?keyword="+ (this.productL.productName));
+
         },
 
     }

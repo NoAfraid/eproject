@@ -86,7 +86,8 @@
                     <div class="search_hot">
                     </div>
                 </div>
-                <div class="button iconfont icon-search" @click="searchProduct"></div>
+                <div class="button iconfont icon-search" @click="searchProductList"></div>
+                <div v-for="(item, index ) in hotProductList" :class="index % 5 == 0 ? 'mlkj' : 'mlkj1'" style="display:inline-block" @click="searchProduc(item.productName)"><p>{{item.productName}}&nbsp;&nbsp;</p></div>
             </div>
         </div>
     </nav>
@@ -127,17 +128,17 @@
                 <!--                    </div>-->
                 <!--                </th:block>-->
                 <!-- 未配置轮播图则显示默认的三张轮播图 -->
-                <div v-if="carouselList.length <=0">
-                    <div class="swiper-slide">
-                        <img src="../../css/mall/image/swiper/banner01.jpg" alt="">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src=../../css/mall/image/swiper/banner02.jpg" alt="">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="../../css/mall/image/swiper/banner03.jpg" alt="">
-                    </div>
-                </div>
+<!--                <div v-if="carouselList.length <=0">-->
+<!--                    <div class="swiper-slide">-->
+<!--                        <img src="../../css/mall/image/swiper/banner01.jpg" alt="">-->
+<!--                    </div>-->
+<!--                    <div class="swiper-slide">-->
+<!--                        <img src=../../css/mall/image/swiper/banner02.jpg" alt="">-->
+<!--                    </div>-->
+<!--                    <div class="swiper-slide">-->
+<!--                        <img src="../../css/mall/image/swiper/banner03.jpg" alt="">-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-prev"></div>
@@ -189,7 +190,7 @@
                 <a @click="productdetail(item.id)">
                     <!--                            th:href="@{'/goods/detail/'+${newGoods.goodsId}}"-->
                     <img :src="item.productImg" :alt="item.productName">
-                    <p class="name">{{item.productName}}</p>
+                    <p class="name" >{{item.productName}}</p>
                     <p class="discount">{{item.description}}</p>
                     <p class="item_price">{{item.promotePrice}}</p>
                 </a>
@@ -248,9 +249,9 @@
     <div id="recommend">
         <h2>为你推荐</h2>
         <a href="##" class="more">查看更多>></a>
-        <ul v-if="hotProductList.length > 0">
+        <ul v-if="saleProductList.length > 0">
             <!-- 已配置推荐商品则显示配置内容 -->
-            <li v-for="item in hotProductList">
+            <li v-for="item in saleProductList">
                 <a @click="productdetail(item.id)">
                     <!--                            th:href="@{'/goods/detail/'+${newGoods.goodsId}}"-->
                     <img :src="item.productImg" :alt="item.productName">
@@ -262,7 +263,7 @@
             </th:block>
             </th:block>
             <!-- 未配置则显示默认 -->
-            <div v-if="hotProductList.length <= 0">
+            <div v-if="saleProductList.length <= 0">
                 <li>
                     <a href="##">
                         <div class="info discount">
@@ -419,7 +420,7 @@
 </content>
 <div th:replace="mall/footer::footer-fragment"></div>
 <!-- jQuery -->
-<script src="../../css/admin/plugins/jquery/jquery.min.js"></script>
+<script src="../../css/admin/plugins/jquery/jquery.js"></script>
 <script src="../../css/admin/plugins/jQueryUI/jquery-ui.min.js"></script>
 <script src="../../css/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../../css/mall/js/swiper.min.js" type="text/javascript"></script>
@@ -431,7 +432,7 @@
 <!--<script src="../../js/mall/header.js"></script>-->
 <!--		<script src="../../js/jquery.form.js"></script>-->
 <script src="../../js/mall/index.js"></script>
-1
+
 
 <!--<script src="../../css/admin/plugins/jquery/jquery.min.js"></script>-->
 

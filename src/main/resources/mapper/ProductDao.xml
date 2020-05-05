@@ -19,11 +19,12 @@
         <result column="verify_status" jdbcType="INTEGER" property="verifyStatus"/>
         <result column="publish_status" jdbcType="INTEGER" property="publishStatus"/>
         <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+        <result column="search_count" jdbcType="INTEGER" property="searchCount"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, product_name, product_img, product_sn, detail, sale, stock, price, promote_price, 
-    sort, description, recomand_status, unit, delete_status, verify_status, publish_status
-  </sql>
+    sort, description, recomand_status, unit, delete_status, verify_status, publish_status,search_count
+    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -109,20 +110,42 @@
         </where>
     </select>
     <select id="selectProductListByNumber" parameterType="int" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+        select *
         from product
         where delete_status = 0
         order by id desc
         limit #{number}
     </select>
     <select id="getProductSaleForIndex" parameterType="int" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+        select *
         from product
         where delete_status = 0
         order by sale desc
         limit #{number}
+    </select>
+    <select id="getProductForHotSearch" parameterType="int" resultMap="BaseResultMap">
+        select *
+        from product
+        where search_count > 0
+        order by search_count desc
+        limit #{number}
+    </select>
+    <select id="searchProductForIndex" parameterType="int" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from product
+        <where>
+            <if test="productSn!=null and productSn!=''">
+                and (product_sn like CONCAT('%',#{productSn},'%'))
+            </if>
+            <if test="productName!=null and productName!=''">
+                or (product_name like CONCAT('%',#{productName},'%'))
+            </if>
+            <if test="description!=null and description!=''">
+                or (description like CONCAT('%',#{description},'%'))
+            </if>
+        </where>
+        order by id desc
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product
@@ -149,6 +172,12 @@
       #{deleteStatus,jdbcType=INTEGER}, #{verifyStatus,jdbcType=INTEGER}, #{publishStatus,jdbcType=INTEGER}
       )
   </insert>
+    <update id="updateSearchCount" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Product"
+            useGeneratedKeys="true">
+        update product
+        set search_count = #{searchCount}
+        where id = #{id}
+    </update>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Product"
             useGeneratedKeys="true">
         insert into product
@@ -198,6 +227,9 @@
             <if test="publishStatus != null">
                 publish_status,
             </if>
+            <if test="searchCount != null">
+                search_count,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="productName != null">
@@ -244,6 +276,9 @@
             </if>
             <if test="publishStatus != null">
                 #{publishStatus,jdbcType=INTEGER},
+            </if>
+            <if test="searchCount != null">
+                #{searchCount,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>

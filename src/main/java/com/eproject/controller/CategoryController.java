@@ -5,9 +5,7 @@ import com.eproject.common.PageQuery;
 import com.eproject.common.R;
 import com.eproject.entity.Category;
 import com.eproject.service.CategoryService;
-import com.eproject.util.ResultGenerator;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -113,9 +111,9 @@ public class CategoryController {
     /**
      * 分页查询列表
      */
-    @RequestMapping(value = "/categories/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/categories/list", method = RequestMethod.POST)
     @ResponseBody
-    public R list(@RequestParam Map<String, Object> params) {
+    public R list(@RequestBody Map<String, Object> params) {
         if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
             return R.error("参数异常！");
         }

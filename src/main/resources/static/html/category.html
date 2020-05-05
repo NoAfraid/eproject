@@ -18,21 +18,19 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="../css/admin/dist/css/adminlte.min.css">
     <link rel="stylesheet" type="text/css" href="../css/grzx.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/css.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/zt.css"/>
 </head>
-<!--<header th:replace="admin/header::header-fragment">-->
-<!--</header>-->
-<style>
-    .ui-jqgrid tr.jqgrow td {
-        white-space: normal !important;
-        height: auto;
-        vertical-align: text-top;
-        padding-top: 2px;
-    }
-</style>
+<header th:replace="admin/header::header-fragment">
+</header>
+<!--<style>-->
+<!--    .ui-jqgrid tr.jqgrow td {-->
+<!--        white-space: normal !important;-->
+<!--        height: auto;-->
+<!--        vertical-align: text-top;-->
+<!--        padding-top: 2px;-->
+<!--    }-->
+<!--</style>-->
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
+<div class="wrapper" id="app">
     <!-- 引入页面头header-fragment -->
     <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
         <!-- Right navbar links -->
@@ -95,7 +93,7 @@
                     <li class="nav-header">首页配置</li>
                     <li class="nav-item">
                         <a href="/html/admin_carousel.html"
-                           class="nav-link active">
+                           class="nav-link ">
                             <i class="nav-icon fa fa-file-image-o"></i>
                             <p>
                                 轮播图配置
@@ -132,7 +130,7 @@
                     <li class="nav-header">管理模块</li>
                     <li class="nav-item">
                         <a href="category.html"
-                           class="nav-link">
+                           class="nav-link active">
                             <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
                             <p>
                                 分类管理
@@ -184,7 +182,7 @@
         </div>
     </aside>
     <!-- Content Wrapper. Contains 图标content -->
-    <div class="content-wrapper" id="app">
+    <div class="content-wrapper">
         <!-- Content Header (图标header) -->
         <div class="content-header">
             <div class="container-fluid">
@@ -195,45 +193,42 @@
             <div class="container-fluid">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">轮播图管理</h3>
+                        <h3 class="card-title">分类管理</h3>
                     </div> <!-- /.card-body -->
                     <div class="card-body">
                         <div class="grid-btn">
-                            <button class="btn btn-info" @click="carouselModal"><i
+                            <button class="btn btn-info" @click="returnModal"><i
                                     class="fa fa-plus"></i>&nbsp;新增
                             </button>
-                            <button class="btn btn-info" @click="uodateCarousel"><i
+                            <button class="btn btn-info" @click="ABCModal"><i
                                     class="fa fa-pencil-square-o"></i>&nbsp;修改
                             </button>
-                            <button class="btn btn-danger" @click="deleteCarousel"><i
+                            <button class="btn btn-danger" onclick="deleteCagegory()"><i
                                     class="fa fa-trash-o"></i>&nbsp;删除
+                            </button>
+                            <button class="btn btn-info" onclick="categoryManage()"><i
+                                    class="fa fa-list"></i>&nbsp;下级分类管理
+                            </button>
+                            <button class="btn btn-info" onclick="categoryBack()"><i
+                                    class="fa fa-backward"></i>&nbsp;返回
                             </button>
                         </div>
                         <br>
-                        <div class="v1">
-                            <div class="v2">
-                                <table class="gridtable" >
-                                    <tr>
-                                        <td><label><input type="checkbox" id="checkAll"/></label></td>
-                                        <th>轮播图</th>
-                                        <th>轮播图名</th>
-                                        <td>跳转链接</td>
-                                        <th>排序权重</th>
-                                        <th>创建时间</th>
-                                        <th>更新时间</th>
-                                    </tr>
-                                    <tr class="gridtable" v-for="item in goodsList">
-                                        <td><input type="checkbox" v-model="msg" :value="item.id"/></td>
-                                        <td><img :src="item.productImg"/></td>
-                                        <td>{{item.carouseName}}</td>
-                                        <td>{{item.redirectUrl}}</td>
-                                        <td>{{item.carouseRank}}</td>
-                                        <td>{{dateFormat(item.creatTime)}}</td>
-                                        <td>{{dateFormat(item.updateTime)}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+                        <table class="gridtable" >
+                            <tr>
+                                <td><label><input type="checkbox" id="checkAll"/></label></td>
+                                <th>分类名称</th>
+                                <th>排序值</th>
+                                <th>添加时间</th>
+                            </tr>
+                            <tr class="gridtable" v-for="item in category.list">
+                                <td><input type="checkbox" v-model="msg" :value="item.id"/></td>
+                                <td>{{item.categoryName}}</td>
+                                <td>{{item.categoryRank}}</td>
+                                <td>{{dateFormat(item.createTime)}}</td>
+
+<!--                            </tr>-->
+                        </table>
                     </div><!-- /.card-body -->
                 </div>
             </div><!-- /.container-fluid -->
@@ -241,100 +236,93 @@
         <!-- /.content -->
         <div class="content">
             <!-- 模态框（Modal） -->
-            <div class="modal fade" id="carouselModal" tabindex="-1" role="dialog"
-                 aria-labelledby="carouselModalLabel">
+            <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
-                            <h6 class="modal-title" id="carouselModalLabel">Modal</h6>
+                            <h6 class="modal-title" id="categoryModalLabel">Modal</h6>
                         </div>
                         <div class="modal-body">
-                            <form id="indexConfigForm">
-                                <div class="zxbt" style="display:flex;">
-                                    <p><span class="red">*</span>选择主图：</p>
-                                    <div class="xzsp">
-                                        <div @click="openImg">
-                                            <img  v-if="carousel.productImg==''" src="../css/admin/dist/img/img-upload.png"/>
-                                            <img id="image" :src="carousel.productImg" controls="controls" v-else>
-                                            <!--                                        您的浏览器不支持 video 标签-->
-                                            </img>
-                                        </div>
-                                        <form id="fileForm" enctype="multipart/form-data" method="post">
-                                            <input id="file" @change="preview" type="file" name="file" />
-                                        </form>
-
+                            <form id="categoryForm">
+                                <div class="form-group">
+                                    <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                                        错误信息展示栏。
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="redirectUrl" class="control-label">跳转链接:</label>
-                                    <input type="text" class="form-control" id="redirectUrl" v-model.trim="carousel.redirectUrl"
-                                           placeholder="请输入跳转链接" value="##">
+                                    <label for="categoryName" class="control-label">分类级别:</label>
+                                    <input type="text" class="form-control" id="categoryLevel" v-model="category.categoryLevel"
+                                           placeholder="请输入分类级别" required="true">
                                 </div>
                                 <div class="form-group">
-                                    <label for="carouselRank" class="control-label">排序值:</label>
-                                    <input type="number" class="form-control" id="carouselRank" v-model.number="carousel.carouseRank"
-                                           placeholder="请输入排序值">
+                                    <label for="categoryName" class="control-label">父类ID:</label>
+                                    <input type="text" class="form-control" id="parentId" v-model="category.parentId"
+                                           placeholder="请输入父类ID" required="true">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="categoryName" class="control-label">分类名称:</label>
+                                    <input type="text" class="form-control" id="categoryName" v-model="category.categoryName"
+                                           placeholder="请输入分类名称" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="categoryName" class="control-label">排序值:</label>
+                                    <input type="number" class="form-control" id="categoryRank" v-model="category.categoryRank"
+                                           placeholder="请输入分类排序值" required="true">
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" @click="carouselAdd">确认</button>
+                            <button type="button" class="btn btn-primary" @click="insertCategory">确认</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- /.modal -->
-        </div>
-        <div class="content">
-            <!-- 模态框（Modal） -->
-            <div class="modal fade" id="updateCarouselModal" tabindex="-1" role="dialog"
-                 aria-labelledby="carouselModalLabel">
+
+            <div class="modal fade" id="updateCategory" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
-                            <h6 class="modal-title" id="updateCarouseModal">关闭</h6>
+                            <h6 class="modal-title" id="abc">Modal</h6>
                         </div>
                         <div class="modal-body">
-                            <form id="indexConfigForm">
-                                <div class="zxbt" style="display:flex;">
-                                    <p><span class="red">*</span>选择主图：</p>
-                                    <div class="xzsp">
-                                        <div @click="openImg">
-                                            <img  v-if="carousel.productImg==''" src="../css/admin/dist/img/img-upload.png"/>
-                                            <img id="image" :src="carousel.productImg" controls="controls" v-else>
-                                            <!--                                        您的浏览器不支持 video 标签-->
-                                            </img>
-                                        </div>
-                                        <form id="fileForm" enctype="multipart/form-data" method="post">
-                                            <input id="file" @change="preview" type="file" name="file" />
-                                        </form>
+                            <form id="categoryForm">
+                                <div class="form-group">
+                                    <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                                        错误信息展示栏。
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="redirectUrl" class="control-label">跳转链接:</label>
-                                    <input type="text" class="form-control" id="redirectUrl" v-model.trim="carousel.redirectUrl"
-                                           placeholder="请输入跳转链接" value="##">
+                                    <label for="categoryName" class="control-label">分类级别:</label>
+                                    <input type="text" class="form-control" id="categoryLevel" v-model="category.categoryLevel"
+                                           placeholder="请输入分类级别" required="true">
                                 </div>
                                 <div class="form-group">
-                                    <label for="redirectUrl" class="control-label">轮播图名:</label>
-                                    <input type="text" class="form-control" id="carouseName" v-model.trim="carousel.carouseName"
-                                           placeholder="请输入轮播图名" value="##">
+                                    <label for="categoryName" class="control-label">父类ID:</label>
+                                    <input type="text" class="form-control" id="parentId" v-model="category.parentId"
+                                           placeholder="请输入父类ID" required="true">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="categoryName" class="control-label">分类名称:</label>
+                                    <input type="text" class="form-control" id="categoryName" v-model="category.categoryName"
+                                           placeholder="请输入分类名称" required="true">
                                 </div>
                                 <div class="form-group">
-                                    <label for="carouselRank" class="control-label">排序值:</label>
-                                    <input type="number" class="form-control" id="carouselRank" v-model.number="carousel.carouseRank"
-                                           placeholder="请输入排序值">
+                                    <label for="categoryName" class="control-label">排序值:</label>
+                                    <input type="number" class="form-control" id="categoryRank" v-model="category.categoryRank"
+                                           placeholder="请输入分类排序值" required="true">
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" @click="updateCarousel">确认</button>
+                            <button type="button" class="btn btn-primary" @click="updateCategory">确认</button>
                         </div>
                     </div>
                 </div>
@@ -343,41 +331,17 @@
         </div>
     </div>
     <!-- /.content-wrapper -->
-    <!-- 引入页脚footer-fragment -->
+<!--    &lt;!&ndash; 引入页脚footer-fragment &ndash;&gt;-->
 <!--    <div th:replace="admin/footer::footer-fragment"></div>-->
 </div>
 <!-- jQuery -->
-<!--<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>-->
-<!--&lt;!&ndash; jQuery UI 1.11.4 &ndash;&gt;-->
-<script src="../js/jquery.js"></script>
-<script src="../js/vue.js"></script>
-<script src="../js/common.js"></script>
-<script src="../js/md5.js"></script>
-<script src="../js/admin_carsourel.js"></script>
-<script src="../js/jquery.form.js"></script>
-<!--<script src="../css/admin/plugins/jQueryUI/jquery-ui.min.js"></script>-->
-<!--&lt;!&ndash; Bootstrap 4 &ndash;&gt;-->
+<script src="../css/admin/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
 <script src="../css/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!--&lt;!&ndash; AdminLTE App &ndash;&gt;-->
-<script src="../css/admin/dist/js/adminlte.min.js"></script>
-<!--&lt;!&ndash; jqgrid &ndash;&gt;-->
-<!--<script th:src="@{/admin/plugins/jqgrid-5.3.0/jquery.jqGrid.min.js}"></script>-->
-<!--<script th:src="@{/admin/plugins/jqgrid-5.3.0/grid.locale-cn.js}"></script>-->
-<!--&lt;!&ndash; sweetalert &ndash;&gt;-->
-<!--<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>-->
-<!--&lt;!&ndash; ajaxupload &ndash;&gt;-->
-<!--<script th:src="@{/admin/plugins/ajaxupload/ajaxupload.js}"></script>-->
-<!--<script th:src="@{/admin/dist/js/public.js}"></script>-->
-<!--<script src="../css/admin/plugins/jquery/jquery.min.js"></script>-->
-
-<!--<script src="../css/admin/plugins/sweetalert/sweetalert.min.js"></script>-->
-<!--<script src="../css/mall/js/bootstrap3.js"></script>-->
 <!--<script src="../css/admin/dist/js/public.js"></script>-->
-
-<!--<script type="text/javascript">-->
-<!--    function carouselModal() {-->
-<!--        $('#carouselModal').modal('show');-->
-<!--    }-->
-<!--</script>-->
+<script src="../js/vue.js"></script>
+<script src="../js/md5.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/category.js"></script>
 </body>
 </html>

@@ -90,7 +90,7 @@
     <div class="intro mt20 w clearfix">
         <div class="left fl" style="position: relative;">
             <div class="swiper-container fl">
-                <img :src="detail.productImg">
+                <img :src="detail.productImg" width="620px" height="513px">
             </div>
         </div>
         <div class="right fr">
@@ -102,18 +102,17 @@
                 <del>
                     原价：{{detail.price}}
                 </del>
-                <div >库存：{{detail.stock}}</div>
-                <div>销量：{{detail.sale}}</div>
+                <div class="zh">
+                    <p>购买数量：<select name="number" v-model="detail.productCount">{{detail.productCount}}
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option></select>
+                    </p>
+                <div >库存：{{detail.stock}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;销量：{{detail.sale}}</div>
+                <div></div>
             </div>
-            <div class="zh">
-                <p>购买数量：</p>
-                <select name="number" v-model="detail.productCount">{{detail.productCount}}
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
             </div>
             <div class="order">
                 <input class="car" type="button" @click="saveAndGoToCart(detail)" value="立即选购"/>

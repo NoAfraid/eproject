@@ -241,6 +241,7 @@ var vm = new Vue({
                         // console.log(vm.order)
                         // console.log(vm.cartList)
                         alert("已取消")
+                        window.location.reload();
                     } else {
                         alert(result.msg);
                     }

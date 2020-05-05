@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ProductDao {
@@ -15,6 +16,8 @@ public interface ProductDao {
     int insert(Product record);
 
     int insertSelective(Product record);
+
+    int updateSearchCount(Product record);
 
     Product selectByPrimaryKey(Integer id);
 
@@ -51,6 +54,10 @@ public interface ProductDao {
     List<Product> selectProductListByNumber(@Param("number") int number);
 
     List<Product> getProductSaleForIndex(@Param("number") int number);
+
+    List<Product> getProductForHotSearch(@Param("number") int number);
+
+    List<Product> searchProductForIndex(Map<String, Object> paramst);
 
     /**
      * 修改 pms_sku_stock表的锁定库存及真实库存

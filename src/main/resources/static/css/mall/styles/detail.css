@@ -63,8 +63,6 @@
 #detail .intro .left .swiper-container {
     width: 100%;
     height: 100%;
-    margin: 20px auto;
-    padding: 0 34px;
     box-sizing: border-box;
 }
 
@@ -98,7 +96,7 @@
     color: #1baeae;
     height: 100px;
     font-weight: bold;
-    float: right;
+    float: left;
 }
 
 #detail .intro .right .item_price del {
@@ -111,7 +109,7 @@
 #detail .intro .right .order {
     height: 50px;
     line-height: 50px;
-    float: right;
+    float: left;
 }
 
 #detail .intro .right .order .car {

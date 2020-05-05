@@ -6,6 +6,7 @@ import com.eproject.common.PageResult;
 import com.eproject.entity.Product;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
     /**
@@ -94,4 +95,17 @@ public interface ProductService {
      * @return
      */
     List<Product> getProductSaleForIndex(int number);
+
+    /**
+     * 返回固定数量的首页热搜商品(首页调用)
+     *
+     * @param number
+     * @return
+     */
+    List<Product> getProductForHotSearch(int number);
+
+    /**
+     * 首页搜索商品（搜索框）
+     */
+    List<Product> searchProductForIndex(Map<String, Object> params);
 }
