@@ -3,21 +3,18 @@ package com.eproject.service.serverIm;
 import com.eproject.common.PageQuery;
 import com.eproject.common.PageResult;
 import com.eproject.common.Result;
+import com.eproject.dao.HistorySearchDao;
 import com.eproject.dao.ProductDao;
 import com.eproject.dao.ShuStockDao;
-import com.eproject.entity.Carouse;
-import com.eproject.entity.Product;
-import com.eproject.entity.ShuStock;
+import com.eproject.entity.*;
 import com.eproject.service.ProductService;
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import javax.annotation.Resources;
+import java.util.*;
 
 @Service
 public class ProductServiceIm implements ProductService {
@@ -27,6 +24,9 @@ public class ProductServiceIm implements ProductService {
 
     @Resource
     private ShuStockDao shuStockDao;
+
+    @Resource
+    private HistorySearchDao historySearchDao;
 
     @Override
     public String saveProduct(Product p) {
@@ -180,7 +180,17 @@ public class ProductServiceIm implements ProductService {
     public List<Product> getProductForHotSearch(int number) {
         List<Product> carouseList = new ArrayList<>(number);
         List<Product> list = productDao.getProductForHotSearch(number);
+        Object[] o = list.toArray();
         if (!CollectionUtils.isEmpty(list)) {
+            for (int i = 0; i < o.length; i++) {
+                //转化为Product对象
+                Product products = (Product) o[i];
+                int count = products.getSearchCount();
+                //每搜索一次，searchCount加一
+                count++;
+                products.setSearchCount(count);
+                productDao.updateSearchCount(products);
+            }
             return list;
         }
         return null;
@@ -190,6 +200,7 @@ public class ProductServiceIm implements ProductService {
     public List<Product> searchProductForIndex(Map<String, Object> params) {
         List<Product> list = productDao.searchProductForIndex(params);
         Object[] o = list.toArray();
+        HistorySearch historySearch = new HistorySearch();
         if (list.size() > 0) {
             for (int i = 0; i < o.length; i++) {
                 //转化为Product对象
@@ -198,7 +209,18 @@ public class ProductServiceIm implements ProductService {
                 //每搜索一次，searchCount加一
                 count++;
                 products.setSearchCount(count);
+                historySearch.setProductId(products.getId());
+                historySearch.setProductName(products.getProductName());
+                historySearch.setSearchCount(count);
+                int userId = (int) params.get("userId");
+                historySearch.setUserId(userId);
+                historySearch.setCreatTime(new Date());
                 productDao.updateSearchCount(products);
+                List<HistorySearch> hs = historySearchDao.selectByProductIdAndUserId(historySearch);
+                if (hs.size() <= 0 ){
+                    historySearchDao.insertSelective(historySearch);
+                }
+
             }
             return list;
         }

@@ -26,6 +26,13 @@ spring:
       charset: utf-8
       enabled: true
 
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDB10Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
   mvc:
     static-path-pattern: /**
 

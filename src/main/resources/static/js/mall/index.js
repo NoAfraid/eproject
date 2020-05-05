@@ -11,12 +11,14 @@ var vm = new Vue({
         carouselList: [],
         productL: {
             productName: "",
+
         },
         mark: 0,
         vip:[],
         user:{nick:''},
         cart:{count:0},
         hotProductList:{},
+        historySearchList:{},
     },
     mounted: function () {
         var swiper = new Swiper('.swiper-container', {
@@ -50,6 +52,7 @@ var vm = new Vue({
         this.getUserInfo();
         this.getCartInfo();
         this.Hotproduct();
+        this.historySearch();
     },
     computed: {
         indexs: function () {
@@ -226,39 +229,7 @@ var vm = new Vue({
          * @param id
          */
         productdetail: function (id) {
-            // var userId = getCookie("sessionId");
-            // var t = {
-            //     limit: this.limit,
-            //     page: page == null ? this.current : page,
-            //     userId: userId
-            // };
-            // var formData = JSON.stringify(t);
-            // var now =  getNow("yyyyMMddHHmmss");
-            // var sign  = signString(formData,now);
-            // $.ajax({
-            // headers:{
-            //     client:client,
-            //     version:version,
-            //     requestTime:now,
-            //     sign:sign
-            // },
-            // type: "post",
-            // url: "http://localhost:8080/product/product/detail/"+id,
-            // contentType: "application/json;charset=utf-8",
-            // dataType: "json",
-            // // data: formData,
-            // success: function (result) {
-            //     if (result.code == 0) {
-            console.log(id)
             window.location.href = "product_detail.html?id="+id;
-
-            //     vm.detail = result.data;
-            //     console.log(vm.detail)
-            // } else {
-            //     alert(result.msg);
-            // }
-            // }
-            // });
         },
 
         /**
@@ -276,5 +247,29 @@ var vm = new Vue({
 
         },
 
+        /**
+         * 历史搜索
+         */
+        historySearch: function () {
+            var userId = getCookie("sessionId");
+            var t = {
+                id:userId
+            };
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/index/historySearch",
+                contentType: "application/json;charset=utf-8",
+                dataType : "json",
+                data: formData,
+                success: function (result) {
+                    if(result.code == 0) {
+                        vm.historySearchList = result.data
+                    } else {
+                        // alert(result.msg)
+                    }
+                }
+            })
+        }
     }
 });

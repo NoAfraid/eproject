@@ -30,6 +30,7 @@ var vm = new Vue({
         productL: {
             productName: '',
             description:'',
+            userId:'',
         },
         mark: 0,
         vip:[],
@@ -99,9 +100,8 @@ var vm = new Vue({
          * 模糊查询商品
          */
         searchProduct: function () {
-            // var t = {
-            //     this
-            // };
+            var userId = getCookie("sessionId");
+            this.productL.userId = userId
             this.keyword = keyword;
             this.productL.productName = keyword;
             var formData = JSON.stringify(this.productL);

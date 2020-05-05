@@ -5,14 +5,18 @@ import com.eproject.common.IndexConfigTypeEnum;
 import com.eproject.common.PageQuery;
 import com.eproject.common.R;
 import com.eproject.entity.Carouse;
+import com.eproject.entity.HistorySearch;
 import com.eproject.entity.Product;
+import com.eproject.entity.User;
 import com.eproject.service.CarouseService;
+import com.eproject.service.HistorySearchService;
 import com.eproject.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +31,9 @@ public class IndexController {
 
     @Resource
     private ProductService productService;
+
+    @Resource
+    private HistorySearchService historySearchService;
 
     /**
      * 返回固定数量的轮播图对象(首页调用)
@@ -90,12 +97,11 @@ public class IndexController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/searchProductForIndex",produces = "application/json;charset=UTF-8")
-    public R searchProductForIndex(@RequestBody Map<String, Object> params, HttpServletResponse response){
-        response.setContentType("text/html;chatset=utf-8");
-        response.setCharacterEncoding("utf-8");
+    public R searchProductForIndex(@RequestBody Map<String, Object> params, HttpServletRequest request){
         String productName = "";
         String description = "";
         String productSn = "";
+//        int userId = Integer.parseInt(params.get("userId"));
         //对keyword做去空格处理
         if (params.containsKey("productName") && !StringUtils.isEmpty((params.get("productName") + "").trim())) {
             productName = params.get("productName") + "";
@@ -111,8 +117,28 @@ public class IndexController {
             productSn = params.get("productSn") + "";
         }
         params.put("productSn",productSn);
+        int userId;
+        if (params.containsKey("productSn") && !StringUtils.isEmpty((params.get("userId") + "").trim())) {
+             userId = Integer.parseInt(params.get("userId") + "");
+            params.put("userId",userId);
+        }
+
         //封装商品数据
 //        Product product = new Product(params);
         return R.ok().put("data",productService.searchProductForIndex(params));
+    }
+
+    /**
+     * 历史搜索
+     */
+    @RequestMapping(method= RequestMethod.POST, value = "/historySearch",produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public R historySearch(@RequestBody User user){
+        int userId = user.getId();
+        List<HistorySearch> HistorySearchProductList = historySearchService.getProductForHistorySearch(Contants.INDEX_HOTSEARCH_NUMBER,userId);
+        if (HistorySearchProductList.size() > 0){
+            return R.ok().put("data",HistorySearchProductList);
+        }
+        return R.error(-1,"获取错误");
     }
 }

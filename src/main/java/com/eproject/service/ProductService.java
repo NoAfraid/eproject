@@ -4,6 +4,7 @@ package com.eproject.service;
 import com.eproject.common.PageQuery;
 import com.eproject.common.PageResult;
 import com.eproject.entity.Product;
+import com.eproject.entity.User;
 
 import java.util.List;
 import java.util.Map;

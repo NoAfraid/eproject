@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eproject.dao.TAddressCityDao">
+  <resultMap id="BaseResultMap" type="com.eproject.entity.TAddressCity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="CHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="provinceCode" jdbcType="CHAR" property="provincecode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, `name`, provinceCode
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_address_city
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_address_city
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.TAddressCity" useGeneratedKeys="true">
+    insert into t_address_city (code, `name`, provinceCode
+      )
+    values (#{code,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{provincecode,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.TAddressCity" useGeneratedKeys="true">
+    insert into t_address_city
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="provincecode != null">
+        provinceCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="provincecode != null">
+        #{provincecode,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eproject.entity.TAddressCity">
+    update t_address_city
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="provincecode != null">
+        provinceCode = #{provincecode,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eproject.entity.TAddressCity">
+    update t_address_city
+    set code = #{code,jdbcType=CHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      provinceCode = #{provincecode,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
