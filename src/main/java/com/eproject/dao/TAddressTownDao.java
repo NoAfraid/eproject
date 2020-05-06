@@ -1,7 +1,11 @@
 package com.eproject.dao;
 
 import com.eproject.entity.TAddressTown;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+@Mapper
 public interface TAddressTownDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +18,6 @@ public interface TAddressTownDao {
     int updateByPrimaryKeySelective(TAddressTown record);
 
     int updateByPrimaryKey(TAddressTown record);
+
+    List<TAddressTown> findByCityCode(int cityCode);
 }

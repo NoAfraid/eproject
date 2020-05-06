@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <select id="province" style="height: 40px;"
+            v-model="province"
+            @change="linkage()"
+            placeholder="省级地区">
+        <option v-for="item in provinceList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.code"></option>
+    </select>
+    <select id="city" style="height: 40px;"
+            v-model="shi"
+            @change="getCity()"
+            placeholder="市级地区">
+        <option v-for="item in city"
+                :key="item.id"
+                :label="item.name"
+                :value="item.code"></option>
+    </select>
+    <select id="country" style="height: 40px"
+            v-model="qu"
+            @change="getTown()"
+            placeholder="区级地区" >
+        <option v-for="item in town"
+                :key="item.id"
+                :label="item.name"
+                :value="item.code"></option>
+    </select>
+    <selected></selected>
+</div>
+</body>
+<script src="../../js/jquery.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../css/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/md5.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/mall/address.js"></script>
+
+</html>

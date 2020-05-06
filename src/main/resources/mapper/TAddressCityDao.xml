@@ -11,10 +11,15 @@
     id, code, `name`, provinceCode
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_address_city
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findByProvinceCode" parameterType="int" resultMap="BaseResultMap">
+    select *
+    from t_address_city
+    where provinceCode = #{provinceCode}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_address_city
