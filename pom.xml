@@ -128,16 +128,24 @@
             <artifactId>hutool-all</artifactId>
             <version>4.5.7</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.data</groupId>-->
+<!--            <artifactId>spring-data-jpa</artifactId>-->
+<!--            <version>2.2.4.RELEASE</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.data</groupId>-->
+<!--            <artifactId>spring-data-commons</artifactId>-->
+<!--            <version>2.1.9.RELEASE</version>-->
+<!--        </dependency>-->
+<!--        支付宝SDK的maven依赖-->
+        <!-- 支付宝支付 -->
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>2.2.4.RELEASE</version>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-            <version>2.1.9.RELEASE</version>
-        </dependency>
+
     </dependencies>
 
     <build>

@@ -5,7 +5,8 @@ import java.util.Date;
 
 /**
  * user
- * @author 
+ *
+ * @author
  */
 public class User implements Serializable {
     private Integer id;
@@ -54,6 +55,11 @@ public class User implements Serializable {
      * 头像URL
      */
     private String pic;
+
+    /**
+     * 邮箱
+     */
+    private String email;
 
     private static final long serialVersionUID = 1L;
 
@@ -137,6 +143,14 @@ public class User implements Serializable {
         this.pic = pic;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -150,15 +164,16 @@ public class User implements Serializable {
         }
         User other = (User) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
-            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
-            && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
-            && (this.getSex() == null ? other.getSex() == null : this.getSex().equals(other.getSex()))
-            && (this.getAdress() == null ? other.getAdress() == null : this.getAdress().equals(other.getAdress()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getPersonalizedSignature() == null ? other.getPersonalizedSignature() == null : this.getPersonalizedSignature().equals(other.getPersonalizedSignature()))
-            && (this.getNick() == null ? other.getNick() == null : this.getNick().equals(other.getNick()))
-            && (this.getPic() == null ? other.getPic() == null : this.getPic().equals(other.getPic()));
+                && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
+                && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
+                && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
+                && (this.getSex() == null ? other.getSex() == null : this.getSex().equals(other.getSex()))
+                && (this.getAdress() == null ? other.getAdress() == null : this.getAdress().equals(other.getAdress()))
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+                && (this.getPersonalizedSignature() == null ? other.getPersonalizedSignature() == null : this.getPersonalizedSignature().equals(other.getPersonalizedSignature()))
+                && (this.getNick() == null ? other.getNick() == null : this.getNick().equals(other.getNick()))
+                && (this.getPic() == null ? other.getPic() == null : this.getPic().equals(other.getPic()))
+                && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()));
     }
 
     @Override
@@ -175,6 +190,7 @@ public class User implements Serializable {
         result = prime * result + ((getPersonalizedSignature() == null) ? 0 : getPersonalizedSignature().hashCode());
         result = prime * result + ((getNick() == null) ? 0 : getNick().hashCode());
         result = prime * result + ((getPic() == null) ? 0 : getPic().hashCode());
+        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
         return result;
     }
 
@@ -194,6 +210,7 @@ public class User implements Serializable {
         sb.append(", personalizedSignature=").append(personalizedSignature);
         sb.append(", nick=").append(nick);
         sb.append(", pic=").append(pic);
+        sb.append(", email=").append(email);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

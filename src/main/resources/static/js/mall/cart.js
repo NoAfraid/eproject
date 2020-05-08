@@ -113,6 +113,10 @@ var vm = new Vue({
          */
         findList: function (page) {
             var userId = getCookie("sessionId");
+            if (userId == null || userId =='') {
+                alert("您未登录，请登录");
+                window.location.href = "login.html";
+            }
             var t = {
                 limit: this.limit,
                 page: page == null ? this.current : page,
@@ -140,7 +144,7 @@ var vm = new Vue({
                         vm.total = result.data.totalCount;
                         vm.cartList = result.data;
                     } else {
-                        alert(result.msg);
+                        // alert(result.msg);
                     }
                 }
             });

@@ -28,6 +28,7 @@ var vm = new Vue({
         detail: {
             number:1,
             productCount: 1,
+            price:'',
         },
         total: 0,
         user:{nick:''},
@@ -103,27 +104,11 @@ var vm = new Vue({
         },
 
         productDetail: function () {
-            // var userId = getCookie("sessionId");
-            // var t = {
-            //     limit: this.limit,
-            //     page: page == null ? this.current : page,
-            //     userId: userId
-            // };
-            // var formData = JSON.stringify(t);
-            // var now =  getNow("yyyyMMddHHmmss");
-            // var sign  = signString(formData,now);
             $.ajax({
-                // headers:{
-                //     client:client,
-                //     version:version,
-                //     requestTime:now,
-                //     sign:sign
-                // },
                 type: "post",
                 url: "http://localhost:8080/product/product/detail/?id="+id,
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
-                // data: formData,
                 success: function (result) {
                     if (result.code == 0) {
                         // window.location.href = "product_detail.html";
@@ -141,6 +126,16 @@ var vm = new Vue({
          */
         saveToCart: function (detail) {
             var userId = getCookie("sessionId");
+            if (userId == null || userId =='') {
+                alert("您未登录，请登录");
+                window.location.href = "login.html";
+            }
+            if (this.detail.productCount == null || this.detail.productCount == 0
+                || this.detail.productCount ==''){
+                alert("请选择购买数量");
+                return;
+            }
+            this.detail.price = this.detail.promotePrice;
             this.detail.userId = userId;
             this.detail = detail
             var formData = JSON.stringify(this.detail);
@@ -174,6 +169,16 @@ var vm = new Vue({
          */
         saveAndGoToCart: function (detail) {
             var userId = getCookie("sessionId");
+            if (userId == null || userId =='') {
+                alert("您未登录，请登录");
+                window.location.href = "login.html";
+            }
+            if (this.detail.productCount == null || this.detail.productCount == 0
+                || this.detail.productCount ==''){
+                alert("请选择购买数量");
+                return;
+            }
+            this.detail.price = this.detail.promotePrice;
             this.detail.userId = userId;
             this.detail = detail
             var formData = JSON.stringify(this.detail);

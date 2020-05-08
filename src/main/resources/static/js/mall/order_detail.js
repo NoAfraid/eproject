@@ -51,10 +51,12 @@ var vm = new Vue({
         pay: {
             orderNo: '',
             orderStatus: '',
-            totalPrice: ''
+            totalPrice: '',
+            productName:'',
         },
         user:{nick:''},
-        cart:{count:0}
+        cart:{count:0},
+        form:'',
     },
     mounted: function () {
         var accessToken = getCookie("accessToken");
@@ -65,6 +67,7 @@ var vm = new Vue({
             this.accessToken = accessToken;
         }
         this.getOrderInfo();
+        // this.payByzhifubao();
         // this.paySuccess();
         // this.getUserInfo();
         // this.getCartInfo();
@@ -191,6 +194,10 @@ var vm = new Vue({
          */
         finishOrder: function (orderNo) {
             var userId = getCookie("sessionId");
+            if (userId == null || userId =='') {
+                alert("您未登录，请登录");
+                window.location.href = "login.html";
+            }
             var t = {
                 userId: userId,
                 orderNo: orderNo
@@ -222,6 +229,10 @@ var vm = new Vue({
          */
         cancelOrder: function (orderNo) {
             var userId = getCookie("sessionId");
+            if (userId == null || userId =='') {
+                alert("您未登录，请登录");
+                window.location.href = "login.html";
+            }
             var t = {
                 userId: userId,
                 orderNo: orderNo
@@ -253,8 +264,14 @@ var vm = new Vue({
          * 去支付
          */
         payOrder: function (orderNo) {
+            var userId = getCookie("sessionId");
+            if (userId == null || userId =='') {
+                alert("您未登录，请登录");
+                window.location.href = "login.html";
+            }
             if (orderNo == '') {
-                alert("订单号为null！")
+                alert("订单号为null！");
+                return;
             } else {
                 window.location.href = "pay-select.html?orderNo=" + orderNo
                 // var t={
@@ -280,17 +297,58 @@ var vm = new Vue({
                 // });
             }
         },
+        payByzhifubao: function(){
 
+            window.location.href = "http://localhost:8080/order/pay?orderNo="+orderNo;
+            // this.paySuccess();
+        },
+        refundModal: function(){
+            $('#personalInfoModal').modal('show');
+        },
+        refund: function(){
+            var t = {
+                orderNo: orderNo,
+
+            }
+        },
         /**
          * 选择支付方式
          */
         payOrderType: function (payType) {
+            var userId = getCookie("sessionId");
+            if (userId == null || userId =='') {
+                alert("您未登录，请登录");
+                window.location.href = "login.html";
+            }
             if (payType == 1) {
-                window.location.href = "pay.html?orderNo=" + orderNo + "&& payType =" + payType
+                this.payByzhifubao();
             }
             if (payType == 2) {
                 window.location.href = "wxpay.html?orderNo=" + orderNo
             }
+
+            // var t={
+            //     orderNo:orderNo
+            // }
+            // var formData = JSON.stringify(t);
+            // $.ajax({
+            //     type: "post",
+            //     url: "http://localhost:8080/order/pay",
+            //     contentType: "application/json;charset=utf-8",
+            //     dataType: "json",
+            //     data: formData,
+            //     success: function (result) {
+            //         if (result.code == 0) {
+            //             vm.pay = result.data;
+            //             console.log(vm.pay);
+            //             alert("您已支付成功！将为你跳转到订单详情页")
+            //             window.location.href = "order-detail.html?orderNo=" + orderNo
+            //             // alert(result.msg);
+            //         } else {
+            //             // alert(result.msg);
+            //         }
+            //     }
+            // });
         },
 
         /**
@@ -319,8 +377,12 @@ var vm = new Vue({
         paySuccess: function () {
             var t = {
                 orderNo: orderNo,
-                payType: 1
+                payType: 1,
+                totalPrice: this.pay.totalPrice,
+                productName:this.pay.productName
+
             }
+            console.log(t)
             var formData = JSON.stringify(t);
             $.ajax({
                 type: "post",
@@ -332,9 +394,9 @@ var vm = new Vue({
                     if (result.code == 0) {
                         vm.pay = result.data;
                         console.log(vm.pay);
+                        alert("您已支付成功！将为你跳转到订单详情页")
                         window.location.href = "order-detail.html?orderNo=" + orderNo
-                        // alert(result.msg);
-
+                        alert(result.msg);
                     } else {
                         alert(result.msg);
                     }

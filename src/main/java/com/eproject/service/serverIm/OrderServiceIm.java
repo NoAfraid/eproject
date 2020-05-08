@@ -1,9 +1,14 @@
 package com.eproject.service.serverIm;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradeFastpayRefundQueryRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.eproject.common.OrderStatusEnum;
 import com.eproject.common.PageQuery;
 import com.eproject.common.PageResult;
 import com.eproject.common.Result;
+import com.eproject.config.AlipayConfig;
 import com.eproject.dao.*;
 import com.eproject.domain.ConfirmOrderResult;
 import com.eproject.domain.OrderDetail;
@@ -88,7 +93,6 @@ public class OrderServiceIm implements OrderService {
             return null;
         }
         //计算order_item的实付金额
-
         //数据库减去已买的商品数量
 
         //进行库存锁定
@@ -321,12 +325,6 @@ public class OrderServiceIm implements OrderService {
         }
         return Result.ORDER_NOT_EXIST_ERROR.getResult();
     }
-
-
-
-
-
-
 
 
 

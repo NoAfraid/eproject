@@ -67,9 +67,9 @@ public class IndexController {
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/getProductSaleForIndex",produces = "application/json;charset=UTF-8")
     public R getProductSaleForIndex(){
-        List<Product> newProductList = productService.getProductSaleForIndex(Contants.INDEX_GOODS_RECOMMOND_NUMBER);
-        if (newProductList.size() > 0){
-            return R.ok().put("data",newProductList);
+        List<Product> saleProductList = productService.getProductSaleForIndex(Contants.INDEX_GOODS_RECOMMOND_NUMBER);
+        if (saleProductList.size() > 0){
+            return R.ok().put("data",saleProductList);
         }
         return R.error(-1,"获取错误");
     }

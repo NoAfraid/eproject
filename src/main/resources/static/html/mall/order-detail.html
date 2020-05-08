@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
 </head>
 <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
+<link href="../../css/mall/css/bootstrap-modal.css" rel="stylesheet">
 <body>
 <header id="header">
     <div class="center">
@@ -115,6 +116,13 @@
                                 </div>
                             </div>
                             <div class="actions">
+                                <input type="hidden" id="">
+                                <div v-if="item.orderStatus>=1 && item.orderStatus<3">
+                                    <a @click="refundModal"
+                                       class="btn btn-small btn-line-gray" title="申请退货">申请退货</a>
+                                </div>
+                            </div>
+                            <div class="actions">
                                 <div v-if="item.orderStatus==0">
                                     <a @click="payOrder(item.orderNo)"
                                        class="btn btn-small btn-primary" title="去支付">去支付</a>
@@ -214,9 +222,11 @@
                                                 <a target="_blank" href="#">
                                                     <img :src="cartList.productImg"
                                                          width="80" height="80" alt="">
+
                                                 </a>
                                             </div>
                                         </td>
+                                        <td><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></td>
                                         <td class="col col-name">
                                             <p class="name">
                                                 <a target="_blank" href="#">{{cartList.productName}}</a>
@@ -225,7 +235,7 @@
                                         <td class="col col-price"><p class="price">
 
                                             <!--                                                v-number="cartList.price+'元 x '+cartList.productCount"-->
-                                            {{cartList.productPrice}}元 × {{cartList.productQuantity}}</p></td>
+                                            {{cartList.productPrice}}.00元 × {{cartList.productQuantity}}</p></td>
                                         <td class="col col-actions">
                                         </td>
                                     </tr>
@@ -262,7 +272,10 @@
                                         <tbody>
                                         <tr>
                                             <th>支付方式：</th>
-                                            <td v-if="item.payType ==1">
+                                            <td v-if="item.payType ==null || item.payType==''">
+                                                暂未支付
+                                            </td>
+                                            <td v-else-if="item.payType ==1">
                                                 支付宝支付
                                             </td>
                                             <td v-else-if="item.payType ==2">
@@ -286,7 +299,7 @@
                                             <td><span class="num">0.00</span>元</td>
                                         </tr>
                                         <tr>
-                                            <th class="total">应付金额：</th>
+                                            <th>应付金额：</th>
                                             <td><span class="num">{{item.totalPrice}}.00</span>元</td>
                                         </tr>
                                         </tbody>
@@ -299,14 +312,47 @@
             </div>
             <div class="clear"></div>
         </div>
+        <div class="modal fade" id="personalInfoModal" tabindex="-1" role="dialog"
+             aria-labelledby="personalInfoModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h6 class="modal-title" id="personalInfoModalLabel">退货申请</h6>
+                    </div>
+                    <div class="modal-body">
+                        <form id="personalInfoForm">
+                            <div class="form-group">
+                                <label class="control-label">退货原因:</label>
+                                <input type="text" class="form-control" id="refundReason" name="address"
+                                       placeholder="请输入退货原因"
+                                       required="true">
+<!--                                <label class="control-label">联系电话:</label>v-model="refundReason"-->
+<!--                                <input type="text" class="form-control" id="phoneNumber" name="address"-->
+<!--                                       placeholder="请输入收货人联系电话" v-model="updateAddressList.phoneNumber"-->
+<!--                                       required="true">v-for="item in aList" @click="updateAddress(item.id)"-->
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" >
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" >确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!--<div th:replace="mall/footer::footer-fragment"></div>-->
 <!-- jQuery -->
 <script src="../../css/admin/plugins/jquery/jquery.min.js"></script>
+<script src="../../css/mall/js/bootstrap3.js"></script>
 <script src="../../js/vue.js"></script>
 <script src="../../js/md5.js"></script>
 <script src="../../js/common.js"></script>
 <script src="../../js/mall/order_detail.js"></script>
+
 </body>
 </html>

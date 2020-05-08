@@ -49,9 +49,7 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/registerUser",produces = "application/json;charset=UTF-8")
-    public R registUser(@RequestBody  User user,
-
-                        HttpSession httpSession){
+    public R registUser(@RequestBody  User user){
         // @RequestParam("verifyCode") String verifyCode, 验证码
         if (StringUtils.isEmpty(user.getUsername())){
             return R.error(-1,"请输入用户名");
@@ -62,10 +60,6 @@ public class UserController {
         if (StringUtils.isEmpty(user.getPhone())){
             return R.error(-1,"请输入手机号");
         }
-//        if (StringUtils.isEmpty(verifyCode)){
-//            return R.error(-1,"请输入验证码");
-//        }
-//        String kaptchaCode = httpSession.getAttribute(Contants.MALL_VERIFY_CODE_KEY) + "";
         String registerResult = userService.register(user);
         // 返回注册成功的信息
         if (Result.SUCCESS.getResult().equals(registerResult)){
@@ -79,7 +73,7 @@ public class UserController {
      * 登录
      */
     @ResponseBody
-    @RequestMapping(method= RequestMethod.POST, value = "/loginUser",produces = "application/json;charset=UTF-8")
+    @RequestMapping(method= RequestMethod.POST, value = "/login",produces = "application/json;charset=UTF-8")
     public R loginUser(@RequestBody  User user){
         User loginUser = userService.loginUser(user);
         //loginUser.getUsername().equals(user.getUsername()) ||loginUser.getPhone().equals(user.getPhone()
@@ -104,6 +98,9 @@ public class UserController {
                 }
                 return R.ok().put("code", 0).put("data",loginUser).put("accessToken", token).put("sessionId",userId);
             }
+        }
+        else if (loginUser == null){
+            return R.error(-2,"该账号未注册，请注册");
         }
         return R.error(-1,"账号或者密码错误");
     }
@@ -341,7 +338,7 @@ public class UserController {
         try {
             String accessToken = (String) params.get("accessToken");
             if (StringUtils.isEmpty(accessToken)) {
-                return R.error(1, "accessToken为空");
+                return R.error(-1, "accessToken为空");
             }
             request.getSession().removeAttribute("loginUserId");
             request.getSession().removeAttribute("loginUser");

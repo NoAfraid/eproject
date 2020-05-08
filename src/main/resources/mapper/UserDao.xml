@@ -12,10 +12,11 @@
     <result column="personalized_signature" jdbcType="VARCHAR" property="personalizedSignature" />
     <result column="nick" jdbcType="VARCHAR" property="nick" />
     <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
   </resultMap>
   <sql id="Base_Column_List">
     id, username, `password`, phone, sex, adress, create_time, personalized_signature, 
-    nick, pic
+    nick, pic, email
   </sql>
   <select id="selectByPrimaryKey" parameterType="Map" resultMap="BaseResultMap">
     select 

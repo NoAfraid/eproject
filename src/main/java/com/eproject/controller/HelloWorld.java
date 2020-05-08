@@ -9,7 +9,13 @@ public class HelloWorld {
     @RequestMapping("/index")
 //    @ResponseBody
     public String hello(){
-        return "goods_edit";
+        return "alipay";
     }
+
+    @RequestMapping("/alipay")
+    public String toTest(){
+        return "alipay";
+    }
+
 }
 

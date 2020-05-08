@@ -1,6 +1,7 @@
 package com.eproject.dao;
 
 import com.eproject.common.PageQuery;
+import com.eproject.domain.OrderDeliveryParam;
 import com.eproject.entity.OrderItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -34,4 +35,16 @@ public interface OrderItemDao {
     int insertList(@Param("list")List<OrderItem> list);
 
     List<OrderItem> selectByOrderNoList(String orderNo);
+
+    /**
+     * 批量配货
+     */
+    int checkDone(@Param("list") List<String> ids);
+
+    /**
+     * 批量发货
+     */
+    int delivery(@Param("list") List<OrderDeliveryParam> deliveryParamList);
+
+    int updateByOrderStatus(@Param("id") Integer[] id);
 }

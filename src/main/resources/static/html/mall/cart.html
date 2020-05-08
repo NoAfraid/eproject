@@ -51,13 +51,13 @@
                     <div class="sub_content fl " v-if="cartList == null">暂无商品</div>
                     <div class="sub_content cover fl"><img :src="cartList.productImg"></div>
                     <div class="sub_content fl ft20">{{cartList.productName}}</div>
-                    <div class="sub_content fl">{{cartList.price}}元</div>
+                    <div class="sub_content fl">{{cartList.price}}.00元</div>
                     <div class="sub_content fl">
                         <input type="number" v-model="cartList.productCount"
                                @blur="updateItem(cartList.id,cartList.userId,cartList.productId,index)" step="1" min="1"
                                max="500">
                     </div>
-                    <div class="sub_content fl">{{cartList.price * cartList.productCount}}元</div>
+                    <div class="sub_content fl">{{cartList.price * cartList.productCount}}.00元</div>
                     <div class="sub_content fl"><a href="##" @click="deleteItem(cartList.id,cartList.userId,cartList.productId)">×</a>
                     </div>
                     <div class="clear"></div>
@@ -76,7 +76,7 @@
                     </ul>
                 </div>
                 <div class="order_div fr">
-                    <div class="order_total fl">合计（不含运费）：<span>{{item.totalAmount}}</span></div>
+                    <div class="order_total fl">合计（不含运费）：<span>{{item.totalAmount}}.00元</span></div>
                     <div class="order_button fr">
 <!--                        <div>-->
 <!--                            <input class="order_button_c" type="button" name="tip"-->

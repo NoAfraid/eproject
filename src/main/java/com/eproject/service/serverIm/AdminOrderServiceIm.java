@@ -46,6 +46,7 @@ public class AdminOrderServiceIm implements AdminOrderService {
     public int delivery(List<OrderDeliveryParam> deliveryParamList){
         //批量发货
         int count = orderDao.delivery(deliveryParamList);
+        orderItemDao.delivery(deliveryParamList);
         return count;
     }
 
@@ -53,6 +54,7 @@ public class AdminOrderServiceIm implements AdminOrderService {
     public int checkDone(String[] ids){
         //批量发货
         int count = orderDao.checkDone(Arrays.asList(ids));
+        orderItemDao.checkDone(Arrays.asList(ids));
         return count;
     }
 
@@ -62,6 +64,7 @@ public class AdminOrderServiceIm implements AdminOrderService {
         //商家关闭
         order.setOrderStatus(-3);
         int count = orderDao.updateByOrderStatus(id);
+        orderItemDao.updateByOrderStatus(id);
         return count;
     }
 
@@ -71,6 +74,7 @@ public class AdminOrderServiceIm implements AdminOrderService {
         //删除订单
         order.setDaleteStatus(1);
         int count = orderDao.updateByDeleteStatus(ids);
+        //orderItemDao.updateByOrderStatus(ids);
         return count;
     }
 

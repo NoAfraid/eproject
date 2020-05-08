@@ -166,6 +166,7 @@
                                                 </a>
                                             </div>
                                         </td>
+                                        <td><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></td>
                                         <td class="col col-name">
                                             <p class="name">
                                                 <a target="_blank" href="#">{{cartList.productName}}</a>
@@ -174,7 +175,7 @@
                                         <td class="col col-price"><p class="price">
 
                                             <!--                                                v-number="cartList.price+'元 x '+cartList.productCount"-->
-                                            {{cartList.price}}元 × {{cartList.productCount}}</p></td>
+                                            {{cartList.price}}.00元 × {{cartList.productCount}}</p></td>
                                         <td class="col col-actions">
                                         </td>
                                     </tr>
@@ -212,7 +213,9 @@
                                     <tbody>
                                     <tr>
                                         <th>支付方式：</th>
-                                        <td>在线支付</td>
+                                        <td>
+                                            暂未支付
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -221,20 +224,20 @@
                             </div>
                             <div class="order-detail-total">
                                 <table class="total-table">
-                                    <tbody>
+<!--                                    <tbody>-->
                                     <tr>
                                         <th>商品总价：</th>
-                                        <td><span class="num">{{item.totalAmount}}</span>元</td>
+                                        <td><span class="num">{{item.totalAmount}}.00</span>元</td>
                                     </tr>
                                     <tr>
                                         <th>运费：</th>
-                                        <td><span class="num">0</span>元</td>
+                                        <td><span class="num">0.00</span>元</td>
                                     </tr>
                                     <tr>
-                                        <th class="total">应付金额：</th>
+                                        <th>应付金额：</th>
                                         <td><span class="num">{{item.totalAmount}}.00</span>元</td>
                                     </tr>
-                                    </tbody>
+<!--                                    </tbody>-->
                                 </table>
                             </div>
                         </div>

@@ -47,7 +47,7 @@
                             </a>
                         </li>
                     </ul>
-                    <a href="##" class="username">
+                    <a href="center.html" class="username">
                         <div>{{user.nick}}</div>
                         <i class="iconfont icon-down"></i>
                     </a>
@@ -192,7 +192,7 @@
                     <img :src="item.productImg" :alt="item.productName">
                     <p class="name" >{{item.productName}}</p>
                     <p class="discount">{{item.description}}</p>
-                    <p class="item_price">{{item.promotePrice}}</p>
+                    <p class="item_price">{{item.promotePrice}}.00元</p>
                 </a>
             </li>
             <!--            <div v-if=" productList.length > 0">-->
@@ -257,11 +257,9 @@
                     <img :src="item.productImg" :alt="item.productName">
                     <p class="name">{{item.productName}}</p>
                     <p class="discount">{{item.description}}</p>
-                    <p class="item_price">{{item.promotePrice}}</p>
+                    <p class="item_price">{{item.promotePrice}}.00元</p>
                 </a>
             </li>
-            </th:block>
-            </th:block>
             <!-- 未配置则显示默认 -->
             <div v-if="saleProductList.length <= 0">
                 <li>

@@ -71,7 +71,7 @@ public class AdminOrderController {
     }
 
     /**
-     * 批量发货
+     * 批量配货
      *
      * */
     @ResponseBody

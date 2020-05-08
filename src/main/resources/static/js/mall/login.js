@@ -1,5 +1,5 @@
 $(function () {
-    var loginUrl = "http://localhost:8080/user/loginUser"; //登录地址
+    var loginUrl = "http://localhost:8080/user/login"; //登录地址
     var registerUser = "http://localhost:8080/user/registerUser"; //登录地址
     var vm = new Vue({
         el: '#login',
@@ -23,7 +23,6 @@ $(function () {
         computed: {},
         methods: {
             loginDo: function () {
-
                 if ($.trim(this.user.username) == ''){
                     alert(this.user.username)
                     this.error = '请输入登录名/账号'; return;
@@ -52,8 +51,12 @@ $(function () {
                             setCookie("accessToken", result.accessToken);
                             setCookie("sessionId",result.sessionId);
                             window.location.href= 'index.html';
-                        } else {
-                            alert(result.msg)
+                        }
+                        if (result.code == -2) {
+                            alert(result.msg);
+                            window.location.href= 'register.html';
+                        }else {
+                            alert(result.msg);
                         }
                     }
                 })
