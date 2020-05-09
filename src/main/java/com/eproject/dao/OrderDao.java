@@ -3,6 +3,7 @@ package com.eproject.dao;
 import com.eproject.common.PageQuery;
 import com.eproject.domain.OrderDeliveryParam;
 import com.eproject.domain.OrderDetail;
+import com.eproject.entity.Alipay;
 import com.eproject.entity.Order;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -73,4 +74,9 @@ public interface OrderDao {
      * 获取订单信息
      */
     List<Order> selectList(PageQuery pageQuery);
+
+    /**
+     * 退货更新状态
+     */
+    void updateStatus(Alipay alipay);
 }

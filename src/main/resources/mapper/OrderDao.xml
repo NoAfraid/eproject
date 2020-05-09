@@ -540,4 +540,9 @@
     </foreach>
     AND order_status = 1
   </update>
+  <update id="updateStatus">
+    update `order`
+    set order_status = #{orderStatus}
+    WHERE id = #{orderId} and order_status &gt;= 1 and order_status &lt;= 3
+  </update>
 </mapper>

@@ -2,6 +2,7 @@ package com.eproject.dao;
 
 import com.eproject.common.PageQuery;
 import com.eproject.domain.OrderDeliveryParam;
+import com.eproject.entity.Alipay;
 import com.eproject.entity.OrderItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -47,4 +48,8 @@ public interface OrderItemDao {
     int delivery(@Param("list") List<OrderDeliveryParam> deliveryParamList);
 
     int updateByOrderStatus(@Param("id") Integer[] id);
+    /**
+     * 退货更新状态
+     */
+    void updateStatus(Alipay alipay);
 }

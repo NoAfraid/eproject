@@ -14,11 +14,14 @@ var vm = new Vue({
 
         },
         mark: 0,
-        vip:[],
-        user:{nick:''},
-        cart:{count:0},
-        hotProductList:{},
-        historySearchList:{},
+        vip: [],
+        user: {nick: ''},
+        cart: {count: 0},
+        hotProductList: {},
+        historySearchList: {},
+        recommendGoodses: [],
+        hotGoodses: [],
+        newGoodses: [],
     },
     mounted: function () {
         var swiper = new Swiper('.swiper-container', {
@@ -53,6 +56,7 @@ var vm = new Vue({
         this.getCartInfo();
         this.Hotproduct();
         this.historySearch();
+        this.productConfig()
     },
     computed: {
         indexs: function () {
@@ -84,21 +88,21 @@ var vm = new Vue({
         /**
          * 获取用户信息
          */
-        getUserInfo:function () {
+        getUserInfo: function () {
             this.vip = getCookie("loginUser");
             var userId = getCookie("sessionId");
             var t = {
-                id:userId
+                id: userId
             };
             var formData = JSON.stringify(t);
             $.ajax({
                 type: "post",
                 url: "http://localhost:8080/user/selectInfo",
                 contentType: "application/json;charset=utf-8",
-                dataType : "json",
+                dataType: "json",
                 data: formData,
                 success: function (result) {
-                    if(result.code == 0) {
+                    if (result.code == 0) {
                         vm.user = result.data
                         console.log(vm.user.nick)
                     } else {
@@ -115,17 +119,17 @@ var vm = new Vue({
             this.vip = getCookie("loginUser");
             var userId = getCookie("sessionId");
             var t = {
-                userId:userId
+                userId: userId
             };
             var formData = JSON.stringify(t);
             $.ajax({
                 type: "post",
                 url: "http://localhost:8080/cart/count",
                 contentType: "application/json;charset=utf-8",
-                dataType : "json",
+                dataType: "json",
                 data: formData,
                 success: function (result) {
-                    if(result.code == 0) {
+                    if (result.code == 0) {
                         vm.cart.count = result.data
                         console.log(vm.cart.count)
                     } else {
@@ -225,11 +229,34 @@ var vm = new Vue({
         },
 
         /**
+         * 热门推荐、新品上线、热销商品这三者合一
+         */
+        productConfig: function () {
+            var formData = JSON.stringify();
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/index/indexPage",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.recommendGoodses = result.recommendGoodses;
+                        vm.hotGoodses = result.hotGoodses;
+                        vm.newGoodses = result.newGoodses;
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        },
+
+        /**
          * 跳转到商品详情页
          * @param id
          */
         productdetail: function (id) {
-            window.location.href = "product_detail.html?id="+id;
+            window.location.href = "product_detail.html?id=" + id;
         },
 
         /**
@@ -238,12 +265,12 @@ var vm = new Vue({
         searchProductList: function (productName) {
 
             // this.productL.productName = productName;
-            window.location.href = encodeURI("search.html?keyword="+ (this.productL.productName));
+            window.location.href = encodeURI("search.html?keyword=" + (this.productL.productName));
 
         },
         searchProduc: function (productName) {
             this.productL.productName = productName;
-            window.location.href = encodeURI("search.html?keyword="+ (this.productL.productName));
+            window.location.href = encodeURI("search.html?keyword=" + (this.productL.productName));
 
         },
 
@@ -253,23 +280,31 @@ var vm = new Vue({
         historySearch: function () {
             var userId = getCookie("sessionId");
             var t = {
-                id:userId
+                id: userId
             };
             var formData = JSON.stringify(t);
             $.ajax({
                 type: "post",
                 url: "http://localhost:8080/index/historySearch",
                 contentType: "application/json;charset=utf-8",
-                dataType : "json",
+                dataType: "json",
                 data: formData,
                 success: function (result) {
-                    if(result.code == 0) {
+                    if (result.code == 0) {
                         vm.historySearchList = result.data
                     } else {
                         // alert(result.msg)
                     }
                 }
             })
+        },
+
+        /**
+         * 查找更多
+         */
+        lookMore: function(){
+            window.location.href = "product_list.html"
         }
     }
+
 });

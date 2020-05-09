@@ -20,12 +20,6 @@
             <ul class="fl">
                 <li><a href="index.html">新蜂商城</a></li>
                 <li><a href="../goods_get.html">后台管理系统</a></li>
-                <!--            <li><a href="https://edu.csdn.net/course/detail/26258">课程视频</a></li>-->
-                <!--            <a href="https://juejin.im/book/5da2f9d4f265da5b81794d48?referrer=59199e22a22b9d0058279886">课程文档</a>-->
-                <!--            <li><a href="https://gitee.com/newbee-ltd/newbee-donate">捐赠</a></li>-->
-                <!--            <li><a href="https://github.com/newbee-ltd/newbee-mall/issues">问题反馈</a></li>-->
-                <!--            <li><a href="https://github.com/newbee-ltd/newbee-mall">GitHub 地址</a></li>-->
-                <!--            <li><a href="https://gitee.com/newbee-ltd/newbee-mall">码云Gitee 地址</a></li>-->
             </ul>
             <div class="fr">
                 <!--            <div >-->
@@ -87,7 +81,16 @@
                     </div>
                 </div>
                 <div class="button iconfont icon-search" @click="searchProductList"></div>
-                <div v-for="(item, index ) in hotProductList" :class="index % 5 == 0 ? 'mlkj' : 'mlkj1'" style="display:inline-block" @click="searchProduc(item.productName)"><p>{{item.productName}}&nbsp;&nbsp;</p></div>
+                <p>热门搜索：</p>
+                <div v-for="(item, index ) in hotProductList" :class="index % 5 == 0 ? 'mlkj' : 'mlkj1'"
+                     style="display:inline-block" @click="searchProduc(item.productName)"><p>{{item.productName}}&nbsp;&nbsp;</p>
+                </div>
+                <div v-if="historySearchList.length > 0">
+                    <p>历史搜索：</p>
+                    <div v-for="(item, index ) in historySearchList" :class="index % 5 == 0 ? 'mlkj' : 'mlkj1'"
+                         style="display:inline-block" @click="searchProduc(item.productName)"><p>{{item.productName}}&nbsp;&nbsp;</p>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -128,17 +131,17 @@
                 <!--                    </div>-->
                 <!--                </th:block>-->
                 <!-- 未配置轮播图则显示默认的三张轮播图 -->
-<!--                <div v-if="carouselList.length <=0">-->
-<!--                    <div class="swiper-slide">-->
-<!--                        <img src="../../css/mall/image/swiper/banner01.jpg" alt="">-->
-<!--                    </div>-->
-<!--                    <div class="swiper-slide">-->
-<!--                        <img src=../../css/mall/image/swiper/banner02.jpg" alt="">-->
-<!--                    </div>-->
-<!--                    <div class="swiper-slide">-->
-<!--                        <img src="../../css/mall/image/swiper/banner03.jpg" alt="">-->
-<!--                    </div>-->
-<!--                </div>-->
+                <!--                <div v-if="carouselList.length <=0">-->
+                <!--                    <div class="swiper-slide">-->
+                <!--                        <img src="../../css/mall/image/swiper/banner01.jpg" alt="">-->
+                <!--                    </div>-->
+                <!--                    <div class="swiper-slide">-->
+                <!--                        <img src=../../css/mall/image/swiper/banner02.jpg" alt="">-->
+                <!--                    </div>-->
+                <!--                    <div class="swiper-slide">-->
+                <!--                        <img src="../../css/mall/image/swiper/banner03.jpg" alt="">-->
+                <!--                    </div>-->
+                <!--                </div>-->
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-prev"></div>
@@ -146,51 +149,57 @@
         </div>
     </div>
 
-    <!--    <div id="sub_banner">-->
-    <!--        &lt;!&ndash; 已配置热销商品则显示配置内容 &ndash;&gt;-->
-    <!--        <th:block th:unless="${#lists.isEmpty(hotGoodses)}">-->
-    <!--            <th:block th:each="hotGoodse : ${hotGoodses}">-->
-    <!--                <div class="hot-image">-->
-    <!--                    <a th:href="@{'/goods/detail/'+${hotGoodse.goodsId}}">-->
-    <!--                        <img th:src="@{${hotGoodse.goodsCoverImg}}" th:alt="${hotGoodse.goodsName}">-->
-    <!--                    </a>-->
-    <!--                </div>-->
-    <!--            </th:block>-->
-    <!--        </th:block>-->
-    <!--        &lt;!&ndash; 未配置热销商品则显示默认 &ndash;&gt;-->
-    <!--        <th:block th:if="${#lists.isEmpty(hotGoodses)}">-->
-    <!--            <div class="hot-image">-->
-    <!--                <a href="##">-->
-    <!--                    <img src="../../css/mall/image/sub_banner/r4.jpg" alt="">-->
-    <!--                </a>-->
-    <!--            </div>-->
-    <!--            <div class="hot-image">-->
-    <!--                <a href="##">-->
-    <!--                    <img src="../../css/mall/image/sub_banner/hot2.jpg" alt="">-->
-    <!--                </a>-->
-    <!--            </div>-->
-    <!--            <div class="hot-image">-->
-    <!--                <a href="##">-->
-    <!--                    <img src="../../css/mall/image/sub_banner/hot3.jpg" alt="">-->
-    <!--                </a>-->
-    <!--            </div>-->
-    <!--            <div class="hot-image">-->
-    <!--                <a href="##">-->
-    <!--                    <img src="../../css/mall/image/sub_banner/hot4.jpg" alt="">-->
-    <!--                </a>-->
-    <!--            </div>-->
-    <!--        </th:block>-->
-    <!--    </div>-->
+    <div id="recommend">
+        <!-- 已配置热销商品则显示配置内容 -->
+        <h2>热销商品</h2>
+        <a @click="lookMore" class="more">查看更多>></a>
+        <ul>
+            <li v-for="item in hotGoodses">
+                <div class="hot-image">
+                    <a @click="productdetail(item.productId)">
+                        <img :src="item.productImg" :alt="item.productName">
+                        <p class="name">{{item.productName}}</p>
+                        <p class="discount">{{item.description}}</p>
+                        <p class="item_price">{{item.promotePrice}}.00元</p>
+                    </a>
+                </div>
+            </li>
+        </ul>
+        <!-- 未配置热销商品则显示默认 -->
+        <div v-if="hotGoodses.length < 0">
+            <div class="hot-image">
+                <a href="##">
+                    <img src="../../css/mall/image/sub_banner/r4.jpg" alt="">
+                </a>
+            </div>
+            <div class="hot-image">
+                <a href="##">
+                    <img src="../../css/mall/image/sub_banner/hot2.jpg" alt="">
+                </a>
+            </div>
+            <div class="hot-image">
+                <a href="##">
+                    <img src="../../css/mall/image/sub_banner/hot3.jpg" alt="">
+                </a>
+            </div>
+            <div class="hot-image">
+                <a href="##">
+                    <img src="../../css/mall/image/sub_banner/hot4.jpg" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
 
     <div id="flash">
         <h2>新品上线</h2>
+        <a @click="lookMore" class="more">查看更多>></a>
         <ul>
             <!-- 已配置新品则显示配置内容 -->
             <li v-for="(item, number) in productList">
                 <a @click="productdetail(item.id)">
                     <!--                            th:href="@{'/goods/detail/'+${newGoods.goodsId}}"-->
                     <img :src="item.productImg" :alt="item.productName">
-                    <p class="name" >{{item.productName}}</p>
+                    <p class="name">{{item.productName}}</p>
                     <p class="discount">{{item.description}}</p>
                     <p class="item_price">{{item.promotePrice}}.00元</p>
                 </a>
@@ -248,7 +257,7 @@
 
     <div id="recommend">
         <h2>为你推荐</h2>
-        <a href="##" class="more">查看更多>></a>
+        <a @click="lookMore" class="more">查看更多>></a>
         <ul v-if="saleProductList.length > 0">
             <!-- 已配置推荐商品则显示配置内容 -->
             <li v-for="item in saleProductList">

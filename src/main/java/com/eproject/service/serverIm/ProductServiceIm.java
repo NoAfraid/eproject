@@ -226,4 +226,14 @@ public class ProductServiceIm implements ProductService {
         }
         return null;
     }
+
+    @Override
+    public List<Product> selectAll(){
+        return productDao.selectAll();
+    }
+
+    @Override
+    public List<Product> orderBy(String orderField,String orderType){
+        return productDao.orderByProduct(orderField,orderType);
+    }
 }

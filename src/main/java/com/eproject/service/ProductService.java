@@ -109,4 +109,14 @@ public interface ProductService {
      * 首页搜索商品（搜索框）
      */
     List<Product> searchProductForIndex(Map<String, Object> params);
+
+    /**
+     * 查看更多
+     */
+    List<Product> selectAll();
+
+    /**
+     * 动态排序
+     */
+    List<Product> orderBy(String orderField,String orderType);
 }

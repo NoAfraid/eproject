@@ -234,13 +234,13 @@ public class OrderController {
     @GetMapping("alipayRefundOrder")
     public R alipayRefund(
             @RequestParam("orderNo")String orderNo,
-            @RequestParam(value = "outRequestNo", required = false)String outRequestNo,
+            @RequestParam(value = "refundReason", required = false)String refundReason,
             @RequestParam(value = "refundAmount", required = false)BigDecimal refundAmount
     ) throws AlipayApiException{
 
         /** 调取数据*/
 //        String outTradeNo = "15382028806591197";
-        String refundReason = "用户不想购买";
+        String outRequestNo = orderNo;
         //refundAmount = 1;
         //outRequestNo = "22";
 //        Integer outRequestNum = Integer.valueOf(outRequestNo);

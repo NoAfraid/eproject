@@ -110,7 +110,7 @@
                             </h2>
                             <div class="actions">
                                 <input type="hidden" id="orderNoValue">
-                                <div v-if="item.orderStatus>=0 && item.orderStatus<3">
+                                <div v-if="item.orderStatus>=0 && item.orderStatus<1">
                                     <a @click="cancelOrder(item.orderNo)"
                                        class="btn btn-small btn-line-gray" title="取消订单">取消订单</a>
                                 </div>
@@ -145,7 +145,10 @@
                                         <div v-if="item.orderStatus==3">订单已出库正在快马加鞭向您奔来~</div>
                                         <div v-if="item.orderStatus==4">交易完成</div>
                                         <div v-if="item.orderStatus < 0 ">交易已关闭~</div>
-
+                                        <div v-if="item.orderStatus == -1 ">&nbsp;&nbsp;&nbsp;手动关闭</div>
+                                        <div v-if="item.orderStatus == -2 ">&nbsp;&nbsp;&nbsp;超时关闭</div>
+                                        <div v-if="item.orderStatus == -3 ">&nbsp;&nbsp;&nbsp;商家关闭</div>
+                                        <div v-if="item.orderStatus == -5 ">&nbsp;&nbsp;&nbsp;已退款</div>
                                     </div>
                                     <div>
                                         <div class="order-progress">
@@ -326,7 +329,7 @@
                             <div class="form-group">
                                 <label class="control-label">退货原因:</label>
                                 <input type="text" class="form-control" id="refundReason" name="address"
-                                       placeholder="请输入退货原因"
+                                       placeholder="请输入退货原因" v-model="refundReason"
                                        required="true">
 <!--                                <label class="control-label">联系电话:</label>v-model="refundReason"-->
 <!--                                <input type="text" class="form-control" id="phoneNumber" name="address"-->
@@ -336,9 +339,9 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer" >
+                    <div class="modal-footer" v-for="(item, index) in order" :key="index">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary" >确认</button>
+                        <button type="button" class="btn btn-primary" @click="refund(item.totalPrice)">确认</button>
                     </div>
                 </div>
             </div>

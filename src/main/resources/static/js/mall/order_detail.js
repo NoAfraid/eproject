@@ -57,6 +57,7 @@ var vm = new Vue({
         user:{nick:''},
         cart:{count:0},
         form:'',
+        refundReason:'',
     },
     mounted: function () {
         var accessToken = getCookie("accessToken");
@@ -305,11 +306,29 @@ var vm = new Vue({
         refundModal: function(){
             $('#personalInfoModal').modal('show');
         },
-        refund: function(){
+        refund: function(refundAmount){
             var t = {
                 orderNo: orderNo,
-
             }
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/order/alipayRefundOrder?orderNo="+orderNo+"&refundReason="+this.refundReason+"&refundAmount="+refundAmount,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.pay = result.data;
+                        console.log(vm.pay);
+                        alert("您已退款成功！将为你跳转到订单详情页")
+                        window.location.href = "order-detail.html?orderNo=" + orderNo
+                        // alert(result.msg);
+                    } else {
+                        // alert(result.msg);
+                    }
+                }
+            });
         },
         /**
          * 选择支付方式
@@ -327,28 +346,6 @@ var vm = new Vue({
                 window.location.href = "wxpay.html?orderNo=" + orderNo
             }
 
-            // var t={
-            //     orderNo:orderNo
-            // }
-            // var formData = JSON.stringify(t);
-            // $.ajax({
-            //     type: "post",
-            //     url: "http://localhost:8080/order/pay",
-            //     contentType: "application/json;charset=utf-8",
-            //     dataType: "json",
-            //     data: formData,
-            //     success: function (result) {
-            //         if (result.code == 0) {
-            //             vm.pay = result.data;
-            //             console.log(vm.pay);
-            //             alert("您已支付成功！将为你跳转到订单详情页")
-            //             window.location.href = "order-detail.html?orderNo=" + orderNo
-            //             // alert(result.msg);
-            //         } else {
-            //             // alert(result.msg);
-            //         }
-            //     }
-            // });
         },
 
         /**

@@ -70,4 +70,16 @@ public interface ProductDao {
      * 选择最新的一条记录
      */
     Product selectNewProduct(Product product);
+
+    List<Product> selectByPrimaryKeys(List<Integer> ids);
+
+    /**
+     * c查看更多
+     */
+    List<Product> selectAll();
+
+    /**
+     * 排序
+     */
+    List<Product> orderByProduct(String orderField,String orderType);
 }

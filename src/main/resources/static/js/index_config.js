@@ -13,15 +13,17 @@ var vm = new Vue({
         goodsList: [],
         msg : [],
         product: [],
-        carousel:{
-            id:'',
+        indexL:[],
+        indexConfig:{
+            productId:'',
+            configName:'',
             carouselUrl:'',
             redirectUrl:'',
-            carouseName:'',
-            carouseRank:'',
-            managerId: null,
-            productId: null,
+            configRank:'',
             productImg:'',
+            productName:'',
+            creatTime:'',
+            updateTime:'',
         }
     },
     mounted: function () {
@@ -32,13 +34,43 @@ var vm = new Vue({
         } else {
             this.accessToken = accessToken;
         }
-        this.carouselList(1);
+        this.indexConfigList(1);
         // this.updateProduct(17)
     },
     created: function() {
     },
     methods:{
-        carouselList: function (page) {
+        /**
+         * 添加轮播
+         */
+        indexConfigAdd: function () {
+            var formData = JSON.stringify(this.indexConfig);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
+            $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
+                type: "post",
+                url:  "http://localhost:8080/adminIndexConfig/indexConfigs/save",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        alert(result.msg);
+                        window.location.reload();
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            })
+        },
+
+        indexConfigList: function (page) {
             var t = {
                 limit: this.limit,
                 page: page == null ? this.current : page
@@ -54,7 +86,7 @@ var vm = new Vue({
                     sign:sign
                 },
                 type: "post",
-                url:  "http://localhost:8080/carouse/getCarouseList",
+                url:  "http://localhost:8080/adminIndexConfig/indexConfigs/list",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 data: formData,
@@ -77,79 +109,10 @@ var vm = new Vue({
         carouselModal: function(){
             $('#carouselModal').modal('show');
         },
-        uodateCarousel: function(){
+        updateCarousel: function(){
             $('#updateCarouselModal').modal('show');
-        },
-
-        /**
-         * 图片处理器
-         */
-        openImg: function(){
-            $('#file').click();
-        },
-        preview: function() {
-            this.productImg = '';
-            var file = document.getElementById('file').files[0];
-            var url = URL.createObjectURL(file);
-            this.carousel.productImg = url;
-            this.carousel.carouselUrl = url;
-        },
-        AjaxUpload: function () {
-            if($.trim($('#file').val()) === '') {
-                alert('请选择图片');
-                return;
-            }
-            var formData = JSON.stringify(this.product);
-            var option = {
-                type: "post",
-                url:  "http://localhost:8080/admin/upload/file",
-                name: "file",
-                // contentType: false,
-                // contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                data: formData,
-                beforeSubmit: function() {
-                    //layer.load();
-                    $('#carouselModal').show();
-                },
-                success: function (result) {
-                    // layer.closeAll('loading');
-                    if (result != null && result.resultCode === 200) {
-                        vm.carousel.productImg = result.data;
-                        return false;
-                    } else {
-                        alert("error");
-                    }
-                }
-            };
-
-            console.log(vm.carousel.productImg)
-            $('#fileForm').ajaxSubmit(option);
-        },
-
-        /**
-         * 时间格式化
-         */
-        dateFormat:function(time) {
-            var date=new Date(time);
-            var year=date.getFullYear();
-            /* 在日期格式中，月份是从0开始的，因此要加0
-             * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
-             * */
-            var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
-            var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
-            var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
-            var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
-            var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
-            // 拼接
-            return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
-        },
-
-        /**
-         * 添加轮播
-         */
-        carouselAdd: function () {
-            var formData = JSON.stringify(this.carousel);
+            this.indexConfig.id = this.msg[0];
+            var formData = JSON.stringify(this.indexConfig);
             var now =  getNow("yyyyMMddHHmmss");
             var sign  = signString(formData,now);
             $.ajax({
@@ -160,30 +123,78 @@ var vm = new Vue({
                     sign:sign
                 },
                 type: "post",
-                url:  "http://localhost:8080/carouse/add",
+                url:  "http://localhost:8080/adminIndexConfig/getIndexConfig",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 data: formData,
                 success: function (result) {
                     if (result.code == 0) {
-                        alert(result.msg);
-                        window.location.reload();
+                        vm.indexConfig = result.data;
+                        // alert(result.msg);
+                        // window.location.reload();
                     } else {
                         alert(result.msg);
                     }
                 }
             })
         },
+
+        /**
+         * 图片处理器
+         */
+        // openImg: function(){
+        //     $('#file').click();
+        // },
+        // preview: function() {
+        //     this.productImg = '';
+        //     var file = document.getElementById('file').files[0];
+        //     var url = URL.createObjectURL(file);
+        //     this.carousel.productImg = url;
+        //     this.carousel.carouselUrl = url;
+        // },
+        // AjaxUpload: function () {
+        //     if($.trim($('#file').val()) === '') {
+        //         alert('请选择图片');
+        //         return;
+        //     }
+        //     var formData = JSON.stringify(this.product);
+        //     var option = {
+        //         type: "post",
+        //         url:  "http://localhost:8080/admin/upload/file",
+        //         name: "file",
+        //         // contentType: false,
+        //         // contentType: "application/json;charset=utf-8",
+        //         dataType: "json",
+        //         data: formData,
+        //         beforeSubmit: function() {
+        //             //layer.load();
+        //             $('#carouselModal').show();
+        //         },
+        //         success: function (result) {
+        //             // layer.closeAll('loading');
+        //             if (result != null && result.resultCode === 200) {
+        //                 vm.carousel.productImg = result.data;
+        //                 return false;
+        //             } else {
+        //                 alert("error");
+        //             }
+        //         }
+        //     };
+        //
+        //     console.log(vm.carousel.productImg)
+        //     $('#fileForm').ajaxSubmit(option);
+        // },
+        //
         /**
          * 修改轮播
          */
-        updateCarousel: function () {
+        updateIndexConfig: function () {
             if (this.msg == undefined || this.msg.length <= 0 || this.msg.length >1){
                 alert("请选择一条记录");
                 window.location.reload();
             } else {
-                this.carousel.id = this.msg[0];
-                var formData = JSON.stringify(this.carousel);
+                this.indexConfig.id = this.msg[0];
+                var formData = JSON.stringify(this.indexConfig);
                 var now =  getNow("yyyyMMddHHmmss");
                 var sign  = signString(formData,now);
                 $.ajax({
@@ -194,7 +205,7 @@ var vm = new Vue({
                         sign:sign
                     },
                     type: "post",
-                    url:  "http://localhost:8080/carouse/updateCarouse",
+                    url:  "http://localhost:8080/adminIndexConfig/indexConfigs/update",
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
                     data: formData,
@@ -213,7 +224,7 @@ var vm = new Vue({
         /**
          * 批量删除轮播图
          */
-        deleteCarousel: function () {
+        deleteIndexConfig: function () {
             var formData = JSON.stringify(this.msg);
             var now =  getNow("yyyyMMddHHmmss");
             var sign  = signString(formData,now);
@@ -226,7 +237,7 @@ var vm = new Vue({
                 },
                 type: "post",
                 traditional: true,
-                url:  "http://localhost:8080/carouse/deleteCarouse",
+                url:  "http://localhost:8080/adminIndexConfig/indexConfigs/delete",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 data: formData,
@@ -241,34 +252,51 @@ var vm = new Vue({
                 }
             })
         },
+        /**
+         * 时间格式化
+         */
+        dateFormat:function(time) {
+            var date=new Date(time);
+            var year=date.getFullYear();
+            /* 在日期格式中，月份是从0开始的，因此要加0
+             * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+             * */
+            var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+            var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+            var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+            var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+            var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
+            // 拼接
+            return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
+        },
 
     },
     computed: {
-        indexs: function(){
-            var left = 1;
-            var right = this.pages;   //总的页数
-            var ar = [];
-            if(this.pages>= 5){
-                if(this.current > 3 && this.current < this.pages-2){
-                    left = this.current - 2;
-                    right = this.current + 2
+    indexs: function(){
+        var left = 1;
+        var right = this.pages;   //总的页数
+        var ar = [];
+        if(this.pages>= 5){
+            if(this.current > 3 && this.current < this.pages-2){
+                left = this.current - 2;
+                right = this.current + 2
+            }else{
+                if(this.current<=3){
+                    left = 1;
+                    right = 5
                 }else{
-                    if(this.current<=3){
-                        left = 1;
-                        right = 5
-                    }else{
-                        right = this.pages;
-                        left = this.pages -4
-                    }
+                    right = this.pages;
+                    left = this.pages -4
                 }
             }
-            while (left <= right){
-                ar.push(left);
-                left ++
-            }
-            return ar
         }
+        while (left <= right){
+            ar.push(left);
+            left ++
+        }
+        return ar
     }
+}
 })
 // })
 

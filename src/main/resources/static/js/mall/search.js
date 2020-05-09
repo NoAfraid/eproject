@@ -1,5 +1,6 @@
 var id = getRequest();
 var keyword = ((id['keyword']));
+
 function getRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串
     var theRequest = new Object();
@@ -29,39 +30,44 @@ var vm = new Vue({
         carouselList: [],
         productL: {
             productName: '',
-            description:'',
-            userId:'',
+            description: '',
+            userId: '',
         },
         mark: 0,
-        vip:[],
-        user:{nick:''},
-        cart:{count:0},
-        keyword:'',
+        vip: [],
+        user: {nick: ''},
+        cart: {count: 0},
+        keyword: '',
+        allProduct: [],
+        promotePrice: "promotePrice",
+        sale: "sale",
+        id: "id",
     },
     mounted: function () {
         this.searchProduct();
         this.getUserInfo();
         this.getCartInfo();
+        this.aLlProductList();
     },
     methods: {
         /**
          * 获取用户信息
          */
-        getUserInfo:function () {
+        getUserInfo: function () {
             this.vip = getCookie("loginUser");
             var userId = getCookie("sessionId");
             var t = {
-                id:userId
+                id: userId
             };
             var formData = JSON.stringify(t);
             $.ajax({
                 type: "post",
                 url: "http://localhost:8080/user/selectInfo",
                 contentType: "application/json;charset=utf-8",
-                dataType : "json",
+                dataType: "json",
                 data: formData,
                 success: function (result) {
-                    if(result.code == 0) {
+                    if (result.code == 0) {
                         vm.user = result.data
                     } else {
                         // alert(result.msg)
@@ -77,17 +83,17 @@ var vm = new Vue({
             this.vip = getCookie("loginUser");
             var userId = getCookie("sessionId");
             var t = {
-                userId:userId
+                userId: userId
             };
             var formData = JSON.stringify(t);
             $.ajax({
                 type: "post",
                 url: "http://localhost:8080/cart/count",
                 contentType: "application/json;charset=utf-8",
-                dataType : "json",
+                dataType: "json",
                 data: formData,
                 success: function (result) {
-                    if(result.code == 0) {
+                    if (result.code == 0) {
                         vm.cart.count = result.data
                         console.log(vm.cart.count)
                     } else {
@@ -120,40 +126,107 @@ var vm = new Vue({
                 }
             })
         },
-        productD: function (id) {
-            // var userId = getCookie("sessionId");
-            // var t = {
-            //     limit: this.limit,
-            //     page: page == null ? this.current : page,
-            //     userId: userId
-            // };
-            // var formData = JSON.stringify(t);
-            // var now =  getNow("yyyyMMddHHmmss");
-            // var sign  = signString(formData,now);
-            // $.ajax({
-            // headers:{
-            //     client:client,
-            //     version:version,
-            //     requestTime:now,
-            //     sign:sign
-            // },
-            // type: "post",
-            // url: "http://localhost:8080/product/product/detail/"+id,
-            // contentType: "application/json;charset=utf-8",
-            // dataType: "json",
-            // // data: formData,
-            // success: function (result) {
-            //     if (result.code == 0) {
-            console.log(id)
-            window.location.href = "product_detail.html?id="+id;
+        /**
+         * 前端排序
+         */
+        downchange: function () {
+            //写法二
+            function sortData(a, b) {
+                return b.price - a.price;
+            }
 
-            //     vm.detail = result.data;
-            //     console.log(vm.detail)
-            // } else {
-            //     alert(result.msg);
-            // }
-            // }
-            // });
+            this.productL.sort(sortData);
+        },
+        upchange: function () {
+            function sortData(a, b) {
+                return a.price - b.price;
+            }
+
+            this.productL.sort(sortData);
+        },
+
+        downSale:function(){
+            function sortData(a, b) {
+                return b.sale - a.sale;
+            }
+            this.productL.sort(sortData);
+        },
+        downByid:function(){
+            function sortData(a, b) {
+                return b.id - a.id;
+            }
+            this.productL.sort(sortData);
+        },
+        productD: function (id) {
+            console.log(id)
+            window.location.href = "product_detail.html?id=" + id;
+        },
+
+        /**
+         * 所有商品
+         */
+        aLlProductList: function () {
+            var formData = JSON.stringify();
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/index/selectAllProduct",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.allProduct = result.data;
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        },
+
+        /**
+         * 后端动态排序
+         */
+        orderByNewProduct: function (orderField) {
+            var t = {
+                orderField: orderField,
+                orderType: "desc"
+            }
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/index/orderBy",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.allProduct = result.data;
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        },
+        orderByPrice: function (orderField) {
+            var t = {
+                orderField: orderField,
+                orderType: "asc"
+            }
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/index/orderBy",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.allProduct = result.data;
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
         },
     }
 })

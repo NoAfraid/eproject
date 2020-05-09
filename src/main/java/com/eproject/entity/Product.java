@@ -12,7 +12,7 @@ import java.util.Map;
 public class Product implements Serializable {
     private Integer id;
 
-    private Integer categoryId;
+
 
     /**
      * 产品名
@@ -90,6 +90,10 @@ public class Product implements Serializable {
     private Integer publishStatus;
 
     /**
+     * 分类id
+     */
+    private Integer categoryId;
+    /**
      * 搜索次数
      */
     private Integer searchCount;
@@ -99,13 +103,6 @@ public class Product implements Serializable {
 //    public Product(Map<String, Object> params) {
 //    }
 
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
 
     public Integer getId() {
         return id;
@@ -228,11 +225,19 @@ public class Product implements Serializable {
     }
 
     public Integer getPublishStatus() {
-        return searchCount;
+        return publishStatus;
     }
 
     public void setPublishStatus(Integer publishStatus) {
-        this.searchCount = searchCount;
+        this.publishStatus = publishStatus;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Integer getSearchCount() {

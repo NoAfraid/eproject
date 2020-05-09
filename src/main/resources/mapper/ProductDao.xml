@@ -23,11 +23,10 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, product_name, product_img, product_sn, detail, sale, stock, price, promote_price, 
-    sort, description, recomand_status, unit, delete_status, verify_status, publish_status,search_count
+    sort, description, recomand_status, unit, delete_status, verify_status, publish_status,category_id,search_count
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+        select *
         from product
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -41,8 +40,7 @@
         </foreach>
     </select>
     <select id="selectProductList" parameterType="Map" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+        select *
         from product
         <where>
             <if test="productName != null and productName.trim() != ''">
@@ -146,6 +144,23 @@
             </if>
         </where>
         order by id desc
+<!--        <if test="orderField != null" >-->
+<!--            ORDER BY-->
+<!--            <choose>-->
+<!--                <when test="orderField == 'id'">-->
+<!--                    id ${orderType}-->
+<!--                </when>-->
+<!--                <when test="orderField == 'sale'">-->
+<!--                    sale ${orderType}-->
+<!--                </when>-->
+<!--                <when test="orderField == 'promotePrice'">-->
+<!--                    promote_price ${orderType}-->
+<!--                </when>-->
+<!--                <otherwise>-->
+<!--                    id ${orderType}-->
+<!--                </otherwise>-->
+<!--            </choose>-->
+<!--        </if>-->
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product
@@ -349,7 +364,7 @@
     <update id="updateBySelective" parameterType="com.eproject.entity.Product">
         update product
         set publish_status = #{publicStatus}
-        where publish_status != #{publicStatus} and id in
+        where id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
@@ -431,9 +446,9 @@
         set
         p.stock = shu.stock,
         p.sale = shu.sale
---         FROM
---         product p
---         LEFT JOIN shu_stock shu ON p.id = shu.product_id
+        -- FROM
+        -- product p
+        -- LEFT JOIN shu_stock shu ON p.id = shu.product_id
         where p.id = shu.product_id and p.id IN
         <foreach collection="itemList" item="item" separator="," open="(" close=")">
             #{item.productId}
@@ -441,5 +456,50 @@
     </update>
     <select id="selectNewProduct" parameterType="com.eproject.entity.Product" resultType="com.eproject.entity.Product">
          select * FROM product ORDER BY id DESC LIMIT 0,1 ;
+    </select>
+    <select id="selectByPrimaryKeys" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from product
+        where publish_status = 1 and id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        order by field(id,
+        <foreach item="id" collection="list" separator=",">
+            #{id}
+        </foreach>
+        );
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,product_name,product_sn,promote_price,product_img,description,detail,sale,stock
+        from product
+        where delete_status = 0 and publish_status = 1
+        order by id desc
+    </select>
+    <select id="orderByProduct" resultMap="BaseResultMap">
+        select id,product_name,product_sn,promote_price,product_img,description,detail,sale,stock
+        from product
+        where delete_status = 0 and publish_status = 1
+        <if test="orderField != null" >
+            ORDER BY
+            <choose>
+                <when test="orderField == 'id'">
+                    id ${orderType}
+                </when>
+                <when test="orderField == 'sale'">
+                    sale ${orderType}
+                </when>
+                <when test="orderField == 'promotePrice'">
+                    promote_price ${orderType}
+                </when>
+                <otherwise>
+                    id ${orderType}
+                </otherwise>
+            </choose>
+        </if>
+<!--        <if test="orderField !=null and orderField != '' ">-->
+<!--            order by ${orderField} ${orderType}-->
+<!--        </if>-->
     </select>
 </mapper>

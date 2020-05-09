@@ -4,10 +4,12 @@ import com.eproject.common.Contants;
 import com.eproject.common.IndexConfigTypeEnum;
 import com.eproject.common.PageQuery;
 import com.eproject.common.R;
+import com.eproject.domain.IndexConfigParam;
 import com.eproject.entity.Carouse;
 import com.eproject.entity.HistorySearch;
 import com.eproject.entity.Product;
 import com.eproject.entity.User;
+import com.eproject.service.AdminIndexConfigService;
 import com.eproject.service.CarouseService;
 import com.eproject.service.HistorySearchService;
 import com.eproject.service.ProductService;
@@ -34,6 +36,9 @@ public class IndexController {
 
     @Resource
     private HistorySearchService historySearchService;
+
+    @Resource
+    private AdminIndexConfigService adminIndexConfigService;
 
     /**
      * 返回固定数量的轮播图对象(首页调用)
@@ -140,5 +145,40 @@ public class IndexController {
             return R.ok().put("data",HistorySearchProductList);
         }
         return R.error(-1,"获取错误");
+    }
+
+
+    /**
+     * 热门推荐1、新品上线、热销商品这三者合一
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/indexPage",produces = "application/json;charset=UTF-8")
+    public R indexPage(){
+        List<IndexConfigParam> hotGoodses = adminIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_HOT.getType(), Contants.INDEX_GOODS_HOT_NUMBER);
+        List<IndexConfigParam> newGoodses = adminIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_NEW.getType(), Contants.INDEX_GOODS_NEW_NUMBER);
+        List<IndexConfigParam> recommendGoodses = adminIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_RECOMMOND.getType(), Contants.INDEX_GOODS_RECOMMOND_NUMBER);
+        return R.ok().put("hotGoodses",hotGoodses).put("newGoodses",newGoodses).put("recommendGoodses",recommendGoodses);
+    }
+
+    /**
+     * 查看更多
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/selectAllProduct",produces = "application/json;charset=UTF-8")
+    public R selectAllProduct(){
+        List<Product> all = productService.selectAll();
+        return R.ok().put("data",all);
+    }
+
+    /**
+     * 动态排序
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/orderBy",produces = "application/json;charset=UTF-8")
+    public R orderByNewProduct(@RequestBody Map<String,Object> o){
+        String orderField = o.get("orderField").toString();
+        String orderType = o.get("orderType").toString();
+        List<Product> all = productService.orderBy(orderField,orderType);
+        return R.ok().put("data",all);
     }
 }
