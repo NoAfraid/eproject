@@ -20,4 +20,7 @@ public interface TAddressCityDao {
     int updateByPrimaryKey(TAddressCity record);
 
     List<TAddressCity> findByProvinceCode(int provinceCode);
+
+    String selectByCode(String code);
+
 }

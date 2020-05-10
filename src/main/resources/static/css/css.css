@@ -781,3 +781,9 @@ textarea{
 .red {
 	color: red;
 }
+.blue {
+	background-color: #e3f2fd;
+	border-color: #e3f2fd;
+	box-shadow: none;
+	border-style: solid;
+}

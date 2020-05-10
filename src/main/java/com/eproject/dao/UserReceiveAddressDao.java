@@ -13,6 +13,8 @@ public interface UserReceiveAddressDao {
 
     int insertSelective(UserReceiveAddress record);
 
+    UserReceiveAddress selectById(Integer id);
+
     List<UserReceiveAddress> selectByPrimaryKey(Integer userId);
 
     int updateByPrimaryKeySelective(UserReceiveAddress record);

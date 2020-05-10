@@ -25,6 +25,11 @@ public interface UserReceiveAddressService {
     int update(Integer id, UserReceiveAddress address);
 
     /**
+     * 根据id获得地址信息
+     */
+    UserReceiveAddress selectById(Integer id);
+
+    /**
      * 返回当前用户的收货地址
      */
     List<UserReceiveAddress> list(UserReceiveAddress address);
@@ -34,4 +39,9 @@ public interface UserReceiveAddressService {
      * @param id 地址id
      */
     UserReceiveAddress getItem(Integer userId);
+
+    /**
+     * 设为默认地址
+     */
+    void updateDefaultStatus(UserReceiveAddress address);
 }

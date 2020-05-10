@@ -534,8 +534,8 @@
 	margin-top: 60px;
 }
 .zxbt{
-	float: left;
-	width: 100%;
+	/*float: left;*/
+	/*width: 100%;*/
 	/*display:flex;*/
 	justify-content:center;
 	align-items:center;

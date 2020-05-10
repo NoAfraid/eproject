@@ -23,9 +23,10 @@ public class UserReceiveAddressController {
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/add",produces = "application/json;charset=UTF-8")
     public R add(@RequestBody UserReceiveAddress address){
+//        address.setRegion(address.);
         int count = userReceiveAddressService.add(address);
         if (count > 0){
-            return R.ok().put("count",count);
+            return R.ok().put("date","添加成功");
         }
         return R.error(-1,"添加出错");
     }
@@ -35,10 +36,10 @@ public class UserReceiveAddressController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/delete",produces = "application/json;charset=UTF-8")
-    public R delete(@RequestParam("id") Integer id){
+    public R delete(@RequestBody Integer id){
         int num = userReceiveAddressService.delete(id);
         if (num > 0){
-            return R.ok().put("count",num);
+            return R.ok().put("0","删除成功");
         }
         return R.error(-1,"删除出错");
     }
@@ -48,14 +49,22 @@ public class UserReceiveAddressController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/update",produces = "application/json;charset=UTF-8")
-    public R update(@RequestParam("id") Integer id,@RequestBody UserReceiveAddress address){
-        int num = userReceiveAddressService.update(id,address);
+    public R update(@RequestBody UserReceiveAddress address){
+        int num = userReceiveAddressService.update(address.getId(),address);
         if (num > 0){
             return R.ok().put("data","修改成功");
         }
         return R.error(-1,"修改出错");
     }
 
+    /**
+     * 根据id获取用户地址
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/selectById",produces = "application/json;charset=UTF-8")
+    public R selectById(@RequestBody Integer id){
+        return R.ok().put("data",userReceiveAddressService.selectById(id));
+    }
     /**
      * 获取收货地址列表
      */
@@ -80,5 +89,15 @@ public class UserReceiveAddressController {
             return R.ok().put("addressList",address);
         }
         return R.error(-1,"获取出错");
+    }
+
+    /**
+     * 设置为默认地址
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/updateDefaultStatus",produces = "application/json;charset=UTF-8")
+    public R updateDefaultStatus(@RequestBody UserReceiveAddress address){
+        userReceiveAddressService.updateDefaultStatus(address);
+        return R.ok();
     }
 }

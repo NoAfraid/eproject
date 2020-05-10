@@ -20,4 +20,6 @@ public interface TAddressTownDao {
     int updateByPrimaryKey(TAddressTown record);
 
     List<TAddressTown> findByCityCode(int cityCode);
+
+    String selectByCode(String code);
 }

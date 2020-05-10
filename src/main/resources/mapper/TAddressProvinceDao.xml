@@ -64,4 +64,9 @@
       `name` = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByCode"  parameterType="java.lang.String" resultType="java.lang.String">
+    select name
+    from t_address_province
+    where code = #{code}
+  </select>
 </mapper>

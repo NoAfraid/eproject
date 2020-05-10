@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>address</title>
+    <link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
+</head>
+<body>
+<div class="bj1" id="app" v-cloak>
+    <div class="dk1">
+        <div class="xsdh">
+            <div class="p1">
+                <a href="../index.html"><p>首页</p></a>
+                <p>></p>
+            </div>
+            <div class="p1">
+                <a href="center.html"><p>个人中心</p></a>
+                <p>></p>
+            </div>
+            <div class="p1">
+                <p>我的关注</p>
+            </div>
+        </div>
+        <div class="grzx">
+            <div class="grzxdht">
+                <div class="gr">
+                    <a href="center.html">个人资料</a>
+                </div>
+                <div class="gr">
+                    <a href="collect.html">我的收藏</a>
+                </div>
+                <div class="gr">
+                    <a href="collect.html">我的关注</a>
+                </div>
+                <div class="gr">
+                    <a class="hsys" href="my_address.html">我的地址</a>
+                </div>
+                <!--					<div class="gr">-->
+                <!--						<a href="wdfensi.html">我的粉丝</a>-->
+                <!--					</div>-->
+                <div class="gr">
+                    <a href="cart.html">我的购物车</a>
+                </div>
+                <div class="gr">
+                    <a href="my_orders.html">我的订单</a>
+                </div>
+                <!--					<div class="gr">-->
+                <!--						<a href="wdzhixun.html">我的咨询</a>-->
+                <!--					</div>-->
+                <!--					<div class="gr">-->
+                <!--						<a href="wdwujuan.html">我参与的问卷</a>-->
+                <!--					</div>-->
+                <div class="gr">
+                    <a href="xgmima.html">修改密码</a>
+                </div>
+                <div class="gr">
+                    <a href="javascript:loginout()">退出</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--                        <form id="goodsForm">-->
+                <div class="zxbt" style="display:flex;">
+                    <p><span class="red">*</span>地址信息：</p>
+                    <label>请选择省:</label>
+                    <select id="province"
+                            v-model="province"
+                            @change="linkage()"
+                            placeholder="省级地区">
+                        <option v-for="item in provinceList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.code"></option>
+                    </select>
+                    <label required="">请选择市:</label>
+                    <select id="city"
+                            v-model="shi"
+                            @click="getCity"
+                            placeholder="市级地区">
+                        <option v-for="item in city"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.code"></option>
+                    </select>
+                    <label required="">请选择区:</label>
+                    <select id="country"
+                            v-model="qu"
+                            @change="getTown"
+                            placeholder="区级地区">
+                        <option v-for="item in town"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.code"></option>
+                    </select>
+                </div>
+                <div class="zxbt" style="display:flex;">
+                    <input type="hidden" id="address" name="address">
+                    <p><span class="red">*</span>详细地址：</p>
+                    <input type="text" id="detailAddress" v-model.trim="address.detailAddress"
+                           placeholder="*请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元等信息" maxlength="30"/>
+                </div>
+                <div class="zxbt" style="display:flex;">
+                    <p><span class="red">*</span>邮政编码：</p>
+                    <input type="text" id="postCode" v-model.trim="address.postCode"
+                           placeholder="请输入邮政编码" maxlength="30"/>
+                </div>
+                <div class="zxbt" style="display:flex;">
+                    <p><span class="red">*</span>收货人名：</p>
+                    <input type="text" id="name" v-model.number="address.name" placeholder="*长度不超过25个字符"
+                           maxlength="30"/>
+                </div>
+                <div class="zxbt" style="display:flex;">
+                    <p><span class="red">*</span>手机号码：</p>
+                    <input type="text" id="phone" v-model.number="address.phoneNumber"
+                           placeholder="*请输入手机号码" maxlength="30"/>
+                </div>
+                <div class="zxbt" style="display:flex;">
+                    <p><span class="red">*</span>设置为默认收货地址：</p>
+                    <div class="xzsp">
+                        <div style="width: 100px;height: unset">
+                            <input type="radio" name="defaultStatus" v-model.number="address.defaultStatus"
+                                   value="1" id="yes"/><label for="yes">是</label>
+                            <input type="radio" name="defaultStatus" v-model.number="address.defaultStatus"
+                                   value="0" id="no"/><label for="no">否</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="zxbt" style="display:flex;">
+                    <input type="button" @click="addAddress" value="保存地址"
+                           style="margin-left: 5px;"/>
+                </div>
+                <div style=" display:flex;font-size: 15px;">
+                    <p><span class="red"></span>个人收货地址列表：</p>
+                    <p><span class="blue">已保存{{addressList.length}}了条地址，还能保存{{10 - addressList.length}}条地址</span></p>
+                </div>
+                <div style="display:flex;">
+                    <table class="gridtable">
+                        <tr class="gridtable">
+                            <!--                                        <td><label><input type="checkbox" id="checkAll"/></label></td>-->
+                            <th>收货人</th>
+                            <th>所在地区</th>
+                            <th>详细地址</th>
+                            <th>邮编</th>
+                            <th>联系电话</th>
+                            <th>操作</th>
+                            <th>状态</th>
+                        </tr>
+                        <tr class="gridtable" v-for="item in addressList">
+                            <td>{{item.name}}</td>
+                            <td>{{item.province}} {{item.city}} {{item.region}}</td>
+                            <td>{{item.detailAddress}}</td>
+
+                            <td>{{item.postCode}}</td>
+                            <td>{{item.phoneNumber}}</td>
+                            <td><a @click="selectById(item.id)">修改</a> | <a @click="deleteAddress(item.id)">删除</a></td>
+                            <td>
+                                <div class="ck">
+                                    <a v-if="item.defaultStatus == 1">默认地址</a>
+                                    <a @click="updateDefaultStatus(item.id)" v-else>设为默认</a>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--    </div>-->
+</div>
+</body>
+<script src="../../js/jquery.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../css/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/md5.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/mall/address.js"></script>
+</html>

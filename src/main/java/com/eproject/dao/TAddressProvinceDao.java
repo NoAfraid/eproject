@@ -19,4 +19,6 @@ public interface TAddressProvinceDao {
     int updateByPrimaryKeySelective(TAddressProvince record);
 
     int updateByPrimaryKey(TAddressProvince record);
+
+    String selectByCode(String code);
 }
