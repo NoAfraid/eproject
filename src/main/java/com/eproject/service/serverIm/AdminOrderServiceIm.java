@@ -54,7 +54,7 @@ public class AdminOrderServiceIm implements AdminOrderService {
     public int checkDone(String[] ids){
         //批量发货
         int count = orderDao.checkDone(Arrays.asList(ids));
-        orderItemDao.checkDone(Arrays.asList(ids));
+        int num = orderItemDao.checkDone(Arrays.asList(ids));
         return count;
     }
 

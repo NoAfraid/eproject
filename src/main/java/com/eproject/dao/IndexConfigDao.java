@@ -21,7 +21,7 @@ public interface IndexConfigDao {
 
     int updateByPrimaryKey(IndexConfig record);
 
-    List<IndexConfig> findIndexConfigList(PageQuery pageUtil);
+    List<IndexConfig> findIndexConfigList();
 
     int deleteBatch(Integer[] ids);
 

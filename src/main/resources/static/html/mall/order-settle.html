@@ -24,12 +24,6 @@
                 <ul class="fl">
                     <li><a href="index.html">新蜂商城</a></li>
                     <li><a href="../goods_get.html">后台管理系统</a></li>
-                    <!--            <li><a href="https://edu.csdn.net/course/detail/26258">课程视频</a></li>-->
-                    <!--            <a href="https://juejin.im/book/5da2f9d4f265da5b81794d48?referrer=59199e22a22b9d0058279886">课程文档</a>-->
-                    <!--            <li><a href="https://gitee.com/newbee-ltd/newbee-donate">捐赠</a></li>-->
-                    <!--            <li><a href="https://github.com/newbee-ltd/newbee-mall/issues">问题反馈</a></li>-->
-                    <!--            <li><a href="https://github.com/newbee-ltd/newbee-mall">GitHub 地址</a></li>-->
-                    <!--            <li><a href="https://gitee.com/newbee-ltd/newbee-mall">码云Gitee 地址</a></li>-->
                 </ul>
                 <div class="fr">
                     <!--            <div >-->
@@ -87,9 +81,9 @@
             <div class="gr">
                 <a href="follow.html">我的关注</a>
             </div>
-            <!--					<div class="gr">-->
-            <!--						<a href="wdfensi.html">我的粉丝</a>-->
-            <!--					</div>-->
+            <div class="gr">
+                <a href="my_address.html">我的地址</a>
+            </div>
             <div class="gr">
                 <a href="cart.html">我的购物车</a>
             </div>
@@ -188,7 +182,7 @@
                                     <h3>收货信息</h3>
                                     <table class="info-table">
                                         <tbody v-for="item in aList">
-                                        <tr>
+                                        <tr v-if="item.defaultStatus ==1">
                                             <th>联系人：</th>
                                             <td v-if="item.name == ''">请选择收货人</td>
                                             <td v-else-if="item.name != ''">{{item.name}} {{item.phoneNumber}}</td>

@@ -12,10 +12,10 @@ public interface AdminIndexConfigService {
     /**
      * 后台分页
      *
-     * @param pageUtil
+     * @param
      * @return
      */
-    PageResult getConfigsPage(PageQuery pageUtil);
+    List<IndexConfig> getConfigsPage();
 
     String saveIndexConfig(IndexConfig indexConfig);
 

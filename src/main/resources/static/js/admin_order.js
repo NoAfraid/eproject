@@ -171,9 +171,9 @@ var vm = new Vue({
                 data: formData,
                 success: function (result) {
                     if (result.code == 0) {
-                        alert(result.msg)
+                        // alert(result.msg)
                         console.log(t)
-                        // window.location.reload();
+                        window.location.reload();
                     } else {
                         alert(result.msg);
                         window.location.reload();

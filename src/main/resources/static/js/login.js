@@ -1,5 +1,5 @@
 $(function () {
-    var loginUrl = "http://localhost:8080/manager/login"; //登录地址
+    // var loginUrl = "http://localhost:8080/manager/login"; //登录地址
     var vm = new Vue({
         el: '#login',
         data: {
@@ -29,11 +29,10 @@ $(function () {
                     alert( '请输入密码'); return;
                 }
                 var verifyCode = $("#verifyCode").val();
-                // alert(verifyCode)
                 if (!validLength(verifyCode, 7)) {
                     alert("请输入正确的验证码")
                 }
-                // alert(this.manager.password)
+
                 var formData = JSON.stringify(this.manager);
                 var now =  getNow("yyyyMMddHHmmss");
                 var sign  = signString(formData,now);
@@ -44,8 +43,9 @@ $(function () {
                         requestTime:now,
                         sign:sign
                     },
+
                     type: "post",
-                    url: loginUrl,
+                    url: "http://localhost:8080/manager/login",
                     contentType: "application/json;charset=utf-8",
                     dataType : "json",
                     data: formData,

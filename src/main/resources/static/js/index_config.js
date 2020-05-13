@@ -36,6 +36,7 @@ var vm = new Vue({
         }
         this.indexConfigList(1);
         // this.updateProduct(17)
+        // this.NewProductList()
     },
     created: function() {
     },
@@ -61,7 +62,7 @@ var vm = new Vue({
                 data: formData,
                 success: function (result) {
                     if (result.code == 0) {
-                        alert(result.msg);
+                        alert("添加成功");
                         window.location.reload();
                     } else {
                         alert(result.msg);
@@ -102,6 +103,24 @@ var vm = new Vue({
                 }
             })
         },
+
+        // NewProductList: function(){
+        //     var formData = JSON.stringify();
+        //     $.ajax({
+        //         type: "post",
+        //         url: "http://localhost:8080/index/getProductForIndex",
+        //         contentType: "application/json;charset=utf-8",
+        //         dataType: "json",
+        //         data: formData,
+        //         success: function (result) {
+        //             if (result.code == 0) {
+        //                 vm.goodsList = result.data
+        //             } else {
+        //                 alert(result.msg)
+        //             }
+        //         }
+        //     })
+        // },
 
         /**
          * 弹出模态框

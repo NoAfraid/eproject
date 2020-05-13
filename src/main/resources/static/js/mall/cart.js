@@ -34,6 +34,7 @@ var vm = new Vue({
         },
         user:{nick:''},
         cart:{count:''},
+        vip:[],
     },
     mounted: function () {
         var accessToken = getCookie("accessToken");

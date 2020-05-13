@@ -166,9 +166,9 @@
       and is_deleted = 0
     </where>
     order by config_rank desc
-    <if test="start!=null and limit!=null">
-      limit #{start},#{limit}
-    </if>
+<!--    <if test="start!=null and limit!=null">-->
+<!--      limit #{start},#{limit}-->
+<!--    </if>-->
   </select>
   <update id="deleteBatch">
     update index_config

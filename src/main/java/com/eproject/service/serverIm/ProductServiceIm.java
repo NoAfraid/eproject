@@ -31,7 +31,7 @@ public class ProductServiceIm implements ProductService {
     @Override
     public String saveProduct(Product p) {
 
-        if (productDao.saveProduct(p) > 0) {
+        if (productDao.insertSelective(p) > 0) {
             Product product = productDao.selectNewProduct(p);
             ShuStock shuStock = new ShuStock();
             shuStock.setProductId(product.getId());

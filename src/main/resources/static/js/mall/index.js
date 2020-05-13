@@ -90,26 +90,37 @@ var vm = new Vue({
          */
         getUserInfo: function () {
             this.vip = getCookie("loginUser");
-            var userId = getCookie("sessionId");
-            var t = {
-                id: userId
-            };
-            var formData = JSON.stringify(t);
-            $.ajax({
-                type: "post",
-                url: "http://localhost:8080/user/selectInfo",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                data: formData,
-                success: function (result) {
-                    if (result.code == 0) {
-                        vm.user = result.data
-                        console.log(vm.user.nick)
-                    } else {
-                        // alert(result.msg)
-                    }
+            if (this.vip == null){
+                return;
+            } else {
+                var userId = getCookie("sessionId");
+
+                if (userId == null || userId ==''){
+                    return;
+                } else {
+                    var t = {
+                        id: userId
+                    };
+                    var formData = JSON.stringify(t);
+                    $.ajax({
+                        type: "post",
+                        url: "http://localhost:8080/user/selectInfo",
+                        contentType: "application/json;charset=utf-8",
+                        dataType : "json",
+                        data: formData,
+                        success: function (result) {
+                            if(result.code == 0) {
+                                vm.user = result.data
+                                console.log(vm.user.nick)
+                            } else {
+                                alert(result.msg)
+                            }
+                        }
+                    })
                 }
-            })
+            }
+
+
         },
 
         /**
@@ -117,26 +128,35 @@ var vm = new Vue({
          */
         getCartInfo: function () {
             this.vip = getCookie("loginUser");
-            var userId = getCookie("sessionId");
-            var t = {
-                userId: userId
-            };
-            var formData = JSON.stringify(t);
-            $.ajax({
-                type: "post",
-                url: "http://localhost:8080/cart/count",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                data: formData,
-                success: function (result) {
-                    if (result.code == 0) {
-                        vm.cart.count = result.data
-                        console.log(vm.cart.count)
-                    } else {
-                        // alert(result.msg)
-                    }
+            if (this.vip == null){
+                return;
+            } else {
+                var userId = getCookie("sessionId");
+                if (userId == null || userId ==''){
+                    return;
+                } else {
+                    var t = {
+                        userId: userId
+                    };
+                    var formData = JSON.stringify(t);
+                    $.ajax({
+                        type: "post",
+                        url: "http://localhost:8080/cart/count",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        data: formData,
+                        success: function (result) {
+                            if (result.code == 0) {
+                                vm.cart.count = result.data
+                                console.log(vm.cart.count)
+                            } else {
+                                // alert(result.msg)
+                            }
+                        }
+                    })
                 }
-            })
+            }
+
         },
         /**
          * 轮播图配置
@@ -279,24 +299,29 @@ var vm = new Vue({
          */
         historySearch: function () {
             var userId = getCookie("sessionId");
-            var t = {
-                id: userId
-            };
-            var formData = JSON.stringify(t);
-            $.ajax({
-                type: "post",
-                url: "http://localhost:8080/index/historySearch",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                data: formData,
-                success: function (result) {
-                    if (result.code == 0) {
-                        vm.historySearchList = result.data
-                    } else {
-                        // alert(result.msg)
+            if (userId ==null || userId == ''){
+                return;
+            }else {
+                var t = {
+                    id: userId
+                };
+                var formData = JSON.stringify(t);
+                $.ajax({
+                    type: "post",
+                    url: "http://localhost:8080/index/historySearch",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    data: formData,
+                    success: function (result) {
+                        if (result.code == 0) {
+                            vm.historySearchList = result.data
+                        } else {
+                            // alert(result.msg)
+                        }
                     }
-                }
-            })
+                })
+            }
+
         },
 
         /**

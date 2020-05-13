@@ -1,5 +1,90 @@
-<form name="punchout_form" method="post" action="https://openapi.alipaydev.com/gateway.do?charset=utf-8&method=alipay.trade.page.pay&sign=kJxjMWwN8nfd6RJk7P4HZv4xflgvq0wvNnzd0RnsgcJL7lqHAoqTKut7mYhnZ6ycegxtKP960YhSB5J%2F3cE8gTcPNB%2F1UJ%2BgY8CguMi4pppUlExLVzuOIB7K6viFy6WU1hW7uH3SGR%2FlQUPqyOs73PdKs5fRpjP0pyOxaqPPAtWnuRWTX1ozfeZZXu3yWIg2RjVpWmPHnf6ChRDnjO0E2T8T%2BkcRYXllIBhgF4YJh3A3OurUsa28CIeyA2ZFMZFgJ6pMXlxNtcUfSDbhBUTIh%2BFtl9ysGtwyS%2BmEvD18Y0W4fiATIG%2FLuAvfpYpidVpb8urijUzNFOI1pc6RzJqkYA%3D%3D&return_url=http%3A%2F%2Flocalhost%3A8080%2Fhtml%2Fmall%2Fmy_orders.html&notify_url=http%3A%2F%2Flocalhost%3A8080%2Fhtml%2Fmall%2Fpay.html&version=1.0&app_id=2016102400750993&sign_type=RSA2&timestamp=2020-05-08+15%3A09%3A56&alipay_sdk=alipay-sdk-java-3.3.0&format=json">
-    <input type="hidden" name="biz_content" value="{&quot;out_trade_no&quot;:&quot;15889217649036561&quot;,&quot;total_amount&quot;:&quot;null&quot;,&quot;subject&quot;:&quot;null&quot;,&quot;body&quot;:&quot;null&quot;,&quot;product_code&quot;:&quot;FAST_INSTANT_TRADE_PAY&quot;}">
-    <input type="submit" value="立即支付" style="display:none" >
-</form>
-<script>document.forms[0].submit();</script>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>eProject管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="text/css" href="../css/admin/dist/img/favicon.png"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="../css/admin/dist/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" type="text/css" href="../css/admin/dist/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" type="text/css" href="../css/admin/dist/css/adminlte.min.css">
+    <style>
+        canvas {
+            display: block;
+            vertical-align: bottom;
+        }
+        #particles {
+            background-color: #F7FAFC;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="hold-transition login-page">
+<div id="particles">
+</div>
+<div class="login-box">
+    <div class="login-logo" style="color: #1baeae;">
+        <img src="../css/mall/image/new-bee-logo-3.png" style="    height: 58px;float: left;margin-left: 10px;">
+        <h1>管理系统登陆</h1>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card" id="login">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg"> 管理员登录</p>
+                <div class="form-group">
+                    <!--                    <div class="alert alert-danger" th:text="${session.errorMsg}"></div>-->
+                </div>
+                <div class="form-group has-feedback">
+                    <span class="fa fa-user form-control-feedback"></span>
+                    <input type="text" id="userName" v-model.trim="manager.loginName" class="form-control" placeholder="请输入账号"
+                           required="true">
+                </div>
+                <div class="form-group has-feedback">
+                    <span class="fa fa-lock form-control-feedback"></span>
+                    <input type="password" id="password" v-model.trim="manager.password" class="form-control" placeholder="请输入密码"
+                           required="true">
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <input type="text" class="form-control" id="verifyCode" name="verifyCode" placeholder="请输入验证码" required="true">
+                    </div>
+                    <div class="col-6">
+                        <img alt="单击图片刷新！" class="pointer" :src="src"
+                             @click="updateCode">
+                    </div>
+                </div>
+                <div class="form-group has-feedback"></div>
+                <div class="row">
+                    <div class="col-8">
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat" @click="loginDo">登录
+                        </button>
+                    </div>
+                </div>
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="../css/admin/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+
+<script src="../css/admin/dist/js/public.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/md5.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/login.js"></script>
+</body>
+</html>

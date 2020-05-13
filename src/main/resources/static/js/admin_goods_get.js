@@ -67,39 +67,39 @@ $(function () {
                 this.product.detail=  editor.html();
                 if ($.trim(this.product.productSn) == '') {
                     alert("请输入商品编号");
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 if ($.trim(this.product.productName) == '') {
                     alert("请输入商品名称");
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 if ($.trim(this.product.description) == '') {
                     alert("请输入商品简介");
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 if ($.trim(this.product.price) == '') {
                     alert("请输入商品价格");
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 if ($.trim(this.product.promotePrice) == '') {
                     alert("请输入商品销售价格");
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 if ($.trim(this.product.stock) == '') {
                     alert("请输入商品库存");
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 if ($.trim(this.product.unit) == '') {
                     alert("请输入商品单位");
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 if ($.trim(this.product.publishStatus) == '') {
                     alert("请选择是否上架");
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 if ($.trim(this.product.detail) == '') {
                     alert("请输入商品详情");
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 var formData = JSON.stringify(this.product);
                 var now =  getNow("yyyyMMddHHmmss");
@@ -119,6 +119,7 @@ $(function () {
                     success: function (result) {
                         if (result.code == 0) {
                             alert(result.msg);
+                            window.location.reload();
                         } else {
                             alert(result.msg);
                         }

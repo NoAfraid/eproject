@@ -81,11 +81,11 @@ public class AdminIndexConfigController {
     @RequestMapping(value = "/indexConfigs/list",  method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public R list(@RequestBody Map<String, Object> params) {
-        if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
-            return R.error("参数异常！");
-        }
-        PageQuery pageUtil = new PageQuery(params);
-        return R.ok().put("data",adminIndexConfigService.getConfigsPage(pageUtil));
+//        if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
+//            return R.error("参数异常！");
+//        }
+//        PageQuery pageUtil = new PageQuery(params);
+        return R.ok().put("data",adminIndexConfigService.getConfigsPage());
     }
 
     /**

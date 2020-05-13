@@ -30,6 +30,10 @@ $(function () {
                 if ($.trim(this.user.password) == ''){
                     this.error = '请输入密码'; return;
                 }
+                var verifyCode = $("#verifyCode").val();
+                if (!validLength(verifyCode, 7)) {
+                    alert("请输入正确的验证码")
+                }
                 var formData = JSON.stringify(this.user);
                 var now =  getNow("yyyyMMddHHmmss");
                 var sign  = signString(formData,now);

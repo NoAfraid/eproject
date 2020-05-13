@@ -28,11 +28,11 @@ public class AdminIndexConfigServiceIm implements AdminIndexConfigService {
     private ProductDao productDao;
 
     @Override
-    public PageResult getConfigsPage(PageQuery pageUtil) {
-        List<IndexConfig> indexConfigs = indexConfigDao.findIndexConfigList(pageUtil);
-        int total = indexConfigs.size();
-        PageResult pageResult = new PageResult(indexConfigs, total, pageUtil.getLimit(), pageUtil.getPage());
-        return pageResult;
+    public List<IndexConfig> getConfigsPage() {
+        List<IndexConfig> indexConfigs = indexConfigDao.findIndexConfigList();
+        //int total = indexConfigs.size();
+        //PageResult pageResult = new PageResult(indexConfigs);
+        return indexConfigs;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class AdminIndexConfigServiceIm implements AdminIndexConfigService {
             List<Integer> ids = indexConfigs.stream().map(IndexConfig::getProductId).collect(Collectors.toList());
             List<Product> productList = productDao.selectByPrimaryKeys(ids);
             IndexConfigParam = BeanUtil.copyList(productList, IndexConfigParam.class);
-            for (Product product : productList){
+            for (Product product : productList) {
                 for (IndexConfigParam indexConfig : IndexConfigParam) {
                     String productName = indexConfig.getProductName();
                     String description = indexConfig.getDescription();
@@ -94,8 +94,10 @@ public class AdminIndexConfigServiceIm implements AdminIndexConfigService {
                         description = description.substring(0, 22) + "...";
                         indexConfig.setDescription(description);
                     }
-                    indexConfig.setProductId(product.getId());
+//                    Integer productId = product.getId();
+//                    indexConfig.setProductId(productId);
                 }
+
             }
         }
         return IndexConfigParam;

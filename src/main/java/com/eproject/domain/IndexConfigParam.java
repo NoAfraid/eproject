@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class IndexConfigParam implements Serializable {
 
     @ApiModelProperty("商品id")
-    private Integer productId;
+    private Integer id;
     @ApiModelProperty("商品名")
     private String productName;
     @ApiModelProperty("商品图")
@@ -24,8 +24,8 @@ public class IndexConfigParam implements Serializable {
     @ApiModelProperty("商品标签")
     private String tag;
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setProductName(String productName) {
@@ -48,8 +48,8 @@ public class IndexConfigParam implements Serializable {
         this.tag = tag;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public Integer getId() {
+        return id;
     }
 
     public String getProductName() {

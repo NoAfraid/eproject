@@ -218,22 +218,7 @@
   <update id="checkDone">
     update order_item
     set
-    <!--    delivery_no = case id-->
-    <!--    <foreach collection="list" item="item">-->
-    <!--      WHEN #{item.orderId} THEN #{item.deliveryNo}-->
-    <!--    </foreach>-->
-    <!--    END,-->
-    <!--    delivery_company = CASE id-->
-    <!--    <foreach collection="list" item="item">-->
-    <!--      WHEN #{item.orderId} THEN #{item.deliveryCompany}-->
-    <!--    </foreach>-->
-    <!--    END,-->
-    <!--    delivery_time = CASE id-->
-    <!--    <foreach collection="list" item="item">-->
-    <!--      WHEN #{item.orderId} THEN now()-->
-    <!--    </foreach>-->
-    <!--    END,-->
-    order_status = CASE id
+    order_status = CASE order_id
     <foreach collection="list" item="item">
       WHEN #{item} THEN 2
     </foreach>
@@ -248,7 +233,7 @@
   <update id="delivery">
     update order_item
     set
-    order_status = CASE id
+    order_status = CASE order_id
     <foreach collection="list" item="item">
       WHEN #{item.orderId} THEN 3
     </foreach>

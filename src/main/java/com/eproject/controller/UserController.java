@@ -115,7 +115,7 @@ public class UserController {
         }
         User  info = userService.selectUserInfo(userInfo);
         if (info == null){
-            return R.error(-1,"查询异常");
+            return R.error();
         }
         return R.ok().put("data",info);
     }

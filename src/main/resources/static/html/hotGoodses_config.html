@@ -211,6 +211,7 @@
                             </button>
                         </div>
                         <br>
+<!--                        <p >共有{{goodsList.length}}记录</p>-->
                         <div class="v1">
                             <div class="v2">
                                 <table class="gridtable">
@@ -218,23 +219,23 @@
                                         <td><label><input type="checkbox" id="checkAll"/></label></td>
                                         <th>商品图</th>
                                         <th>商品编号</th>
-                                        <th>商品图名</th>
+                                        <th>商品名</th>
                                         <th>跳转链接</th>
                                         <th>排序权重</th>
                                         <th>创建时间</th>
                                         <th>更新时间</th>
                                     </tr>
-                                    <tr class="gridtable" v-for="item in goodsList.list" v-if="item.configType == 3">
+                                    <tr class="gridtable" v-for="item in goodsList" v-if="item.configType == 3">
                                         <td><input type="checkbox" v-model="msg" :value="item.id"/></td>
                                         <td><img :src="item.productImg"/></td>
                                         <td>{{item.productId}}</td>
-                                        <td>{{item.productName}}</td>
+                                        <td>{{item.configName}}</td>
                                         <td>{{item.redirectUrl}}</td>
                                         <td>{{item.configRank}}</td>
                                         <td>{{dateFormat(item.createTime)}}</td>
                                         <td>{{dateFormat(item.updateTime)}}</td>
                                     </tr>
-                                    <tr v-else>暂无商品</tr>
+<!--                                    <tr v-else-if="goodsList.length <=0">暂无商品</tr>-->
                                 </table>
                             </div>
                         </div>
