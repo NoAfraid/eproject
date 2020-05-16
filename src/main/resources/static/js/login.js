@@ -6,6 +6,7 @@ $(function () {
            manager:{
                loginName: null,
                password: null,
+               verifyCode:'',
            },
             error: null,
             src:'',
@@ -32,7 +33,7 @@ $(function () {
                 if (!validLength(verifyCode, 7)) {
                     alert("请输入正确的验证码")
                 }
-
+                this.manager.verifyCode = verifyCode;
                 var formData = JSON.stringify(this.manager);
                 var now =  getNow("yyyyMMddHHmmss");
                 var sign  = signString(formData,now);
@@ -45,7 +46,7 @@ $(function () {
                     },
 
                     type: "post",
-                    url: "http://localhost:8080/manager/login",
+                    url: "http://localhost:8080/manager/login?verifyCode=" + verifyCode,
                     contentType: "application/json;charset=utf-8",
                     dataType : "json",
                     data: formData,

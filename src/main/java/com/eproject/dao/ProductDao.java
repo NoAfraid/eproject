@@ -76,7 +76,7 @@ public interface ProductDao {
     /**
      * c查看更多
      */
-    List<Product> selectAll();
+    List<Product> selectAll(PageQuery pageQuery);
 
     /**
      * 排序

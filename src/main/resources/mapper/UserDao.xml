@@ -13,10 +13,12 @@
     <result column="nick" jdbcType="VARCHAR" property="nick" />
     <result column="pic" jdbcType="VARCHAR" property="pic" />
     <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="disable_status" jdbcType="INTEGER" property="disableStatus" />
   </resultMap>
   <sql id="Base_Column_List">
     id, username, `password`, phone, sex, adress, create_time, personalized_signature, 
-    nick, pic, email
+    nick, pic, email, delete_status, disable_status
   </sql>
   <select id="selectByPrimaryKey" parameterType="Map" resultMap="BaseResultMap">
     select 
@@ -43,6 +45,19 @@
     select username, phone
     from user
     where username = #{username,jdbcType=VARCHAR} or phone =  #{phone,jdbcType=VARCHAR}
+  </select>
+  <select id="findUserList" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    where 1=1
+    <if test="username!=null and username!=''">
+      and username = #{username}
+    </if>
+    order by create_time desc
+    <if test="start!=null and limit!=null">
+      limit #{start},#{limit}
+    </if>
   </select>
   <select id="countById" parameterType="com.eproject.entity.User" resultType="java.lang.Integer">
     select count(id)
@@ -71,11 +86,12 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.User" useGeneratedKeys="true">
     insert into user (username, `password`, phone, 
       sex, adress, create_time, 
-      personalized_signature, nick, pic
+      personalized_signature, nick, pic,email,delete_status,disable_status
       )
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{sex,jdbcType=VARCHAR}, #{adress,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{personalizedSignature,jdbcType=VARCHAR}, #{nick,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}
+      #{personalizedSignature,jdbcType=VARCHAR}, #{nick,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR},
+      #{deleteStatus}, #{disableStatus}
       )
   </insert>
   <insert id="insertUser" parameterType="com.eproject.entity.User">
@@ -112,6 +128,15 @@
       <if test="pic != null">
         pic,
       </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="deleteStatus != null">
+        delete_status,
+      </if>
+      <if test="disableStatus != null">
+        disable_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="username != null">
@@ -140,6 +165,15 @@
       </if>
       <if test="pic != null">
         #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email},
+      </if>
+      <if test="deleteStatus != null">
+        #{delete_status},
+      </if>
+      <if test="disableStatus != null">
+        #{disable_status},
       </if>
     </trim>
   </insert>
@@ -208,5 +242,12 @@
     update user
     set pic = #{pic}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="lockUserBatch">
+    update user
+    set disable_status=#{disableStatus} where id in
+    <foreach item="id" collection="ids" open="(" separator="," close=")">
+      #{id}
+    </foreach>
   </update>
 </mapper>

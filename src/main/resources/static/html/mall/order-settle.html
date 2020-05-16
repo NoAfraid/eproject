@@ -178,11 +178,11 @@
                                 </table>
                             </div>
                             <div class="order-detail-info">
-                                <div>
+                                <div v-for="item in aList"  v-if="item.defaultStatus ==1">
                                     <h3>收货信息</h3>
                                     <table class="info-table">
-                                        <tbody v-for="item in aList">
-                                        <tr v-if="item.defaultStatus ==1">
+                                        <tbody >
+                                        <tr>
                                             <th>联系人：</th>
                                             <td v-if="item.name == ''">请选择收货人</td>
                                             <td v-else-if="item.name != ''">{{item.name}} {{item.phoneNumber}}</td>
@@ -197,7 +197,7 @@
                                     </table>
                                     <div class="actions">
                                         <a class="btn btn-small btn-line-gray J_editAddr"
-                                           href="javascript:openUpdateModal();">修改</a>
+                                           @click="openUpdateModal(item.id)">修改</a>
                                     </div>
                                 </div>
                             </div>
@@ -280,7 +280,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer" v-for="item in aList">
+                    <div class="modal-footer" v-for="item in aList" v-if="item.defaultStatus ==1">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                         <button type="button" class="btn btn-primary" @click="updateAddress(item.id)">确认</button>
                     </div>
@@ -307,10 +307,8 @@
 <script src="../../js/common.js"></script>
 <script src="../../js/mall/cart.js"></script>
 <!--<script src="../../js/mall/order_detail.js"></script>-->
-<script type="text/javascript">
-    function openUpdateModal() {
-        $('#personalInfoModal').modal('show');
-    }
-</script>
+<!--<script type="text/javascript">-->
+<!--   -->
+<!--</script>-->
 </body>
 </html>

@@ -74,7 +74,15 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/login",produces = "application/json;charset=UTF-8")
-    public R loginUser(@RequestBody  User user){
+    public R loginUser(@RequestBody  User user,@RequestParam("verifyCode") String verifyCode,
+                       HttpSession session){
+        if (StringUtils.isEmpty(verifyCode)) {
+            return R.error(-1,"验证码不能为空");
+        }
+        String kaptchaCode = session.getAttribute("MallVerifyCode") + "";
+        if (StringUtils.isEmpty(kaptchaCode) || !verifyCode.equals(kaptchaCode)) {
+            return R.error(-3, "验证码错误!");
+        }
         User loginUser = userService.loginUser(user);
         //loginUser.getUsername().equals(user.getUsername()) ||loginUser.getPhone().equals(user.getPhone()
         if (loginUser != null){
@@ -102,7 +110,7 @@ public class UserController {
         else if (loginUser == null){
             return R.error(-2,"该账号未注册，请注册");
         }
-        return R.error(-1,"账号或者密码错误");
+        return R.error(-4,"账号或者密码错误");
     }
     /**
      * 获取用户信息

@@ -2,6 +2,8 @@ package com.eproject.service;
 
 import com.eproject.common.PageQuery;
 import com.eproject.common.PageResult;
+import com.eproject.domain.CategoryParam;
+import com.eproject.domain.SearchPageCategoryVO;
 import com.eproject.entity.Category;
 
 import java.util.List;
@@ -32,6 +34,21 @@ public interface CategoryService {
      */
     List<Category> selectByLevelAndParentIdsAndNumber(List<Integer> parentIds, int categoryLevel);
     Category getGoodsCategoryById(Integer id);
+
+    /**
+     * 返回分类数据(首页调用)
+     *
+     * @return
+     */
+    List<CategoryParam> getCategoriesForIndex();
+
+    /**
+     * 返回分类数据(搜索页调用)
+     *
+     * @param categoryId
+     * @return
+     */
+    SearchPageCategoryVO getCategoriesForSearch(Integer categoryId);
 
     /**
      * 分页查询

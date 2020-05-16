@@ -1,6 +1,6 @@
 $(function () {
-    var loginUrl = "http://localhost:8080/user/login"; //登录地址
-    var registerUser = "http://localhost:8080/user/registerUser"; //登录地址
+    var loginUrl = "http://localhost:8080/user/login?verifyCode="+this.verifyCode; //登录地址
+    var registerUser = "http://localhost:8080/user/registerUser"; //注册地址
     var vm = new Vue({
         el: '#login',
         data: {
@@ -14,7 +14,8 @@ $(function () {
                 phone: '',
             },
             src:'',
-            error: null
+            error: null,
+            verifyCode: '',
         },
 
         mounted: function () {
@@ -24,15 +25,21 @@ $(function () {
         methods: {
             loginDo: function () {
                 if ($.trim(this.user.username) == ''){
-                    alert(this.user.username)
-                    this.error = '请输入登录名/账号'; return;
+                    // alert(this.user.username)
+                    this.error = '请输入登录名/账号';
+                    alert(this.error);
+                    return;
                 }
                 if ($.trim(this.user.password) == ''){
-                    this.error = '请输入密码'; return;
+                    this.error = '请输入密码';
+                    alert(this.error);
+                    return;
                 }
                 var verifyCode = $("#verifyCode").val();
-                if (!validLength(verifyCode, 7)) {
-                    alert("请输入正确的验证码")
+
+
+                if (!validLength(this.verifyCode,7)) {
+                    alert("请输入正确的验证码"); return;
                 }
                 var formData = JSON.stringify(this.user);
                 var now =  getNow("yyyyMMddHHmmss");
@@ -45,7 +52,7 @@ $(function () {
                         sign:sign
                     },
                     type: "post",
-                    url: loginUrl,
+                    url: "http://localhost:8080/user/login?verifyCode="+ this.verifyCode,
                     contentType: "application/json;charset=utf-8",
                     dataType : "json",
                     data: formData,
@@ -54,14 +61,28 @@ $(function () {
                             setCookie("loginUser", JSON.stringify(result.data));
                             setCookie("accessToken", result.accessToken);
                             setCookie("sessionId",result.sessionId);
+                            alert("登录成功");
                             window.location.href= 'index.html';
+                        }
+                        if (result.code==-1){
+                            alert("验证码不能为空");
+                            window.location.reload();
+                        }
+                        if (result.code==-3){
+                            alert("验证码错误");
+                            window.location.reload();
+                        }
+                        if (result.code==-4){
+                            alert("账号或者密码错误");
+                            window.location.reload();
                         }
                         if (result.code == -2) {
                             alert(result.msg);
                             window.location.href= 'register.html';
-                        }else {
-                            alert(result.msg);
                         }
+                        // else {
+                        //     alert(result.msg);
+                        // }
                     }
                 })
             },

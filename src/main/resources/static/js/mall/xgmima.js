@@ -6,7 +6,10 @@
             newPassword: null,
             originalPassword: null,
             confirmPassword: null,
-            showPassword: false
+            showPassword: false,
+            vip: [],
+            user: {nick: ''},
+            cart: {count: 0},
         },
         mounted: function () {
             var accessToken = getCookie("accessToken");

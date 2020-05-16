@@ -22,6 +22,11 @@ var vm = new Vue({
         recommendGoodses: [],
         hotGoodses: [],
         newGoodses: [],
+        categories: {
+            secondLevelCategoryParams:[],
+            thirdLevelCategoryParam:[],
+        },
+        seen:false,
     },
     mounted: function () {
         var swiper = new Swiper('.swiper-container', {
@@ -50,13 +55,14 @@ var vm = new Vue({
 
         });
         this.carousel();
-        this.product();
-        this.hotProduct();
+        //this.product();
+        // this.hotProduct();
         this.getUserInfo();
         this.getCartInfo();
-        this.Hotproduct();
+        this.HotSearchProduct();
         this.historySearch();
-        this.productConfig()
+        this.productConfig();
+        this.getCategories();
     },
     computed: {
         indexs: function () {
@@ -83,6 +89,7 @@ var vm = new Vue({
             }
             return ar
         }
+
     },
     methods: {
         /**
@@ -158,6 +165,35 @@ var vm = new Vue({
             }
 
         },
+
+        /**
+         * 分类信息
+         */
+        getCategories: function(){
+            var formData = JSON.stringify();
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/category/getCategoryForIndex",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.categories = result.data
+                        console.log(vm.categories.secondLevelCategoryParams)
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        },
+
+        /**
+         * 分类搜索
+         */
+        searchCategory: function(id){
+            window.location.href = encodeURI("search.html?categoryId=" + id);
+        },
         /**
          * 轮播图配置
          */
@@ -206,7 +242,7 @@ var vm = new Vue({
         /**
          * 热搜商品
          */
-        Hotproduct: function () {
+        HotSearchProduct: function () {
             var formData = JSON.stringify();
             $.ajax({
                 type: "post",
@@ -329,6 +365,16 @@ var vm = new Vue({
          */
         lookMore: function(){
             window.location.href = "product_list.html"
+        },
+
+        /**
+         * 鼠标悬停显示或影藏内容
+         */
+        enter: function () {
+            this.seen = true;
+        },
+        leave: function () {
+            this.seen = false;
         }
     }
 

@@ -32,6 +32,22 @@ public class UserServiceIm implements UserService {
     private FollowDao followDao;
 
     @Override
+    public PageResult usersPage(PageQuery pageUtil){
+        List<User> list = userDao.findUserList(pageUtil);
+        int total = list.size();
+        PageResult pageResult = new PageResult(list, total, pageUtil.getLimit(), pageUtil.getPage());
+        return pageResult;
+    }
+
+    @Override
+    public Boolean disableUsers(Integer[] ids, int lockStatus) {
+        if (ids.length < 1) {
+            return false;
+        }
+        return userDao.lockUserBatch(ids, lockStatus) > 0;
+    }
+
+    @Override
     public String register(User registerUser){
         registerUser.setCreateTime(new Date());
         String username = "";

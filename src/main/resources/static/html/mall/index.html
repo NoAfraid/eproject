@@ -58,10 +58,10 @@
                         <li><a href="login.html">登录</a></li>
                         <li><a href="register.html">注册</a></li>
                     </ul>
-<!--                    <div class="shopcart">-->
-<!--                        <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>-->
-<!--                            购物车(0)</a>-->
-<!--                    </div>-->
+                    <!--                    <div class="shopcart">-->
+                    <!--                        <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>-->
+                    <!--                            购物车(0)</a>-->
+                    <!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -76,25 +76,55 @@
             </ul>
             <div class="fr">
                 <div class="search">
-                    <input class="text" type="text" id="keyword" autocomplete="off" v-model="productL.productName">
-                    <div class="search_hot">
+                    <div style="position:relative" id="five">
+                        <input class="text" type="text" id="keyword" autocomplete="off" v-model="productL.productName">
+                        <div class="button iconfont icon-search" id="four" @click="searchProductList"></div>
                     </div>
-                </div>
-                <div class="button iconfont icon-search" @click="searchProductList"></div>
-                <p>热门搜索：</p>
-                <div v-for="(item, index ) in hotProductList" :class="index % 5 == 0 ? 'mlkj' : 'mlkj1'"
-                     style="display:inline-block" @click="searchProduc(item.productName)"><p>{{item.productName}}&nbsp;&nbsp;</p>
-                </div>
-                <div v-if="historySearchList.length > 0">
-                    <p>历史搜索：</p>
-                    <div v-for="(item, index ) in historySearchList" :class="index % 5 == 0 ? 'mlkj' : 'mlkj1'"
-                         style="display:inline-block" @click="searchProduc(item.productName)"><p>{{item.productName}}&nbsp;&nbsp;</p>
+                    <p>&nbsp;&nbsp;</p>
+                    <div style="position:relative;" class="one">热门搜索：
+                        <div v-for="(item, index ) in hotProductList" :class="index % 5 == 0 ? 'mlkj' : 'mlkj1'"
+                             style="display:inline-block" @click="searchProduc(item.searchName)"><p>
+                            {{item.searchName}}&nbsp;&nbsp;</p>
+                        </div>
                     </div>
+                    <div style="position:relative;" class="two" v-if="historySearchList.length > 0">
+                        历史搜索：
+                        <div v-for="(item, index ) in historySearchList" :class="index % 5 == 0 ? 'mlkj' : 'mlkj1'"
+                             style="display:inline-block" @click="searchProduc(item.searchName)"><p>
+                            {{item.searchName}}&nbsp;&nbsp;</p>
+                        </div>
+                    </div>
+                    <!--                    <div class="search_hot" >-->
+                    <!--                    </div>-->
+
                 </div>
+
+
             </div>
         </div>
     </nav>
     <div id="banner">
+        <div class="all-sort-list">
+            <div class="item" v-for="(items,index) in categories">
+                <h3><span>·</span><a href="##">{{items.categoryName}}</a></h3>
+                <div class="item-list clearfix">
+                    <div class="subitem">
+                        <dl class="fore1" v-for="second in items.secondLevelCategoryParams">
+                            <dt><a href="#">{{second.categoryName}}</a></dt>
+                            <dd>
+                                <!--                                        <div>-->
+                                <!--                                            :href="@{'/search?goodsCategoryId='+${thirdLevelCategory.categoryId}}"-->
+                                <em v-for="third in second.thirdLevelCategoryParam"><a href="#"
+                                                                                       @click="searchCategory(third.id)">
+                                    {{third.categoryName}}
+                                </a></em>
+                                <!--                                        </div>-->
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="swiper-container" id="index">
             <div class="swiper-wrapper">
                 <!-- 配置了轮播图则显示后台配置的轮播图 -->
@@ -394,6 +424,40 @@
 <!--<script src="../../js/mall/header.js"></script>-->
 <!--		<script src="../../js/jquery.form.js"></script>-->
 <script src="../../js/mall/index.js"></script>
+<script type="text/javascript">
+    $('.all-sort-list > .item').hover(function () {
+        var eq = $('.all-sort-list > .item').index(this),				//获取当前滑过是第几个元素
+            h = $('.all-sort-list').offset().top,						//获取当前下拉菜单距离窗口多少像素
+            s = $(window).scrollTop(),									//获取游览器滚动了多少高度
+            i = $(this).offset().top,									//当前元素滑过距离窗口多少像素
+            item = $(this).children('.item-list').height(),				//下拉菜单子类内容容器的高度
+            sort = $('.all-sort-list').height();						//父类分类列表容器的高度
 
+        if (item < sort) {												//如果子类的高度小于父类的高度
+            if (eq == 0) {
+                $(this).children('.item-list').css('top', (i - h));
+            } else {
+                $(this).children('.item-list').css('top', (i - h) + 1);
+            }
+        } else {
+            if (s > h) {												//判断子类的显示位置，如果滚动的高度大于所有分类列表容器的高度
+                if (i - s > 0) {											//则 继续判断当前滑过容器的位置 是否有一半超出窗口一半在窗口内显示的Bug,
+                    $(this).children('.item-list').css('top', (s - h) + 2);
+                } else {
+                    $(this).children('.item-list').css('top', (s - h) - (-(i - s)) + 2);
+                }
+            } else {
+                $(this).children('.item-list').css('top', 3);
+            }
+        }
+
+        $(this).addClass('hover');
+        $(this).children('.item-list').css('display', 'block');
+    }, function () {
+        $(this).removeClass('hover');
+        $(this).children('.item-list').css('display', 'none');
+    });
+
+</script>
 </body>
 </html>

@@ -4,6 +4,7 @@ import com.eproject.common.PageQuery;
 import com.eproject.common.PageResult;
 import com.eproject.common.Result;
 import com.eproject.dao.HistorySearchDao;
+import com.eproject.dao.HotSearchDao;
 import com.eproject.dao.ProductDao;
 import com.eproject.dao.ShuStockDao;
 import com.eproject.entity.*;
@@ -11,6 +12,7 @@ import com.eproject.service.ProductService;
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.annotation.Resources;
@@ -27,6 +29,9 @@ public class ProductServiceIm implements ProductService {
 
     @Resource
     private HistorySearchDao historySearchDao;
+
+    @Resource
+    private HotSearchDao hotSearchDao;
 
     @Override
     public String saveProduct(Product p) {
@@ -177,14 +182,26 @@ public class ProductServiceIm implements ProductService {
     }
 
     @Override
-    public List<Product> getProductForHotSearch(int number) {
+    public List<HotSearch> getProductForHotSearch(int number) {
         List<Product> carouseList = new ArrayList<>(number);
-        List<Product> list = productDao.getProductForHotSearch(number);
-        Object[] o = list.toArray();
+        List<HotSearch> list = hotSearchDao.getProductForHotSearch(number);
+        List<Product> l = productDao.getProductForHotSearch(number);
+        Object[] o = l.toArray();
         if (!CollectionUtils.isEmpty(list)) {
             for (int i = 0; i < o.length; i++) {
                 //转化为Product对象
                 Product products = (Product) o[i];
+                //String[] keyword = {"水准仪","无人机","全站仪","经纬仪","测量仪","测量系统"};
+                String productName = products.getProductName();
+//                for (int j=0; j<keyword.length;j++){
+//                    if (productName.contains(keyword[j])) {
+//                        productName = keyword[j];
+//
+//                    }
+//                }
+                products.setProductName(productName);
+                //String p = products.getProductName();
+                //System.out.println(p);
                 int count = products.getSearchCount();
                 //每搜索一次，searchCount加一
                 count++;
@@ -212,15 +229,22 @@ public class ProductServiceIm implements ProductService {
                 historySearch.setProductId(products.getId());
                 historySearch.setProductName(products.getProductName());
                 historySearch.setSearchCount(count);
-                int userId = (int) params.get("userId");
-                historySearch.setUserId(userId);
-                historySearch.setCreatTime(new Date());
-                productDao.updateSearchCount(products);
-                List<HistorySearch> hs = historySearchDao.selectByProductIdAndUserId(historySearch);
-                if (hs.size() <= 0 ){
-                    historySearchDao.insertSelective(historySearch);
+                historySearch.setSearchName(params.get("productName")+"");
+                if (StringUtils.isEmpty(params.get("userId"))){
+                    productDao.updateSearchCount(products);
+                    return list;
                 }
-
+                else {
+                    int userId = Integer.parseInt(params.get("userId") + "") ;
+                    historySearch.setUserId(userId);
+                    historySearch.setCreatTime(new Date());
+                    productDao.updateSearchCount(products);
+                    List<HistorySearch> hs = historySearchDao.selectByProductIdAndUserId(historySearch);
+                    hotSearchDao.insertSelective(historySearch);
+                    if (hs.size() <= 0 ){
+                        historySearchDao.insertSelective(historySearch);
+                    }
+                }
             }
             return list;
         }
@@ -228,8 +252,11 @@ public class ProductServiceIm implements ProductService {
     }
 
     @Override
-    public List<Product> selectAll(){
-        return productDao.selectAll();
+    public PageResult selectAll(PageQuery pageQuery){
+        List<Product> list = productDao.selectAll(pageQuery);
+        int total = list.size();
+        PageResult pageResult = new PageResult(list, total, pageQuery.getLimit(), pageQuery.getPage());
+        return pageResult;
     }
 
     @Override

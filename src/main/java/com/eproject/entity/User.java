@@ -61,6 +61,17 @@ public class User implements Serializable {
      */
     private String email;
 
+    /**
+     * 删除状态
+     */
+    private Integer deleteStatus;
+
+
+    /**
+     * 禁用状态
+     */
+    private Integer disableStatus;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -151,6 +162,23 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public Integer getDisableStatus() {
+        return disableStatus;
+    }
+
+    public void setDisableStatus(Integer disableStatus) {
+        this.disableStatus = disableStatus;
+    }
+
+    public Integer getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(Integer deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
+
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -173,7 +201,9 @@ public class User implements Serializable {
                 && (this.getPersonalizedSignature() == null ? other.getPersonalizedSignature() == null : this.getPersonalizedSignature().equals(other.getPersonalizedSignature()))
                 && (this.getNick() == null ? other.getNick() == null : this.getNick().equals(other.getNick()))
                 && (this.getPic() == null ? other.getPic() == null : this.getPic().equals(other.getPic()))
-                && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()));
+                && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
+                && (this.getDeleteStatus() == null ? other.getDeleteStatus() == null : this.getDeleteStatus().equals(other.getDeleteStatus()))
+                && (this.getDisableStatus() == null ? other.getDisableStatus() == null : this.getDisableStatus().equals(other.getDisableStatus()));
     }
 
     @Override
@@ -191,6 +221,8 @@ public class User implements Serializable {
         result = prime * result + ((getNick() == null) ? 0 : getNick().hashCode());
         result = prime * result + ((getPic() == null) ? 0 : getPic().hashCode());
         result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
+        result = prime * result + ((getDeleteStatus() == null) ? 0 : getDeleteStatus().hashCode());
+        result = prime * result + ((getDisableStatus() == null) ? 0 : getDisableStatus().hashCode());
         return result;
     }
 
@@ -211,6 +243,8 @@ public class User implements Serializable {
         sb.append(", nick=").append(nick);
         sb.append(", pic=").append(pic);
         sb.append(", email=").append(email);
+        sb.append(", deleteStatus=").append(deleteStatus);
+        sb.append(", disableStatus=").append(disableStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

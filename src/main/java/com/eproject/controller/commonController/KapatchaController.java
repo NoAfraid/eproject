@@ -67,7 +67,7 @@ public class KapatchaController {
         try {
             //生产验证码字符串并保存到session中
             String verifyCode = newBeeMallLoginKaptcha.createText();
-            httpServletRequest.getSession().setAttribute(Contants.MALL_VERIFY_CODE_KEY, verifyCode);
+            httpServletRequest.getSession().setAttribute("MallVerifyCode", verifyCode);
             BufferedImage challenge = newBeeMallLoginKaptcha.createImage(verifyCode);
             ImageIO.write(challenge, "jpg", imgOutputStream);
         } catch (IllegalArgumentException e) {

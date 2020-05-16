@@ -124,6 +124,7 @@ var vm = new Vue({
                     if (result.code == 0) {
                         // window.location.href = "product_detail.html";
                         vm.detail = result.data;
+                        vm.detail.productCount = 1;
                         // console.log(vm.detail)
                     } else {
                         alert(result.msg);

@@ -3,6 +3,7 @@ package com.eproject.service;
 
 import com.eproject.common.PageQuery;
 import com.eproject.common.PageResult;
+import com.eproject.entity.HotSearch;
 import com.eproject.entity.Product;
 import com.eproject.entity.User;
 
@@ -103,7 +104,7 @@ public interface ProductService {
      * @param number
      * @return
      */
-    List<Product> getProductForHotSearch(int number);
+    List<HotSearch> getProductForHotSearch(int number);
 
     /**
      * 首页搜索商品（搜索框）
@@ -113,7 +114,7 @@ public interface ProductService {
     /**
      * 查看更多
      */
-    List<Product> selectAll();
+    PageResult selectAll(PageQuery pageQuery);
 
     /**
      * 动态排序

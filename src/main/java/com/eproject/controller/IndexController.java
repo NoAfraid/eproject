@@ -5,10 +5,7 @@ import com.eproject.common.IndexConfigTypeEnum;
 import com.eproject.common.PageQuery;
 import com.eproject.common.R;
 import com.eproject.domain.IndexConfigParam;
-import com.eproject.entity.Carouse;
-import com.eproject.entity.HistorySearch;
-import com.eproject.entity.Product;
-import com.eproject.entity.User;
+import com.eproject.entity.*;
 import com.eproject.service.AdminIndexConfigService;
 import com.eproject.service.CarouseService;
 import com.eproject.service.HistorySearchService;
@@ -85,7 +82,7 @@ public class IndexController {
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/getProductForHotSearch",produces = "application/json;charset=UTF-8")
     public R getProductForHotSearch(){
-        List<Product> HotSearchProductList = productService.getProductForHotSearch(Contants.INDEX_HOTSEARCH_NUMBER);
+        List<HotSearch> HotSearchProductList = productService.getProductForHotSearch(Contants.INDEX_HOTSEARCH_NUMBER);
         if (HotSearchProductList.size() > 0){
             return R.ok().put("data",HotSearchProductList);
         }
@@ -123,10 +120,10 @@ public class IndexController {
         }
         params.put("productSn",productSn);
         int userId;
-        if (params.containsKey("productSn") && !StringUtils.isEmpty((params.get("userId") + "").trim())) {
-             userId = Integer.parseInt(params.get("userId") + "");
-            params.put("userId",userId);
-        }
+//        if (params.containsKey("productSn") ) {
+////             userId = Integer.parseInt(params.get("userId") + "");
+////            params.put("userId",userId);
+//        }
 
         //封装商品数据
 //        Product product = new Product(params);
@@ -165,9 +162,12 @@ public class IndexController {
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/selectAllProduct",produces = "application/json;charset=UTF-8")
-    public R selectAllProduct(){
-        List<Product> all = productService.selectAll();
-        return R.ok().put("data",all);
+    public R selectAllProduct(@RequestBody Map<String, Object> params){
+        if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
+            return R.error(-1,"参数异常！");
+        }
+        PageQuery pageUtil = new PageQuery(params);
+        return R.ok().put("data",productService.selectAll(pageUtil));
     }
 
     /**

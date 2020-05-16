@@ -5,7 +5,8 @@ import java.util.Date;
 
 /**
  * history_search
- * @author 
+ *
+ * @author
  */
 public class HistorySearch implements Serializable {
     private Integer id;
@@ -41,6 +42,12 @@ public class HistorySearch implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+
+    /**
+     * 搜索名
+     */
+    private String searchName;
 
     private static final long serialVersionUID = 1L;
 
@@ -108,6 +115,14 @@ public class HistorySearch implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public void setSearchName(String searchName) {
+        this.searchName = searchName;
+    }
+
+    public String getSearchName() {
+        return searchName;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -121,13 +136,14 @@ public class HistorySearch implements Serializable {
         }
         HistorySearch other = (HistorySearch) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getProductId() == null ? other.getProductId() == null : this.getProductId().equals(other.getProductId()))
-            && (this.getProductName() == null ? other.getProductName() == null : this.getProductName().equals(other.getProductName()))
-            && (this.getHistorySearch() == null ? other.getHistorySearch() == null : this.getHistorySearch().equals(other.getHistorySearch()))
-            && (this.getSearchCount() == null ? other.getSearchCount() == null : this.getSearchCount().equals(other.getSearchCount()))
-            && (this.getCreatTime() == null ? other.getCreatTime() == null : this.getCreatTime().equals(other.getCreatTime()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
+                && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+                && (this.getProductId() == null ? other.getProductId() == null : this.getProductId().equals(other.getProductId()))
+                && (this.getProductName() == null ? other.getProductName() == null : this.getProductName().equals(other.getProductName()))
+                && (this.getHistorySearch() == null ? other.getHistorySearch() == null : this.getHistorySearch().equals(other.getHistorySearch()))
+                && (this.getSearchCount() == null ? other.getSearchCount() == null : this.getSearchCount().equals(other.getSearchCount()))
+                && (this.getCreatTime() == null ? other.getCreatTime() == null : this.getCreatTime().equals(other.getCreatTime()))
+                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+                && (this.getSearchName() == null ? other.getSearchName() == null : this.getSearchName().equals(other.getSearchName()));
     }
 
     @Override
@@ -142,6 +158,7 @@ public class HistorySearch implements Serializable {
         result = prime * result + ((getSearchCount() == null) ? 0 : getSearchCount().hashCode());
         result = prime * result + ((getCreatTime() == null) ? 0 : getCreatTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
+        result = prime * result + ((getSearchName() == null) ? 0 : getSearchName().hashCode());
         return result;
     }
 
@@ -159,6 +176,7 @@ public class HistorySearch implements Serializable {
         sb.append(", searchCount=").append(searchCount);
         sb.append(", creatTime=").append(creatTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", searchName=").append(searchName);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -12,6 +12,20 @@ import java.util.List;
 public interface UserService {
 
     /**
+     * 后台处理用户列表
+     */
+    PageResult usersPage(PageQuery pageUtil);
+
+    /**
+     * 用户禁用与解除禁用(0-未锁定 1-已锁定)
+     *
+     * @param ids
+     * @param disableStatus
+     * @return
+     */
+    Boolean disableUsers(Integer[] ids, int disableStatus);
+
+    /**
      * 用户注册
      */
     String register(User user);

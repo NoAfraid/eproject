@@ -144,23 +144,23 @@
             </if>
         </where>
         order by id desc
-<!--        <if test="orderField != null" >-->
-<!--            ORDER BY-->
-<!--            <choose>-->
-<!--                <when test="orderField == 'id'">-->
-<!--                    id ${orderType}-->
-<!--                </when>-->
-<!--                <when test="orderField == 'sale'">-->
-<!--                    sale ${orderType}-->
-<!--                </when>-->
-<!--                <when test="orderField == 'promotePrice'">-->
-<!--                    promote_price ${orderType}-->
-<!--                </when>-->
-<!--                <otherwise>-->
-<!--                    id ${orderType}-->
-<!--                </otherwise>-->
-<!--            </choose>-->
-<!--        </if>-->
+        <!--        <if test="orderField != null" >-->
+        <!--            ORDER BY-->
+        <!--            <choose>-->
+        <!--                <when test="orderField == 'id'">-->
+        <!--                    id ${orderType}-->
+        <!--                </when>-->
+        <!--                <when test="orderField == 'sale'">-->
+        <!--                    sale ${orderType}-->
+        <!--                </when>-->
+        <!--                <when test="orderField == 'promotePrice'">-->
+        <!--                    promote_price ${orderType}-->
+        <!--                </when>-->
+        <!--                <otherwise>-->
+        <!--                    id ${orderType}-->
+        <!--                </otherwise>-->
+        <!--            </choose>-->
+        <!--        </if>-->
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product
@@ -471,17 +471,25 @@
         </foreach>
         );
     </select>
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" parameterType="Map" resultMap="BaseResultMap">
         select id,product_name,product_sn,promote_price,product_img,description,detail,sale,stock
         from product
-        where delete_status = 0 and publish_status = 1
+        <where>
+        <if test="deleteStatus!=null and deleteStatus!=''">
+            and delete_status = 0
+        </if>
+        <if test="deleteStatus!=null and deleteStatus!=''">
+           and publish_status = 1
+        </if>
+        </where>
         order by id desc
+        limit #{start},#{limit}
     </select>
     <select id="orderByProduct" resultMap="BaseResultMap">
         select id,product_name,product_sn,promote_price,product_img,description,detail,sale,stock
         from product
         where delete_status = 0 and publish_status = 1
-        <if test="orderField != null" >
+        <if test="orderField != null">
             ORDER BY
             <choose>
                 <when test="orderField == 'id'">
@@ -498,8 +506,8 @@
                 </otherwise>
             </choose>
         </if>
-<!--        <if test="orderField !=null and orderField != '' ">-->
-<!--            order by ${orderField} ${orderType}-->
-<!--        </if>-->
+        <!--        <if test="orderField !=null and orderField != '' ">-->
+        <!--            order by ${orderField} ${orderType}-->
+        <!--        </if>-->
     </select>
 </mapper>

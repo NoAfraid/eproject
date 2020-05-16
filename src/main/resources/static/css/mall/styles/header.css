@@ -210,6 +210,7 @@
 }
 
 #nav .banner_x .fr .button {
+    position: relative;
     box-sizing: border-box;
     width: 50px;
     height: 30px;
@@ -229,6 +230,7 @@
 
 #nav .banner_x .fr .search {
     position: relative;
+    margin-top: 15px;
 }
 
 #nav .banner_x .fr .search .text {
@@ -307,7 +309,24 @@
     float: right;
     color: #b0b0b0;
 }
+.one{
+    margin:10px 0px 5px 0px;
+    float:none;
+}
+.two{
+    margin:0px 0px 10px 0px;
+}
+#four{
+    float:left;
 
+}
+#five{
+    float:none;
+
+}
+#keyword{
+    float:left;
+}
 .container {
     width: 1226px;
     *zoom: 1;

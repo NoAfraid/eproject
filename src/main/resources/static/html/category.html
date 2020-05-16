@@ -36,7 +36,7 @@
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-                <a class="nav-link" href="/">
+                <a class="nav-link" href="mall/index.html">
                     <i class="fa fa-paper-plane">&nbsp;&nbsp;mall首页</i>
                 </a>
             </li>
@@ -71,19 +71,8 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
-                    <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
-                    <!--                    <li class="nav-header">Dashboard</li>-->
-                    <!--                    <li class="nav-item">-->
-                    <!--                        <a href="/admin/index" class="nav-link">-->
-                    <!--                            <i class="nav-icon fa fa-dashboard"></i>-->
-                    <!--                            <p>-->
-                    <!--                                Dashboard-->
-                    <!--                            </p>-->
-                    <!--                        </a>-->
-                    <!--                    </li>-->
                     <li class="nav-item">
-                        <a href="/html/goods_get.html" class="nav-link">
+                        <a href="goods_get.html" class="nav-link">
                             <i class="nav-icon fa fa-plus"></i>
                             <p>
                                 商品信息
@@ -92,7 +81,7 @@
                     </li>
                     <li class="nav-header">首页配置</li>
                     <li class="nav-item">
-                        <a href="/html/admin_carousel.html"
+                        <a href="admin_carousel.html"
                            class="nav-link ">
                             <i class="nav-icon fa fa-file-image-o"></i>
                             <p>
@@ -101,16 +90,16 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/admin/indexConfigs?configType=3"
-                           class="nav-link ">
+                        <a href="hotGoodses_config.html"
+                           class="nav-link">
                             <i class="nav-icon fa fa-hand-o-up"></i>
                             <p>
                                 热销商品配置
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="/admin/indexConfigs?configType=4"
+                    <li class="nav-item ">
+                        <a href="newGoodses_config.html"
                            class="nav-link">
                             <i class="nav-icon fa fa-hand-o-up"></i>
                             <p>
@@ -119,7 +108,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/admin/indexConfigs?configType=5"
+                        <a href="recommenGoodses_config.html"
                            class="nav-link">
                             <i class="nav-icon fa fa-hand-o-up"></i>
                             <p>
@@ -146,7 +135,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/admin/users" class="nav-link">
+                        <a href="admin_user.html" class="nav-link">
                             <i class="fa fa-users nav-icon" aria-hidden="true"></i>
                             <p>
                                 会员管理
@@ -162,15 +151,15 @@
                         </a>
                     </li>
                     <li class="nav-header">系统管理</li>
+<!--                    <li class="nav-item">-->
+<!--                        <a href="/admin/profile"-->
+<!--                           class="nav-link">-->
+<!--                            <i class="fa fa-user-secret nav-icon"></i>-->
+<!--                            <p>修改密码</p>-->
+<!--                        </a>-->
+<!--                    </li>-->
                     <li class="nav-item">
-                        <a href="/admin/profile"
-                           class="nav-link">
-                            <i class="fa fa-user-secret nav-icon"></i>
-                            <p>修改密码</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/logout" class="nav-link">
+                        <a href="javascript:loginout()">
                             <i class="fa fa-sign-out nav-icon"></i>
                             <p>安全退出</p>
                         </a>
@@ -206,28 +195,28 @@
                             <button class="btn btn-danger" onclick="deleteCagegory()"><i
                                     class="fa fa-trash-o"></i>&nbsp;删除
                             </button>
-                            <button class="btn btn-info" onclick="categoryManage()"><i
+                            <button class="btn btn-info" @click="categoryManage"><i
                                     class="fa fa-list"></i>&nbsp;下级分类管理
                             </button>
-                            <button class="btn btn-info" onclick="categoryBack()"><i
+                            <button class="btn btn-info" @click="categoryBack"><i
                                     class="fa fa-backward"></i>&nbsp;返回
                             </button>
                         </div>
                         <br>
-                        <table class="gridtable" >
+                        <h4>一级分类</h4>
+                        <table class="gridtable">
                             <tr>
-                                <td><label><input type="checkbox" id="checkAll"/></label></td>
+                                <th><label><input type="checkbox" id="checkAll"/></label></th>
                                 <th>分类名称</th>
                                 <th>排序值</th>
                                 <th>添加时间</th>
                             </tr>
-                            <tr class="gridtable" v-for="item in category.list">
+                            <tr class="gridtable" v-for="item in category.list" v-if="item.categoryLevel == 1">
                                 <td><input type="checkbox" v-model="msg" :value="item.id"/></td>
                                 <td>{{item.categoryName}}</td>
                                 <td>{{item.categoryRank}}</td>
                                 <td>{{dateFormat(item.createTime)}}</td>
-
-<!--                            </tr>-->
+                            </tr>
                         </table>
                     </div><!-- /.card-body -->
                 </div>
@@ -252,24 +241,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="categoryName" class="control-label">分类级别:</label>
-                                    <input type="text" class="form-control" id="categoryLevel" v-model="category.categoryLevel"
-                                           placeholder="请输入分类级别" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="categoryName" class="control-label">父类ID:</label>
-                                    <input type="text" class="form-control" id="parentId" v-model="category.parentId"
-                                           placeholder="请输入父类ID" required="true">
-                                </div>
-
-                                <div class="form-group">
                                     <label for="categoryName" class="control-label">分类名称:</label>
-                                    <input type="text" class="form-control" id="categoryName" v-model="category.categoryName"
+                                    <input type="text" class="form-control" id="categoryName"
+                                           v-model="category.categoryName"
                                            placeholder="请输入分类名称" required="true">
                                 </div>
                                 <div class="form-group">
                                     <label for="categoryName" class="control-label">排序值:</label>
-                                    <input type="number" class="form-control" id="categoryRank" v-model="category.categoryRank"
+                                    <input type="number" class="form-control" id="categoryRank"
+                                           v-model="category.categoryRank"
                                            placeholder="请输入分类排序值" required="true">
                                 </div>
                             </form>
@@ -282,7 +262,8 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="updateCategory" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel">
+            <div class="modal fade" id="updateCategory" tabindex="-1" role="dialog"
+                 aria-labelledby="categoryModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -298,24 +279,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="categoryName" class="control-label">分类级别:</label>
-                                    <input type="text" class="form-control" id="categoryLevel" v-model="category.categoryLevel"
-                                           placeholder="请输入分类级别" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="categoryName" class="control-label">父类ID:</label>
-                                    <input type="text" class="form-control" id="parentId" v-model="category.parentId"
-                                           placeholder="请输入父类ID" required="true">
-                                </div>
-
-                                <div class="form-group">
                                     <label for="categoryName" class="control-label">分类名称:</label>
-                                    <input type="text" class="form-control" id="categoryName" v-model="category.categoryName"
+                                    <input type="text" class="form-control" id="categoryName"
+                                           v-model="category.categoryName"
                                            placeholder="请输入分类名称" required="true">
                                 </div>
                                 <div class="form-group">
                                     <label for="categoryName" class="control-label">排序值:</label>
-                                    <input type="number" class="form-control" id="categoryRank" v-model="category.categoryRank"
+                                    <input type="number" class="form-control" id="categoryRank"
+                                           v-model="category.categoryRank"
                                            placeholder="请输入分类排序值" required="true">
                                 </div>
                             </form>
@@ -331,14 +303,14 @@
         </div>
     </div>
     <!-- /.content-wrapper -->
-<!--    &lt;!&ndash; 引入页脚footer-fragment &ndash;&gt;-->
-<!--    <div th:replace="admin/footer::footer-fragment"></div>-->
+    <!--    &lt;!&ndash; 引入页脚footer-fragment &ndash;&gt;-->
+    <!--    <div th:replace="admin/footer::footer-fragment"></div>-->
 </div>
 <!-- jQuery -->
 <script src="../css/admin/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../css/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!--<script src="../css/admin/dist/js/public.js"></script>-->
+<script src="../css/admin/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="../js/vue.js"></script>
 <script src="../js/md5.js"></script>
 <script src="../js/common.js"></script>

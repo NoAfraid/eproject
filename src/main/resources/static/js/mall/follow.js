@@ -6,7 +6,10 @@
             limit: 10,
             pages: 1,
             followList: [],
-            total: 0
+            total: 0,
+            vip: [],
+            user: {nick: ''},
+            cart: {count: 0},
         },
         mounted: function () {
             var accessToken = getCookie("accessToken");

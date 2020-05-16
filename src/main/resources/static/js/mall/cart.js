@@ -4,43 +4,43 @@ var vm = new Vue({
         current: 1,
         limit: 10,
         pages: 1,
-        cartList:{
-            productName:'',
-            productImg:'',
-            productCount:'',
-            price:"",
-            productAttr:'',
+        cartList: {
+            productName: '',
+            productImg: '',
+            productCount: '',
+            price: "",
+            productAttr: '',
         },
         aList: [],
-        updateAddressList:{
+        updateAddressList: {
             //暂时赋值给userId
-            userId:'',
-            name:'',
-            phoneNumber:'',
-            province:'',
-            city:'',
-            region:'',
-            detailAddress:''
+            userId: '',
+            name: '',
+            phoneNumber: '',
+            province: '',
+            city: '',
+            region: '',
+            detailAddress: ''
         },
         total: 0,
-        productCount:'',
-        count:'',
-        item:{
-            itemsTotal:'',
-            totalAmount:'',
+        productCount: '',
+        count: '',
+        item: {
+            itemsTotal: '',
+            totalAmount: '',
         },
-        order:{
-            orderNo:''
+        order: {
+            orderNo: ''
         },
-        user:{nick:''},
-        cart:{count:''},
-        vip:[],
+        user: {nick: ''},
+        cart: {count: ''},
+        vip: [],
     },
     mounted: function () {
         var accessToken = getCookie("accessToken");
         if (isEmpty(accessToken)) {
             alert("请登录");
-            window.location.href="login.html"
+            window.location.href = "login.html"
         } else {
             this.accessToken = accessToken;
         }
@@ -51,27 +51,27 @@ var vm = new Vue({
         this.getUserInfo();
         this.getCartInfo();
     },
-    create:{},
+    create: {},
     methods: {
 
         /**
          * 获取用户信息
          */
-        getUserInfo:function () {
+        getUserInfo: function () {
             this.vip = getCookie("loginUser");
             var userId = getCookie("sessionId");
             var t = {
-                id:userId
+                id: userId
             };
             var formData = JSON.stringify(t);
             $.ajax({
                 type: "post",
                 url: "http://localhost:8080/user/selectInfo",
                 contentType: "application/json;charset=utf-8",
-                dataType : "json",
+                dataType: "json",
                 data: formData,
                 success: function (result) {
-                    if(result.code == 0) {
+                    if (result.code == 0) {
                         vm.user = result.data
                         console.log(vm.user.nick)
                     } else {
@@ -88,17 +88,17 @@ var vm = new Vue({
             this.vip = getCookie("loginUser");
             var userId = getCookie("sessionId");
             var t = {
-                userId:userId
+                userId: userId
             };
             var formData = JSON.stringify(t);
             $.ajax({
                 type: "post",
                 url: "http://localhost:8080/cart/count",
                 contentType: "application/json;charset=utf-8",
-                dataType : "json",
+                dataType: "json",
                 data: formData,
                 success: function (result) {
-                    if(result.code == 0) {
+                    if (result.code == 0) {
                         vm.cart = result.data
                         console.log(vm.cart)
                     } else {
@@ -114,7 +114,7 @@ var vm = new Vue({
          */
         findList: function (page) {
             var userId = getCookie("sessionId");
-            if (userId == null || userId =='') {
+            if (userId == null || userId == '') {
                 alert("您未登录，请登录");
                 window.location.href = "login.html";
             }
@@ -124,14 +124,14 @@ var vm = new Vue({
                 userId: userId
             };
             var formData = JSON.stringify(t);
-            var now =  getNow("yyyyMMddHHmmss");
-            var sign  = signString(formData,now);
+            var now = getNow("yyyyMMddHHmmss");
+            var sign = signString(formData, now);
             $.ajax({
-                headers:{
-                    client:client,
-                    version:version,
-                    requestTime:now,
-                    sign:sign
+                headers: {
+                    client: client,
+                    version: version,
+                    requestTime: now,
+                    sign: sign
                 },
                 type: "post",
                 url: "http://localhost:8080/cart/selectCartInfo",
@@ -159,14 +159,14 @@ var vm = new Vue({
                 userId: userId
             };
             var formData = JSON.stringify(t);
-            var now =  getNow("yyyyMMddHHmmss");
-            var sign  = signString(formData,now);
+            var now = getNow("yyyyMMddHHmmss");
+            var sign = signString(formData, now);
             $.ajax({
-                headers:{
-                    client:client,
-                    version:version,
-                    requestTime:now,
-                    sign:sign
+                headers: {
+                    client: client,
+                    version: version,
+                    requestTime: now,
+                    sign: sign
                 },
                 type: "post",
                 url: "http://localhost:8080/cart/selectCartList",
@@ -197,14 +197,14 @@ var vm = new Vue({
                 productCount: this.cartList[index].productCount
             };
             var formData = JSON.stringify(t);
-            var now =  getNow("yyyyMMddHHmmss");
-            var sign  = signString(formData,now);
+            var now = getNow("yyyyMMddHHmmss");
+            var sign = signString(formData, now);
             $.ajax({
-                headers:{
-                    client:client,
-                    version:version,
-                    requestTime:now,
-                    sign:sign
+                headers: {
+                    client: client,
+                    version: version,
+                    requestTime: now,
+                    sign: sign
                 },
                 type: "post",
                 url: "http://localhost:8080/cart/updateQuantity",
@@ -233,14 +233,14 @@ var vm = new Vue({
                 userId: userId,
             };
             var formData = JSON.stringify(t);
-            var now =  getNow("yyyyMMddHHmmss");
-            var sign  = signString(formData,now);
+            var now = getNow("yyyyMMddHHmmss");
+            var sign = signString(formData, now);
             $.ajax({
-                headers:{
-                    client:client,
-                    version:version,
-                    requestTime:now,
-                    sign:sign
+                headers: {
+                    client: client,
+                    version: version,
+                    requestTime: now,
+                    sign: sign
                 },
                 type: "post",
                 url: "http://localhost:8080/cart/deleteCartInfo?ids=" + id,
@@ -269,20 +269,20 @@ var vm = new Vue({
         /**
          *用户地址信息
          */
-        addressList:function (id) {
+        addressList: function (id) {
             var userId = getCookie("sessionId");
-            var t={
-                userId:userId
+            var t = {
+                userId: userId
             }
             var formData = JSON.stringify(t);
-            var now =  getNow("yyyyMMddHHmmss");
-            var sign  = signString(formData,now);
+            var now = getNow("yyyyMMddHHmmss");
+            var sign = signString(formData, now);
             $.ajax({
-                headers:{
-                    client:client,
-                    version:version,
-                    requestTime:now,
-                    sign:sign
+                headers: {
+                    client: client,
+                    version: version,
+                    requestTime: now,
+                    sign: sign
                 },
                 type: "post",
                 url: "http://localhost:8080/address/addressList",
@@ -303,20 +303,13 @@ var vm = new Vue({
         /**
          * 弹出模态框
          */
-        Rmodel: function(){
+        Rmodel: function () {
             $('#personalInfoModal').modal('show');
         },
 
-        /**
-         * 修改用户地址信息
-         */
-        updateAddress: function (id) {
-            // var t={
-            //     address: this.updateAddressList
-            // }
-            // console.log(t.address)
-            // this.updateAddressList.userId = "${session.userId}"
-            var formData = JSON.stringify(this.updateAddressList);
+        openUpdateModal: function (id) {
+            console.log(id)
+            var formData = JSON.stringify(id);
             var now =  getNow("yyyyMMddHHmmss");
             var sign  = signString(formData,now);
             $.ajax({
@@ -327,7 +320,43 @@ var vm = new Vue({
                     sign:sign
                 },
                 type: "post",
-                url: "http://localhost:8080/address/update?id="+id,
+                url:  "http://localhost:8080/address/selectById",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.updateAddressList = result.data;
+                        // alert(result.msg);
+                        // window.location.reload();
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            })
+            $('#personalInfoModal').modal('show');
+        },
+        /**
+         * 修改用户地址信息
+         */
+        updateAddress: function (id) {
+            // var t={
+            //     address: this.updateAddressList
+            // }
+            // console.log(t.address)
+            // this.updateAddressList.userId = "${session.userId}"
+            var formData = JSON.stringify(this.updateAddressList);
+            var now = getNow("yyyyMMddHHmmss");
+            var sign = signString(formData, now);
+            $.ajax({
+                headers: {
+                    client: client,
+                    version: version,
+                    requestTime: now,
+                    sign: sign
+                },
+                type: "post",
+                url: "http://localhost:8080/address/update?id=" + id,
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 data: formData,
@@ -350,10 +379,10 @@ var vm = new Vue({
         // subOrder:function () {
         //     window.location.href = "order-detail.html";
         // }
-        SuOrder:function (orderNo) {
+        SuOrder: function (orderNo) {
             var userId = getCookie("sessionId");
-            var t={
-                userId:userId
+            var t = {
+                userId: userId
             }
             var formData = JSON.stringify(t);
             $.ajax({
@@ -365,7 +394,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.order = result.data.order;
-                        window.location.href = "order-detail.html?orderNo="+vm.order.orderNo;
+                        window.location.href = "order-detail.html?orderNo=" + vm.order.orderNo;
                     } else {
                         alert(result.msg);
                     }

@@ -10,10 +10,11 @@
     <result column="search_count" jdbcType="INTEGER" property="searchCount" />
     <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="search_name" jdbcType="VARCHAR" property="searchName" />
   </resultMap>
   <sql id="Base_Column_List">
     id, user_id, product_id, product_name, history_search, search_count, creat_time, 
-    update_time
+    update_time,search_name
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -28,10 +29,10 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.HistorySearch" useGeneratedKeys="true">
     insert into history_search (user_id, product_id, product_name, 
       history_search, search_count, creat_time, 
-      update_time)
+      update_time, search_name)
     values (#{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, 
       #{historySearch,jdbcType=INTEGER}, #{searchCount,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{updateTime,jdbcType=TIMESTAMP}, #{searchName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.HistorySearch" useGeneratedKeys="true">
     insert into history_search
@@ -57,6 +58,9 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="searchName != null">
+        search_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -79,6 +83,9 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="searchName != null">
+        #{searchName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -106,6 +113,9 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="searchName != null">
+        #{searchName,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -117,7 +127,8 @@
       history_search = #{historySearch,jdbcType=INTEGER},
       search_count = #{searchCount,jdbcType=INTEGER},
       creat_time = #{creatTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      search_name = #{searchName}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateSearchCount" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Product"
@@ -127,7 +138,7 @@
         where id = #{id}
     </update>
   <select id="getProductForHistorySearch" parameterType="int" resultMap="BaseResultMap">
-        select *
+        select distinct(search_name)
         from history_search
         where user_id = #{userId} and search_count > 0
         order by search_count desc

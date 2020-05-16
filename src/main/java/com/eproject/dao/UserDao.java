@@ -1,5 +1,6 @@
 package com.eproject.dao;
 
+import com.eproject.common.PageQuery;
 import com.eproject.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,6 +36,10 @@ public interface UserDao {
     int updatePic(User user);
 
     List<User> selectByPhone(User user);
+
+    List<User> findUserList(PageQuery pageUtil);
+
+    int lockUserBatch(@Param("ids") Integer[] ids, @Param("disableStatus") int disableStatus);
 
     User loginUser(User user);
 

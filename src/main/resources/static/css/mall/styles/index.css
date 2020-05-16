@@ -121,6 +121,7 @@
 }
 
 #content #banner {
+    padding-top: 30px;
     width: 1226px;
     flex-shrink: 0;
     height: 447px;
@@ -417,7 +418,7 @@
 #content #flash .more {
     position: absolute;
     /*top: 18px;*/
-    right: 30px;
+    right: 150px;
 }
 
 #content #recommend .more:hover {

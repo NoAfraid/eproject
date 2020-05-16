@@ -13,7 +13,7 @@
 <body>
 <div id="detail">
     <!-- nav -->
-<!--    <nav th:replace="mall/header::nav-fragment"></nav>-->
+    <!--    <nav th:replace="mall/header::nav-fragment"></nav>-->
     <header id="header">
         <div class="center">
             <ul class="fl">
@@ -89,7 +89,7 @@
         </div>
         <div class="right fr">
 
-            <div class="h3 ml20 mt20" >{{detail.productName}}</div>
+            <div class="h3 ml20 mt20">{{detail.productName}}</div>
             <div class="sub_title mr40 ml20 mt10">{{detail.description}}</div>
             <div class="item_price mr40 ml20 mt10">
                 现价：{{detail.promotePrice}}
@@ -102,11 +102,12 @@
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
-                        <option value="5">5</option></select>
+                        <option value="5">5</option>
+                    </select>
                     </p>
-                <div >库存：{{detail.stock}}&nbsp;&nbsp;&nbsp;销量：{{detail.sale}}</div>
-                <div></div>
-            </div>
+                    <div>库存：{{detail.stock}}&nbsp;&nbsp;&nbsp;销量：{{detail.sale}}</div>
+                    <div></div>
+                </div>
             </div>
             <div class="order">
                 <input class="car" type="button" @click="saveAndGoToCart(detail)" value="立即选购"/>
@@ -121,7 +122,7 @@
                 <dl>
                     <dt>支付</dt>
                     <dd><a href="##" target="_blank"><img src="../../css/mall/image/hua.png">蚂蚁花呗</a><a href="##"
-                                                                                                     target="_blank"><img
+                                                                                                        target="_blank"><img
                             src="../../css/mall/image/card.png">信用卡支付</a><a href="##" target="_blank"><img
                             src="../../css/mall/image/ji.png">集分宝</a></dd>
                 </dl>
@@ -135,9 +136,13 @@
         <div class="clear"></div>
     </div>
     <!-- 这里使用的是 th:utext 标签，用 th:text 不会解析 html，用 th:utext 会解析 html -->
-    <div class="goods mt20 w clearfix" >
-        <span v-html="detail.detail"></span>
+    <div class="dc">
+        <div class="content w">
+            <div class="title fl">商品简介
+            </div>
+        </div>
     </div>
+    <span v-html="detail.detail"></span>
 </div>
 
 <div th:replace="mall/footer::footer-fragment"></div>

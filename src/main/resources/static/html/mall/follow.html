@@ -4,47 +4,69 @@
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" href="../../css/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../../css/mall/styles/header.css">
     <link rel="stylesheet" type="text/css" href="../../css/grzx.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/css.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/zt.css"/>
 </head>
 <body>
-<div id="zd">
+<div id="app">
     <!-- 引入页面头header-fragment -->
-    <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
-        <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link" href="index.html">
-                    <i class="fa fa-paper-plane">&nbsp;&nbsp;newbee-mall首页</i>
-                </a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user">&nbsp;&nbsp;作者</i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fa fa-user-o mr-2"></i> 姓名
-                        <span class="float-right text-muted text-sm">十三 / 13</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fa fa-user-secret mr-2"></i> 身份
-                        <span class="float-right text-muted text-sm">Java开发工程师</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fa fa-address-card mr-2"></i> 邮箱
-                        <span class="float-right text-muted text-sm">2449207463@qq.com</span>
+    <header id="header">
+        <div class="center">
+            <ul class="fl">
+                <li><a href="index.html">新蜂商城</a></li>
+                <li><a href="../goods_get.html">后台管理系统</a></li>
+            </ul>
+            <div class="fr">
+                <!--            <div >-->
+                <div class="user" v-if="vip !=null">
+                    <ul class="selector">
+                        <li>
+                            <a href="center.html">
+                                个人中心
+                            </a>
+                        </li>
+                        <li>
+                            <a href="my_orders.html">
+                                我的订单
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:loginout()">
+                                退出登录
+                            </a>
+                        </li>
+                    </ul>
+                    <a href="center.html" class="username">
+                        <div>{{user.nick}}</div>
+                        <i class="iconfont icon-down"></i>
                     </a>
                 </div>
-            </li>
-        </ul>
+                <div class="shopcart">
+                    <a href="cart.html" style="color: white;"><i class="iconfont icon-cart"></i>
+                        购物车(
+                        {{cart.count}}
+                        )</a>
+                </div>
+                <!--            </div>-->
+                <div v-if="vip==null">
+                    <ul class="login">
+                        <li><a href="login.html">登录</a></li>
+                        <li><a href="register.html">注册</a></li>
+                    </ul>
+                    <!--                    <div class="shopcart">-->
+                    <!--                        <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>-->
+                    <!--                            购物车(0)</a>-->
+                    <!--                    </div>-->
+                </div>
+            </div>
+        </div>
+    </header>
+        <!-- Right navbar links -->
     </nav>
     <!--#include file="../header.html"-->
-    <div class="bj1" id="app" v-cloak>
+    <div class="bj1">
         <div class="dk1">
             <div class="xsdh">
                 <div class="p1">

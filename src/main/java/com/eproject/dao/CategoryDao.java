@@ -25,7 +25,7 @@ public interface CategoryDao {
 
     int deleteBatch(Integer[] ids);
 
-    Category selectByLevelAndName(@Param("categoryLevel") String categoryLevel, @Param("categoryName") String categoryName);
+    Category selectByLevelAndName(@Param("categoryLevel") Integer categoryLevel, @Param("categoryName") String categoryName);
 
     List<Category> selectByLevelAndParentIdsAndNumber(@Param("parentIds") List<Integer> parentIds, @Param("categoryLevel") int categoryLevel, @Param("number") int number);
 

@@ -3,7 +3,7 @@
 <mapper namespace="com.eproject.dao.CategoryDao">
     <resultMap id="BaseResultMap" type="com.eproject.entity.Category">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="category_level" jdbcType="VARCHAR" property="categoryLevel"/>
+        <result column="category_level" jdbcType="INTEGER" property="categoryLevel"/>
         <result column="category_rank" jdbcType="VARCHAR" property="categoryRank"/>
         <result column="is_deleted" jdbcType="VARCHAR" property="isDeleted"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -158,10 +158,11 @@
             limit #{number}
         </if>
     </select>
-    <select id="findGoodsCategoryList" parameterType="Map" resultMap="BaseResultMap">
+    <select id="findGoodsCategoryList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from category
+--         where is_deleted =0
         <where>
             <if test="categoryLevel!=null and categoryLevel!=''">
                 and category_level = #{categoryLevel}
@@ -171,7 +172,7 @@
             </if>
             and is_deleted = 0
         </where>
-        order by category_rank desc
+        order by category_rank asc
         <if test="start!=null and limit!=null">
             limit #{start},#{limit}
         </if>

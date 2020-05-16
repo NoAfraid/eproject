@@ -10,7 +10,7 @@ import java.util.Date;
 public class Category implements Serializable {
     private Integer id;
 
-    private String categoryLevel;
+    private Integer categoryLevel;
 
     private String categoryRank;
 
@@ -34,11 +34,11 @@ public class Category implements Serializable {
         this.id = id;
     }
 
-    public String getCategoryLevel() {
+    public Integer getCategoryLevel() {
         return categoryLevel;
     }
 
-    public void setCategoryLevel(String categoryLevel) {
+    public void setCategoryLevel(Integer categoryLevel) {
         this.categoryLevel = categoryLevel;
     }
 

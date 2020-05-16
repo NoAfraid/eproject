@@ -1,6 +1,6 @@
 var id = getRequest();
 var keyword = ((id['keyword']));
-
+var categoryId = id['categoryId'];
 function getRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串
     var theRequest = new Object();
@@ -18,8 +18,13 @@ function getRequest() {
 };
 
 var vm = new Vue({
-    el: "#app",
+    el: "#aaaaLLLL",
     data: {
+        current: 1,
+        limit: 10,
+        pages: 1,
+        page:1,
+        total: 0,
         productList: {
             productName: '',
             productImg: '',
@@ -42,12 +47,15 @@ var vm = new Vue({
         promotePrice: "promotePrice",
         sale: "sale",
         id: "id",
+        categoryId: '',
     },
     mounted: function () {
+        this.CategorySearch();
         this.searchProduct();
         this.getUserInfo();
         this.getCartInfo();
-        this.aLlProductList();
+        this.allProductList(1);
+
     },
     methods: {
         /**
@@ -55,11 +63,11 @@ var vm = new Vue({
          */
         getUserInfo: function () {
             this.vip = getCookie("loginUser");
-            if (this.vip == null){
+            if (this.vip == null) {
                 return;
             } else {
                 var userId = getCookie("sessionId");
-                if (userId == null || userId ==''){
+                if (userId == null || userId == '') {
                     return;
                 } else {
                     var t = {
@@ -70,10 +78,10 @@ var vm = new Vue({
                         type: "post",
                         url: "http://localhost:8080/user/selectInfo",
                         contentType: "application/json;charset=utf-8",
-                        dataType : "json",
+                        dataType: "json",
                         data: formData,
                         success: function (result) {
-                            if(result.code == 0) {
+                            if (result.code == 0) {
                                 vm.user = result.data
                                 console.log(vm.user.nick)
                             } else {
@@ -92,11 +100,11 @@ var vm = new Vue({
          */
         getCartInfo: function () {
             this.vip = getCookie("loginUser");
-            if (this.vip == null){
+            if (this.vip == null) {
                 return;
             } else {
                 var userId = getCookie("sessionId");
-                if (userId == null || userId ==''){
+                if (userId == null || userId == '') {
                     return;
                 } else {
                     var t = {
@@ -127,10 +135,13 @@ var vm = new Vue({
          */
         searchProduct: function () {
             var userId = getCookie("sessionId");
-            if (userId == null || userId ==''){
+            // if (userId == null || userId == '') {
+            //     return;
+            // } else {
+                this.productL.userId = userId;
+            if (keyword == null || keyword == undefined) {
                 return;
             } else {
-                this.productL.userId = userId
                 this.keyword = keyword;
                 this.productL.productName = keyword;
                 var formData = JSON.stringify(this.productL);
@@ -149,6 +160,42 @@ var vm = new Vue({
                     }
                 })
             }
+
+            // }
+        },
+
+        /**
+         * 分类搜索
+         */
+        CategorySearch: function () {
+            // var userId = getCookie("sessionId");
+            // if (userId == null || userId ==''){
+            //     return;
+            // } else {
+            //     this.productL.userId = userId
+            if (categoryId == null ||  categoryId == undefined){
+                return;
+            }
+            var t = {
+                keyword: categoryId,
+                categoryId: categoryId,
+            };
+            var formData = JSON.stringify(t);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/category/searchCategory",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.productL = result.data.list;
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+            // }
         },
         /**
          * 前端排序
@@ -169,16 +216,18 @@ var vm = new Vue({
             this.productL.sort(sortData);
         },
 
-        downSale:function(){
+        downSale: function () {
             function sortData(a, b) {
                 return b.sale - a.sale;
             }
+
             this.productL.sort(sortData);
         },
-        downByid:function(){
+        downByid: function () {
             function sortData(a, b) {
                 return b.id - a.id;
             }
+
             this.productL.sort(sortData);
         },
         productD: function (id) {
@@ -189,8 +238,12 @@ var vm = new Vue({
         /**
          * 所有商品
          */
-        aLlProductList: function () {
-            var formData = JSON.stringify();
+        allProductList: function (page) {
+            var t = {
+                limit: this.limit,
+                page: page == null ? this.current : page
+            };
+            var formData = JSON.stringify(t);
             $.ajax({
                 type: "post",
                 url: "http://localhost:8080/index/selectAllProduct",
@@ -199,7 +252,10 @@ var vm = new Vue({
                 data: formData,
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.allProduct = result.data;
+                        vm.current = result.data.currPage;
+                        vm.pages = result.data.pageSize;
+                        vm.total = result.data.totalCount;
+                        vm.allProduct = result.data.list;
                     } else {
                         alert(result.msg)
                     }
@@ -252,5 +308,31 @@ var vm = new Vue({
                 }
             })
         },
+    },
+    computed: {
+        indexss: function(){
+            var left = 1;
+            var right = this.pages;   //总的页数
+            var ar = [];
+            if(this.pages>= 5){
+                if(this.current > 3 && this.current < this.pages-2){
+                    left = this.current - 2;
+                    right = this.current + 2
+                }else{
+                    if(this.current<=3){
+                        left = 1;
+                        right = 5
+                    }else{
+                        right = this.pages;
+                        left = this.pages -4
+                    }
+                }
+            }
+            while (left <= right){
+                ar.push(left);
+                left ++
+            }
+            return ar
+        }
     }
 })

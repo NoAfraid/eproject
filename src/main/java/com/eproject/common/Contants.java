@@ -8,6 +8,10 @@ public class Contants {
 
     public final static String MALL_VERIFY_CODE_KEY = "mallVerifyCode";//验证码key
 
+    public final static int INDEX_CATEGORY_NUMBER = 10;//首页一级分类的最大数量
+
+    public final static int SEARCH_CATEGORY_NUMBER = 8;//搜索页一级分类的最大数量
+
     public final static int INDEX_CAROUSEL_NUMBER = 5;//首页轮播图数量(可根据自身需求修改)
     public final static int INDEX_GOODS_NEW_NUMBER = 5;//首页新品数量
     public final static int INDEX_GOODS_HOT_NUMBER = 10;//首页热卖商品数量

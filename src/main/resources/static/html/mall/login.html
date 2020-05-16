@@ -39,8 +39,8 @@
                                placeholder="请输入你的密码"/></div>
                     <div class="login-info">
                         验证码:&nbsp;
-                        <input class="login-info-input verify-code" type="text" name="verifyCode"
-                               placeholder="请输入验证码" id="verifyCode"/>
+                        <input class="login-info-input verify-code" type="text" id="verifyCode"
+                               placeholder="请输入验证码" v-model="verifyCode"/>
                         <img alt="单击图片刷新！" style="top: 14px;position: relative;" :src="src"
                             @click="updateCode">
                     </div>

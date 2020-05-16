@@ -7,9 +7,11 @@ import com.eproject.util.MD5Encode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
@@ -26,8 +28,16 @@ public class ManagerController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/login", produces = "application/json;charset=UTF-8")
-    public R login(@RequestBody Manager manager) {
+    public R login(@RequestBody Manager manager, @RequestParam("verifyCode") String verifyCode,
+                   HttpSession session) {
 
+        if (StringUtils.isEmpty(verifyCode)) {
+            return R.error(-1,"验证码不能为空");
+        }
+        String kaptchaCode = session.getAttribute("verifyCode") + "";
+        if (StringUtils.isEmpty(kaptchaCode) || !verifyCode.equals(kaptchaCode)) {
+            return R.error(-1, "验证码错误");
+        }
         Manager login = managerService.login(manager.getLoginName(), manager.getPassword());
 //        JSONObject result = new JSONObject();
         if (login == null) {

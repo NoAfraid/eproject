@@ -7,6 +7,9 @@ var vm = new Vue({
         orderList: [],
         total: 0,
         accessToken:'',
+        vip: [],
+        user: {nick: ''},
+        cart: {count: 0},
     },
     mounted: function () {
         var accessToken = getCookie("accessToken");
@@ -17,6 +20,8 @@ var vm = new Vue({
             this.accessToken = accessToken;
         }
         this.findList(1);
+        this.getUserInfo();
+        this.getCartInfo();
     },
     create:{},
     methods: {
@@ -109,7 +114,81 @@ var vm = new Vue({
                     }
                 }
             });
-        }
+        },
+
+        /**
+         * 获取用户信息
+         */
+        getUserInfo: function () {
+            this.vip = getCookie("loginUser");
+            if (this.vip == null){
+                return;
+            } else {
+                var userId = getCookie("sessionId");
+
+                if (userId == null || userId ==''){
+                    return;
+                } else {
+                    var t = {
+                        id: userId
+                    };
+                    var formData = JSON.stringify(t);
+                    $.ajax({
+                        type: "post",
+                        url: "http://localhost:8080/user/selectInfo",
+                        contentType: "application/json;charset=utf-8",
+                        dataType : "json",
+                        data: formData,
+                        success: function (result) {
+                            if(result.code == 0) {
+                                vm.user = result.data
+                                console.log(vm.user.nick)
+                            } else {
+                                alert(result.msg)
+                            }
+                        }
+                    })
+                }
+            }
+
+
+        },
+
+        /**
+         * 获取购物车信息
+         */
+        getCartInfo: function () {
+            this.vip = getCookie("loginUser");
+            if (this.vip == null){
+                return;
+            } else {
+                var userId = getCookie("sessionId");
+                if (userId == null || userId ==''){
+                    return;
+                } else {
+                    var t = {
+                        userId: userId
+                    };
+                    var formData = JSON.stringify(t);
+                    $.ajax({
+                        type: "post",
+                        url: "http://localhost:8080/cart/count",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        data: formData,
+                        success: function (result) {
+                            if (result.code == 0) {
+                                vm.cart.count = result.data
+                                console.log(vm.cart.count)
+                            } else {
+                                // alert(result.msg)
+                            }
+                        }
+                    })
+                }
+            }
+
+        },
     },
     computed: {
         indexs: function () {

@@ -1,16 +1,18 @@
 package com.eproject.controller;
 
-import com.eproject.common.CategoryLevelEnum;
-import com.eproject.common.PageQuery;
-import com.eproject.common.R;
+import com.eproject.common.*;
+import com.eproject.domain.CategoryParam;
+import com.eproject.domain.SearchPageCategoryVO;
 import com.eproject.entity.Category;
 import com.eproject.service.CategoryService;
+import com.eproject.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
@@ -18,6 +20,9 @@ import java.util.*;
 public class CategoryController {
     @Resource
     private CategoryService categoryService;
+
+    @Resource
+    private ProductService productService;
 
     /**
      *添加分类
@@ -33,9 +38,9 @@ public class CategoryController {
         }
         int result = categoryService.saveCategory(category);
         if (result == 0){
-            return R.ok("添加成功");
+            return R.ok();
         }
-       return R.error("添加出错");
+       return R.error();
     }
 
     /**
@@ -68,10 +73,15 @@ public class CategoryController {
         }
         int result = categoryService.updateCategory(category);
         if (result ==0 ) {
-            return R.ok("更新成功");
+            return R.ok();
         } else {
             return R.error("更新失败");
         }
+    }
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/selectCategoryById",produces = "application/json;charset=UTF-8")
+    public R selectCategoryById(@RequestBody Category category){
+        return  R.ok().put("data",categoryService.getGoodsCategoryById(category.getId()));
     }
 
     /**
@@ -119,5 +129,56 @@ public class CategoryController {
         }
         PageQuery pageUtil = new PageQuery(params);
         return R.ok().put("data",categoryService.getCategoriesPage(pageUtil));
+    }
+
+    /**
+     * 首页调用分类
+     */
+    @RequestMapping(value = "/getCategoryForIndex", method = RequestMethod.POST)
+    @ResponseBody
+    public R getCategoryForIndex(){
+        List<CategoryParam> categories = categoryService.getCategoriesForIndex();
+        if (CollectionUtils.isEmpty(categories)) {
+            return R.error("获取错误");
+        }
+        return R.ok().put("data",categories);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/searchCategory", method = RequestMethod.POST)
+    public R searchPage(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+        if (StringUtils.isEmpty(params.get("page"))) {
+            params.put("page", 1);
+        }
+        params.put("limit", Contants.GOODS_SEARCH_PAGE_LIMIT);
+        //封装分类数据
+        if (params.containsKey("categoryId") && !StringUtils.isEmpty(params.get("categoryId") + "")) {
+            Integer id = Integer.valueOf(params.get("categoryId") + "");
+            SearchPageCategoryVO searchPageCategoryVO = categoryService.getCategoriesForSearch(id);
+            if (searchPageCategoryVO != null) {
+                request.setAttribute("goodsCategoryId", id);
+                request.setAttribute("searchPageCategoryVO", searchPageCategoryVO);
+                String productName = searchPageCategoryVO.getCurrentCategoryName();
+                params.put("keyword",productName);
+                params.put("productName",productName);
+                PageQuery pageQuery = new PageQuery(params);
+                return R.ok().put("data", productService.searchProduct(pageQuery));
+//                return R.ok().put("data", searchPageCategoryVO);
+            }
+        }
+        //封装参数供前端回显
+//        if (params.containsKey("orderBy") && !StringUtils.isEmpty(params.get("orderBy") + "")) {
+//            request.setAttribute("orderBy", params.get("orderBy") + "");
+//        }
+//        String keyword = "";
+//        //对keyword做过滤 去掉空格
+//        if (params.containsKey("keyword") && !StringUtils.isEmpty((params.get("keyword") + "").trim())) {
+//            keyword = params.get("keyword") + "";
+//        }
+//        request.setAttribute("keyword", keyword);
+//        params.put("keyword", keyword);
+//        //封装商品数据
+//        PageQuery pageQuery = new PageQuery(params);
+        return R.error(-1,"查询错误");
     }
 }
