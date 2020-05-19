@@ -165,9 +165,9 @@
   padding: 0 8px 0 8px;
 }
 .goods_item .main .item_card_frame .item_price {
-  font-size: 14px;
+  color: #ef3a3b;
+  font-size: 16px;
   text-align: center;
-  color: #1baeae;
 }
 .goods_item .pages {
   display: flex;

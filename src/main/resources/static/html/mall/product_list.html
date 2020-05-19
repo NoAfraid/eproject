@@ -78,6 +78,43 @@
             </div>
         </div>
     </header>
+    <nav id="nav">
+        <div class="banner_x center">
+            <a href="/index" class="logo"><h1>Gis商城</h1></a>
+            <a href="/index" class="gif"></a>
+            <ul class="list">
+                <li><a href="##">秒杀</a></li>
+                <li><a href="##">优惠券</a></li>
+            </ul>
+            <div class="fr">
+                <div class="search">
+                    <div style="position:relative" id="five">
+                        <input class="text" type="text" id="keyword" autocomplete="off" v-model="productL.productName">
+                        <div class="button iconfont icon-search" id="four" @click="searchProductList"></div>
+                    </div>
+                    <p>&nbsp;&nbsp;</p>
+                    <div style="position:relative;" class="one">热门搜索：
+                        <div v-for="(item, index ) in hotProductList" :class="index % 5 == 0 ? 'mlkj' : 'mlkj1'"
+                             style="display:inline-block" @click="searchProduc(item.searchName)"><p>
+                            {{item.searchName}}&nbsp;&nbsp;</p>
+                        </div>
+                    </div>
+                    <div style="position:relative;" class="two" v-if="historySearchList.length > 0">
+                        历史搜索：
+                        <div v-for="(item, index ) in historySearchList" :class="index % 5 == 0 ? 'mlkj' : 'mlkj1'"
+                             style="display:inline-block" @click="searchProduc(item.searchName)"><p>
+                            {{item.searchName}}&nbsp;&nbsp;</p>
+                        </div>
+                    </div>
+                    <!--                    <div class="search_hot" >-->
+                    <!--                    </div>-->
+
+                </div>
+
+
+            </div>
+        </div>
+    </nav>
     <!--排序-->
     <div class="sort">
         <div class="list">
@@ -115,7 +152,7 @@
                     <div class="item_brand"><a @click="productD(item.id)" target="_blank">
                         {{item.productName}}</a></div>
                     <div class="item_sub_intro">{{item.description}}</div>
-                    <div class="item_price">{{item.promotePrice}}.00元</div>
+                    <div class="item_price">￥{{item.promotePrice}}.00元</div>
                 </div>
             </div>
             <div class="fyq">

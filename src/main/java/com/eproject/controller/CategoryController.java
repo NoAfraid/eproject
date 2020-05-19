@@ -162,7 +162,7 @@ public class CategoryController {
                 params.put("keyword",productName);
                 params.put("productName",productName);
                 PageQuery pageQuery = new PageQuery(params);
-                return R.ok().put("data", productService.searchProduct(pageQuery));
+                return R.ok().put("data", productService.searchProduct(pageQuery)).put("searchPageCategoryVO",searchPageCategoryVO);
 //                return R.ok().put("data", searchPageCategoryVO);
             }
         }

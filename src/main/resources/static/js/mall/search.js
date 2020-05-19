@@ -42,12 +42,18 @@ var vm = new Vue({
         vip: [],
         user: {nick: ''},
         cart: {count: 0},
-        keyword: '',
+        keyword: null,
         allProduct: [],
         promotePrice: "promotePrice",
         sale: "sale",
         id: "id",
         categoryId: '',
+        historySearchList: {},
+        searchPageCategoryVO: {
+            currentCategoryName:'',
+            secondLevelCategoryName:'',
+            thirdLevelCategoryParam:[],
+        },
     },
     mounted: function () {
         this.CategorySearch();
@@ -55,7 +61,8 @@ var vm = new Vue({
         this.getUserInfo();
         this.getCartInfo();
         this.allProductList(1);
-
+        this.HotSearchProduct();
+        this.historySearch();
     },
     methods: {
         /**
@@ -190,6 +197,8 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.productL = result.data.list;
+                        console.log(vm.keyword)
+                        vm.searchPageCategoryVO = result.searchPageCategoryVO;
                     } else {
                         alert(result.msg)
                     }
@@ -307,6 +316,74 @@ var vm = new Vue({
                     }
                 }
             })
+        },
+
+        /**
+         * 热搜商品
+         */
+        HotSearchProduct: function () {
+            var formData = JSON.stringify();
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/index/getProductForHotSearch",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.hotProductList = result.data
+                    } else {
+                        alert(result.msg)
+                    }
+                }
+            })
+        },
+
+        /**
+         * 历史搜索
+         */
+        historySearch: function () {
+            var userId = getCookie("sessionId");
+            if (userId ==null || userId == ''){
+                return;
+            }else {
+                var t = {
+                    id: userId
+                };
+                var formData = JSON.stringify(t);
+                $.ajax({
+                    type: "post",
+                    url: "http://localhost:8080/index/historySearch",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    data: formData,
+                    success: function (result) {
+                        if (result.code == 0) {
+                            vm.historySearchList = result.data
+                        } else {
+                            // alert(result.msg)
+                        }
+                    }
+                })
+            }
+
+        },
+
+
+        /**
+         * 模糊查询商品
+         */
+        searchProductList: function (productName) {
+
+            // this.productL.productName = productName;
+            window.location.href = encodeURI("search.html?keyword=" + (this.productL.productName));
+
+        },
+
+        searchProduc: function (productName) {
+            this.productL.productName = productName;
+            window.location.href = encodeURI("search.html?keyword=" + (this.productL.productName));
+
         },
     },
     computed: {
