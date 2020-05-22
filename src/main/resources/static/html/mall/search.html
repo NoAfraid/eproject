@@ -4,7 +4,7 @@
 </head>
 <body>
 <meta charset="UTF-8">
-<title>新蜂商城 NewBee商城 newbee-mall</title>
+<title>Gis电子商城</title>
 <link rel="stylesheet" href="../../css/mall/css/swiper.min.css">
 <link rel="stylesheet" href="../../css/mall/css/iconfont.css">
 <link rel="stylesheet" href="../../css/mall/css/common.css">
@@ -64,10 +64,10 @@
                         <li><a href="login.html">登录</a></li>
                         <li><a href="register.html">注册</a></li>
                     </ul>
-                    <div class="shopcart">
-                        <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>
-                            购物车(0)</a>
-                    </div>
+<!--                    <div class="shopcart">-->
+<!--                        <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>-->
+<!--                            购物车(0)</a>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@
     <!--分类筛选-->
     <div class="classify" >
         <div class="category">
-            <div class="category_bar" v-if="searchPageCategoryVO != null">
+            <div class="category_bar" v-if="searchPageCategoryVO.currentCategoryName != '' || searchPageCategoryVO.length > 0">
                     <div class="fm c">
                         <a href="##" class="qqq">{{searchPageCategoryVO.secondLevelCategoryName}}</a>
                         <div v-for="thirdLevelCategory in searchPageCategoryVO.thirdLevelCategoryParam">
@@ -87,11 +87,11 @@
                         {{searchPageCategoryVO.currentCategoryName}}
                         "
                     </div>
-                <div  v-else>
-                    <div v-if="keyword !=null || keyword !=''">
-                        <p>搜索 "{{keyword}} "
-                        </p>
-                    </div>
+            </div>
+            <div  v-if="searchPageCategoryVO.currentCategoryName == '' || searchPageCategoryVO.length < 0">
+                <div>
+                    <p>搜索 "{{keyword}} "
+                    </p>
                 </div>
             </div>
         </div>

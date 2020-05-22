@@ -58,6 +58,13 @@ var vm = new Vue({
         cart:{count:0},
         form:'',
         refundReason:'',
+        sendDelayMessage:'',
+        creatTime:'',
+        isEnd :false,
+        day: 0,
+        hr: 0,
+        min: 0,
+        sec: 0
     },
     mounted: function () {
         var accessToken = getCookie("accessToken");
@@ -68,12 +75,14 @@ var vm = new Vue({
             this.accessToken = accessToken;
         }
         this.getOrderInfo();
+        // this.sendDelayMessageCancelOrder()
+        // this.setEndTime()
         // this.payByzhifubao();
         // this.paySuccess();
         // this.getUserInfo();
         // this.getCartInfo();
+        // this.countdown()
     },
-    create: {},
     methods: {
 
         // getUserInfo:function () {
@@ -156,9 +165,68 @@ var vm = new Vue({
                     }
                 }
             });
+            this.sendDelayMessageCancelOrder()
         },
 
         /**
+         * 设置延时取消订单
+         */
+        sendDelayMessageCancelOrder: function(){
+            var formData = JSON.stringify();
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/order/cancelTimeOrder?orderId="+244,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.sendDelayMessage = result.data;
+                        vm.creatTime = result.creatTime;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+            this.countdown()
+        },
+        countdown: function () {
+            // 定义结束时间戳
+            this.sendDelayMessage = this.sendDelayMessage -1000
+            // console.log(this.creatTime)  //+ this.sendDelayMessage
+            const end = Date.parse(new Date('2020-5-22 00:00:00')) ;
+            // 定义当前时间戳
+            const now = Date.parse(new Date())
+            // console.log(now)
+            // console.log(end)
+            // // 做判断当倒计时结束时都为0
+            // if (now >= end) {
+            //     this.day = 0
+            //     this.hr = 0
+            //     this.min = 0
+            //     this.sec = 0
+            //     return
+            // }
+            // 用结束时间减去当前时间获得倒计时时间戳
+            const msec = this.sendDelayMessage ;
+            let day = parseInt(msec / 1000 / 60 / 60 / 24) //算出天数
+            let hr = parseInt(msec / 1000 / 60 / 60 % 24)//算出小时数
+            let min = parseInt(msec / 1000 / 60 % 60)//算出分钟数
+            let sec = parseInt(msec / 1000 % 60)//算出秒数
+            //给数据赋值
+            this.day = day
+            this.hr = hr > 9 ? hr : '0' + hr
+            this.min = min > 9 ? min : '0' + min
+            this.sec = sec > 9 ? sec : '0' + sec
+            //定义this指向
+            const that = this
+            // 使用定时器 然后使用递归 让每一次函数能调用自己达到倒计时效果
+            setTimeout(function () {
+                that.countdown()
+            }, 1000)
+        },
+
+        /**ajax, jq vue js
          * 支付成功后修改库存
          */
         updateStock: function (productId, productQuantity) {
@@ -217,7 +285,8 @@ var vm = new Vue({
                         // // alert(vm.order.orderNo)
                         // console.log(vm.order)
                         // console.log(vm.cartList)
-                        alert("已确认")
+                        alert("已确认");
+                        window.location.reload();
                     } else {
                         alert(result.msg);
                     }

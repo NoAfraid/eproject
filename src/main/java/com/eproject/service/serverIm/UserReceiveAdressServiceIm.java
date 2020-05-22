@@ -34,6 +34,12 @@ public class UserReceiveAdressServiceIm implements UserReceiveAddressService {
     @Override
     public int add(UserReceiveAddress address) {
         address.setUserId(address.getUserId());
+        String province = provinceDao.selectByCode(address.getProvince());
+        String city = cityDao.selectByCode(address.getCity());
+        String region = townDao.selectByCode(address.getRegion());
+        address.setCity(city);
+        address.setProvince(province);
+        address.setRegion(region);
         if (userReceiveAddressDao.selectById(address.getId()) != null){
             return userReceiveAddressDao.updateByPrimaryKeySelective(address);
         }
@@ -60,17 +66,17 @@ public class UserReceiveAdressServiceIm implements UserReceiveAddressService {
     @Override
     public List<UserReceiveAddress> list(UserReceiveAddress address) {
         List<UserReceiveAddress> userReceiveAddressList = userReceiveAddressDao.selectByExample(address);
-        if (userReceiveAddressList.size() > 0) {
-            for (UserReceiveAddress receiveAddress : userReceiveAddressList) {
-                String code = receiveAddress.getProvince();
-                String province = provinceDao.selectByCode(code);
-                String city = cityDao.selectByCode(receiveAddress.getCity());
-                String region = townDao.selectByCode(receiveAddress.getRegion());
-                receiveAddress.setProvince(province);
-                receiveAddress.setCity(city);
-                receiveAddress.setRegion(region);
-            }
-        }
+//        if (userReceiveAddressList.size() > 0) {
+//            for (UserReceiveAddress receiveAddress : userReceiveAddressList) {
+//                String code = receiveAddress.getProvince();
+//                String province = provinceDao.selectByCode(code);
+//                String city = cityDao.selectByCode(receiveAddress.getCity());
+//                String region = townDao.selectByCode(receiveAddress.getRegion());
+//                receiveAddress.setProvince(province);
+//                receiveAddress.setCity(city);
+//                receiveAddress.setRegion(region);
+//            }
+//        }
         return userReceiveAddressList;
     }
 

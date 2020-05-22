@@ -164,13 +164,13 @@
                         </a>
                     </li>
                     <li class="nav-header">系统管理</li>
-<!--                    <li class="nav-item">-->
-<!--                        <a href="/admin/profile"-->
-<!--                           class="nav-link">-->
-<!--                            <i class="fa fa-user-secret nav-icon"></i>-->
-<!--                            <p>修改密码</p>-->
-<!--                        </a>-->
-<!--                    </li>-->
+                    <!--                    <li class="nav-item">-->
+                    <!--                        <a href="/admin/profile"-->
+                    <!--                           class="nav-link">-->
+                    <!--                            <i class="fa fa-user-secret nav-icon"></i>-->
+                    <!--                            <p>修改密码</p>-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
                     <li class="nav-item">
                         <a href="javascript:loginout()">
                             <i class="fa fa-sign-out nav-icon"></i>
@@ -191,7 +191,7 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- Main content -->
-        <div class="content" >
+        <div class="content">
             <div class="container-fluid">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
@@ -211,10 +211,13 @@
                             <button class="btn btn-danger" @click="closeOrder"><i
                                     class="fa fa-trash-o"></i>&nbsp;关闭订单
                             </button>
-                            <button  style=" text-align: center">
-                                <input class="text" type="text" id="oderNo" autocomplete="off" placeholder="*请输入订单号"  v-model="searchOrderList.orderNo">
-                                <input class="text" type="text" id="userId" autocomplete="off" placeholder="*请输入用户ID" v-model="searchOrderList.userId">
-                                <input class="text" type="text" id="productId" autocomplete="off" placeholder="*请输入商品ID" v-model="searchOrderList.productId">
+                            <button style=" text-align: center">
+                                <input class="text" type="text" id="oderNo" autocomplete="off" placeholder="*请输入订单号"
+                                       v-model="searchOrderList.orderNo">
+                                <input class="text" type="text" id="userId" autocomplete="off" placeholder="*请输入用户ID"
+                                       v-model="searchOrderList.userId">
+                                <input class="text" type="text" id="productId" autocomplete="off" placeholder="*请输入商品ID"
+                                       v-model="searchOrderList.productId">
                             </button>&nbsp;&nbsp;&nbsp;&nbsp;
                             <button @click="searchOrder">搜索商品</button>
                         </div>
@@ -312,17 +315,17 @@
                                     </div>
                                 </div>
                                 <input type="hidden" id="orderId">
-<!--                                <div class="form-group">-->
-<!--                                    <label for="totalPrice" class="control-label">订单价格:&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
-<!--                                    <input type="number" class="form-control" id="totalPrice" name="totalPrice"-->
-<!--                                           placeholder="请输入改价金额" required="true">-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="userAddress"-->
-<!--                                           class="control-label">物流公司信息:&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
-<!--                                    <input type="text" class="form-control" id="userAddress"-->
-<!--                                           placeholder="请输入物流公司" v-model="order.deliveryCompany"/>-->
-<!--                                </div>-->
+                                <!--                                <div class="form-group">-->
+                                <!--                                    <label for="totalPrice" class="control-label">订单价格:&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+                                <!--                                    <input type="number" class="form-control" id="totalPrice" name="totalPrice"-->
+                                <!--                                           placeholder="请输入改价金额" required="true">-->
+                                <!--                                </div>-->
+                                <!--                                <div class="form-group">-->
+                                <!--                                    <label for="userAddress"-->
+                                <!--                                           class="control-label">物流公司信息:&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+                                <!--                                    <input type="text" class="form-control" id="userAddress"-->
+                                <!--                                           placeholder="请输入物流公司" v-model="order.deliveryCompany"/>-->
+                                <!--                                </div>-->
 
                             </form>
                         </div>
@@ -360,10 +363,18 @@
                                 <!--                                           placeholder="请输入改价金额" required="true">-->
                                 <!--                                </div>-->
                                 <div class="form-group">
-                                    <label for="userAddress"
-                                           class="control-label">物流公司信息:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                    <input type="text" class="form-control" id="userAddress"
-                                           placeholder="请输入物流公司" v-model="order.deliveryCompany"/>
+                                    <p style="font-size: 18px;">请选择物流公司：
+                                        <select name="number" style="font-size: 14px; width: 250px;height: 30px"
+                                                v-model="order.deliveryCompany">
+                                            <option value="顺丰快递">顺丰快递</option>
+                                            <option value="圆通速递">圆通速递</option>
+                                            <option value="申通快递">申通快递</option>
+                                            <option value="京东速运">京东速运</option>
+                                            <option value="中通快递">中通快递</option>
+                                            <option value="韵达快递">韵达快递</option>
+                                            <option value="中国邮政">中国邮政</option>
+                                        </select>
+                                    </p>
                                 </div>
 
                             </form>
@@ -391,7 +402,8 @@
                         <div class="modal-body">
                             <form id="##">
                                 <div class="form-group">
-                                    <input type="text" id="deliveryCompany" v-model="order.deliveryCompany" placeholder="请输入物流公司">
+                                    <input type="text" id="deliveryCompany" v-model="order.deliveryCompany"
+                                           placeholder="请输入物流公司">
                                     <label class="control-label">收件信息:</label>
                                     <label id="userAddressInfo" class="control-label"></label>
                                 </div>

@@ -180,6 +180,7 @@ var vm = new Vue({
             //     return;
             // } else {
             //     this.productL.userId = userId
+            // console.log(this.searchPageCategoryVO)
             if (categoryId == null ||  categoryId == undefined){
                 return;
             }

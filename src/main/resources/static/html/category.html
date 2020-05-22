@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>newbee-mall | 后台管理系统</title>
+    <title>后台管理系统</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -18,17 +18,17 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="../css/admin/dist/css/adminlte.min.css">
     <link rel="stylesheet" type="text/css" href="../css/grzx.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/zt.css"/>
 </head>
-<header th:replace="admin/header::header-fragment">
-</header>
-<!--<style>-->
-<!--    .ui-jqgrid tr.jqgrow td {-->
-<!--        white-space: normal !important;-->
-<!--        height: auto;-->
-<!--        vertical-align: text-top;-->
-<!--        padding-top: 2px;-->
-<!--    }-->
-<!--</style>-->
+<style>
+    .ui-jqgrid tr.jqgrow td {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+        padding-top: 2px;
+    }
+</style>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" id="app">
     <!-- 引入页面头header-fragment -->
@@ -143,7 +143,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="admin_order.html" class="nav-link">
+                        <a href="admin_order.html" class="nav-link ">
                             <i class="fa fa-money nav-icon" aria-hidden="true"></i>
                             <p>
                                 订单管理
@@ -151,13 +151,13 @@
                         </a>
                     </li>
                     <li class="nav-header">系统管理</li>
-<!--                    <li class="nav-item">-->
-<!--                        <a href="/admin/profile"-->
-<!--                           class="nav-link">-->
-<!--                            <i class="fa fa-user-secret nav-icon"></i>-->
-<!--                            <p>修改密码</p>-->
-<!--                        </a>-->
-<!--                    </li>-->
+                    <!--                    <li class="nav-item">-->
+                    <!--                        <a href="/admin/profile"-->
+                    <!--                           class="nav-link">-->
+                    <!--                            <i class="fa fa-user-secret nav-icon"></i>-->
+                    <!--                            <p>修改密码</p>-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
                     <li class="nav-item">
                         <a href="javascript:loginout()">
                             <i class="fa fa-sign-out nav-icon"></i>

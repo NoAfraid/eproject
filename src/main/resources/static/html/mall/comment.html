@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>评价</title>
+</head>
+<body>
+<div id="app">
+    <table>
+        <tbody>
+        <tr v-for="item in list">
+            <td style="width: 494px;padding-right: 30px;">
+                <div style="font-size: 12px">{{item.content}}</div>
+                <div style="zoom: 1;">
+                    <ul style="margin: 10px 0;list-style-type: none;height: 40px;">
+                        <li v-for="img in list.pics"><img width="40" height="40" :src="img"/></li>
+                    </ul>
+                </div>
+                <div style="clear: both;color: #ccc;font-size: 12px;">{{dateFormat(item.createTime)}}</div>
+            </td>
+            <td style="width: 160px;color: #999;" >
+                <img width="20" height="20"  v-for="star in item.star " :src="star <= item ? imgs.off : imgs.on" alt="1" />
+            </td>
+            <td style="padding-right: 0;" >
+                <div style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 95px; font-size: 12px" v-if="item.showStatus ==0">
+                    {{substrNick(item.memberNickName)}}
+                    <span>***</span>
+                    {{substrMemberNickName(item.memberNickName)}}
+                    <span>（匿名）</span>
+                </div>
+                <div style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 95px; font-size: 12px" v-if="item.showStatus ==1">
+                    {{(item.memberNickName)}}
+                </div>
+            </td>
+        </tr>
+
+
+        </tbody>
+    </table>
+</div>
+</body>
+<script src="../../js/jquery.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/md5.js"></script>
+<script src="../../js/mall/comment.js"></script>
+</html>

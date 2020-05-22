@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eproject.dao.CommentDao">
   <resultMap id="BaseResultMap" type="com.eproject.entity.Comment">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="member_nick_name" jdbcType="VARCHAR" property="memberNickName" />
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
@@ -18,39 +19,59 @@
     <result column="pics" jdbcType="VARCHAR" property="pics" />
     <result column="member_pic" jdbcType="VARCHAR" property="memberPic" />
     <result column="replay_count" jdbcType="INTEGER" property="replayCount" />
+    <result column="replay" jdbcType="VARCHAR" property="replay" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, product_id, user_id, member_nick_name, product_name, star, member_ip, create_time, 
-    show_status, product_attribute, collect_couont, read_count, content, pics, member_pic, 
-    replay_count
+    id, order_id, product_id, user_id, member_nick_name, product_name, star, member_ip, 
+    create_time, show_status, product_attribute, collect_couont, read_count, content, 
+    pics, member_pic, replay_count, replay
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from comment
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <select id="selectCommentList" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from comment
+    where user_id = #{userId}
+  </select>
+  <select id="selectImg"  resultType="String">
+    select pics
+    from comment
+    where user_id = #{userId} and id = 2
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from comment
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteComment">
+    delete from comment
+    where order_id = #{orderId} and user_id = #{userId} and product_id = #{productId}
+    limit 1
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Comment" useGeneratedKeys="true">
-    insert into comment (product_id, user_id, member_nick_name, 
-      product_name, star, member_ip, 
-      create_time, show_status, product_attribute, 
-      collect_couont, read_count, content, 
-      pics, member_pic, replay_count
-      )
-    values (#{productId,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}, #{memberNickName,jdbcType=VARCHAR}, 
-      #{productName,jdbcType=VARCHAR}, #{star,jdbcType=INTEGER}, #{memberIp,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{showStatus,jdbcType=INTEGER}, #{productAttribute,jdbcType=VARCHAR}, 
-      #{collectCouont,jdbcType=INTEGER}, #{readCount,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
-      #{pics,jdbcType=VARCHAR}, #{memberPic,jdbcType=VARCHAR}, #{replayCount,jdbcType=INTEGER}
-      )
+    insert into comment (order_id, product_id, user_id, 
+      member_nick_name, product_name, star, 
+      member_ip, create_time, show_status, 
+      product_attribute, collect_couont, read_count, 
+      content, pics, member_pic, 
+      replay_count, replay)
+    values (#{orderId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{memberNickName,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{star,jdbcType=INTEGER}, 
+      #{memberIp,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{showStatus,jdbcType=INTEGER}, 
+      #{productAttribute,jdbcType=VARCHAR}, #{collectCouont,jdbcType=INTEGER}, #{readCount,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{pics,jdbcType=VARCHAR}, #{memberPic,jdbcType=VARCHAR}, 
+      #{replayCount,jdbcType=INTEGER}, #{replay,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.eproject.entity.Comment" useGeneratedKeys="true">
     insert into comment
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
       <if test="productId != null">
         product_id,
       </if>
@@ -96,10 +117,16 @@
       <if test="replayCount != null">
         replay_count,
       </if>
+      <if test="replay != null">
+        replay,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
       <if test="productId != null">
-        #{productId,jdbcType=BIGINT},
+        #{productId,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
@@ -143,13 +170,19 @@
       <if test="replayCount != null">
         #{replayCount,jdbcType=INTEGER},
       </if>
+      <if test="replay != null">
+        #{replay,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.eproject.entity.Comment">
     update comment
     <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
       <if test="productId != null">
-        product_id = #{productId,jdbcType=BIGINT},
+        product_id = #{productId,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
@@ -193,12 +226,16 @@
       <if test="replayCount != null">
         replay_count = #{replayCount,jdbcType=INTEGER},
       </if>
+      <if test="replay != null">
+        replay = #{replay,jdbcType=VARCHAR},
+      </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.eproject.entity.Comment">
     update comment
-    set product_id = #{productId,jdbcType=BIGINT},
+    set order_id = #{orderId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
       member_nick_name = #{memberNickName,jdbcType=VARCHAR},
       product_name = #{productName,jdbcType=VARCHAR},
@@ -212,7 +249,8 @@
       content = #{content,jdbcType=VARCHAR},
       pics = #{pics,jdbcType=VARCHAR},
       member_pic = #{memberPic,jdbcType=VARCHAR},
-      replay_count = #{replayCount,jdbcType=INTEGER}
-    where id = #{id,jdbcType=BIGINT}
+      replay_count = #{replayCount,jdbcType=INTEGER},
+      replay = #{replay,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

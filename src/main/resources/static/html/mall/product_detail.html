@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>新蜂商城 NewBee商城 newbee-mall</title>
+    <title>商品详情</title>
     <link rel="stylesheet" href="../../css/mall/css/swiper.min.css">
     <link rel="stylesheet" href="../../css/mall/css/iconfont.css">
     <link rel="stylesheet" href="../../css/mall/css/common.css">
@@ -17,7 +17,7 @@
     <header id="header">
         <div class="center">
             <ul class="fl">
-                <li><a href="index.html">新蜂商城</a></li>
+                <li><a href="index.html">Gis商城</a></li>
                 <li><a href="../goods_get.html">后台管理系统</a></li>
             </ul>
             <div class="fr">
@@ -142,7 +142,10 @@
             </div>
         </div>
     </div>
-    <span v-html="detail.detail"></span>
+    <div class="intro mt20 w clearfix">
+        <span v-html="detail.detail"></span>
+    </div>
+
 </div>
 
 <div th:replace="mall/footer::footer-fragment"></div>

@@ -8,9 +8,11 @@ import java.util.Date;
  * @author 
  */
 public class Comment implements Serializable {
-    private Long id;
+    private Integer id;
 
-    private Long productId;
+    private Integer orderId;
+
+    private Integer productId;
 
     private Integer userId;
 
@@ -55,21 +57,34 @@ public class Comment implements Serializable {
 
     private Integer replayCount;
 
+    /**
+     * 回复
+     */
+    private String replay;
+
     private static final long serialVersionUID = 1L;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getProductId() {
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
@@ -185,6 +200,14 @@ public class Comment implements Serializable {
         this.replayCount = replayCount;
     }
 
+    public String getReplay() {
+        return replay;
+    }
+
+    public void setReplay(String replay) {
+        this.replay = replay;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -198,6 +221,7 @@ public class Comment implements Serializable {
         }
         Comment other = (Comment) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getOrderId() == null ? other.getOrderId() == null : this.getOrderId().equals(other.getOrderId()))
             && (this.getProductId() == null ? other.getProductId() == null : this.getProductId().equals(other.getProductId()))
             && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getMemberNickName() == null ? other.getMemberNickName() == null : this.getMemberNickName().equals(other.getMemberNickName()))
@@ -212,7 +236,8 @@ public class Comment implements Serializable {
             && (this.getContent() == null ? other.getContent() == null : this.getContent().equals(other.getContent()))
             && (this.getPics() == null ? other.getPics() == null : this.getPics().equals(other.getPics()))
             && (this.getMemberPic() == null ? other.getMemberPic() == null : this.getMemberPic().equals(other.getMemberPic()))
-            && (this.getReplayCount() == null ? other.getReplayCount() == null : this.getReplayCount().equals(other.getReplayCount()));
+            && (this.getReplayCount() == null ? other.getReplayCount() == null : this.getReplayCount().equals(other.getReplayCount()))
+            && (this.getReplay() == null ? other.getReplay() == null : this.getReplay().equals(other.getReplay()));
     }
 
     @Override
@@ -220,6 +245,7 @@ public class Comment implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getOrderId() == null) ? 0 : getOrderId().hashCode());
         result = prime * result + ((getProductId() == null) ? 0 : getProductId().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getMemberNickName() == null) ? 0 : getMemberNickName().hashCode());
@@ -235,6 +261,7 @@ public class Comment implements Serializable {
         result = prime * result + ((getPics() == null) ? 0 : getPics().hashCode());
         result = prime * result + ((getMemberPic() == null) ? 0 : getMemberPic().hashCode());
         result = prime * result + ((getReplayCount() == null) ? 0 : getReplayCount().hashCode());
+        result = prime * result + ((getReplay() == null) ? 0 : getReplay().hashCode());
         return result;
     }
 
@@ -245,6 +272,7 @@ public class Comment implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", orderId=").append(orderId);
         sb.append(", productId=").append(productId);
         sb.append(", userId=").append(userId);
         sb.append(", memberNickName=").append(memberNickName);
@@ -260,6 +288,7 @@ public class Comment implements Serializable {
         sb.append(", pics=").append(pics);
         sb.append(", memberPic=").append(memberPic);
         sb.append(", replayCount=").append(replayCount);
+        sb.append(", replay=").append(replay);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -94,6 +94,10 @@ var vm = new Vue({
          * 批量配货
          */
         ordersInfo: function () {
+            if (this.msg == undefined || this.msg.length <= 0 || this.msg.length >1){
+                alert("请选择一条记录");
+                window.location.reload();
+            }
             var i = 0 ;
             for(i;i< this.msg.length; i++){
                 var t = [{
@@ -101,9 +105,7 @@ var vm = new Vue({
                 }]
             }
             // alert(t.orderId)
-            if (this.msg.length <0){
-                alert("请选择一条记录")
-            }
+
             var formData = JSON.stringify(this.msg);
             var now =  getNow("yyyyMMddHHmmss");
             var sign  = signString(formData,now);
@@ -136,6 +138,10 @@ var vm = new Vue({
          * 弹出模态框
          */
         reModal: function(){
+            if (this.msg == undefined || this.msg.length <= 0 || this.msg.length >1){
+                alert("请选择一条记录");
+                window.location.reload();
+            }
             $('#putDelivery').modal('show');
         },
         /**
@@ -151,9 +157,7 @@ var vm = new Vue({
                 }]
             }
             // alert(t.orderId)
-            if (this.msg.length <0){
-                alert("请选择一条记录")
-            }
+
             var formData = JSON.stringify(t);
             var now =  getNow("yyyyMMddHHmmss");
             var sign  = signString(formData,now);

@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -292,5 +293,13 @@ public class OrderController {
             return R.ok().put("data", info);
         }
         return R.error("查询错误");
+    }
+
+    @ApiOperation("取消单个超时订单")
+    @RequestMapping(value = "/cancelTimeOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public R cancelTimeOrder(@RequestParam("orderId") Integer orderId) {
+        Integer delayTimes = orderService.sendDelayMessageCancelOrder(orderId);
+        return R.ok().put("data",delayTimes);
     }
 }

@@ -35,7 +35,7 @@ var vm = new Vue({
     },
     methods: {
         linkage: function (event) {
-            this.province = "110000"
+            // this.province = "110000"
             var formData = JSON.stringify();
             $.ajax({
                 type: "post",
@@ -56,8 +56,9 @@ var vm = new Vue({
         getCity: function(){
             if ($.trim(this.province) == ''|| $.trim(this.province) == null) {
                 var t={
-                    provinceCode:"110100",
+                    // provinceCode:"110100",
                 }
+                return;
             }else {
                 var t={
                     provinceCode:this.province,
@@ -83,8 +84,9 @@ var vm = new Vue({
         getTown: function () {
             if ($.trim(this.shi) == ''|| $.trim(this.shi) == null) {
                 var t={
-                    cityCode:"110101",
+                    // cityCode:"110101",
                 }
+                return;
             }else {
                 var t={
                     cityCode:this.shi,
