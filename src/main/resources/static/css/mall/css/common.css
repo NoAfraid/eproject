@@ -49,9 +49,13 @@ a {
 }
 .mt10 {
   margin-top: 10px;
+  /*background-color: #e9e9e9;*/
 }
 .ml20 {
   margin-left: 20px;
+}
+.ml50 {
+  margin-left: 30px;
 }
 .ml40 {
   margin-left: 40px;
