@@ -4,6 +4,9 @@ server:
     max-threads: 1000
     min-spare-threads: 10
   port: 8080
+  servlet:
+    session:
+      timeout: 2h
 
 #  servlet:
 #    context-path: /

@@ -1,7 +1,11 @@
 package com.eproject.service.serverIm;
 
 import com.eproject.dao.CommentDao;
+import com.eproject.dao.OrderDao;
+import com.eproject.dao.OrderItemDao;
 import com.eproject.entity.Comment;
+import com.eproject.entity.Order;
+import com.eproject.entity.OrderItem;
 import com.eproject.service.CommentService;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +20,24 @@ public class CommentServiceIm implements CommentService {
     @Resource
     private CommentDao commentDao;
 
+    @Resource
+    private OrderItemDao orderItemDao;
+
+    @Resource
+    private OrderDao orderDao;
+
     @Override
     public void addComment(Comment comment){
         comment.setCreateTime(new Date());
         commentDao.insertSelective(comment);
+        Order order =new Order();
+        OrderItem orderItem = new OrderItem();
+        order.setId(comment.getOrderId());
+        order.setOrderStatus(5);
+        orderItem.setOrderStatus(5);
+        orderItem.setOrderId(comment.getOrderId());
+        orderDao.updateByPrimaryKeySelective(order);
+        orderItemDao.updateByPrimaryKeySelective(orderItem);
     }
 
     @Override

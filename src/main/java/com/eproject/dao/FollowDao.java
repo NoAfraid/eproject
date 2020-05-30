@@ -18,6 +18,7 @@ public interface FollowDao {
 
     List<Follow> selectInfo(PageQuery pageQuery);
 
+
     int selectByFollow(Integer id, Integer userId);
 
     int updateByPrimaryKeySelective(Follow record);
@@ -29,4 +30,5 @@ public interface FollowDao {
     int updateFollowStatus(Integer id, Integer status);
 
     int updateFollowTime(Integer id);
+
 }

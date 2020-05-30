@@ -59,6 +59,11 @@
       limit #{start},#{limit}
     </if>
   </select>
+  <select id="selectNick" resultType="String">
+    select nick
+    from user
+    where id = #{id}
+  </select>
   <select id="countById" parameterType="com.eproject.entity.User" resultType="java.lang.Integer">
     select count(id)
     from user
@@ -69,7 +74,7 @@
     from user
     <where>
       <if test="phone!= null and phone.trim() != ''">
-        and phone = #{phone}
+        or phone = #{phone}
       </if>
       <if test="username!= null and username.trim() != ''">
         or username = #{username}

@@ -70,7 +70,7 @@
 		<div class="dk1">
 			<div class="xsdh">
 				<div class="p1">
-					<a href="../index.html"><p>首页</p></a>
+					<a href="index.html"><p>首页</p></a>
 					<p>></p>
 				</div>
 				<div class="p1">
@@ -131,7 +131,7 @@
 								<img src="../../upload/20200408_2259582.png" v-if="(f.productImg) == ''"/>
 								<img :src="f.productImg" v-else />
 								<p>{{f.productName}}</p>
-								<p>{{f.createTime}}</p>
+								<p>{{dateFormat(f.createTime)}}</p>
 								</a>
 								<!--										<div class="gztx">-->
 								<!--											<img src="../../static/img/yh.png" v-if="$.trim(f.follow.pic) == ''"/>-->

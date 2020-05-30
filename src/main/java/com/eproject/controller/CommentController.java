@@ -3,6 +3,7 @@ package com.eproject.controller;
 import com.eproject.common.R;
 import com.eproject.entity.Comment;
 import com.eproject.service.CommentService;
+import com.eproject.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +18,18 @@ public class CommentController {
     @Resource
     private CommentService commentService;
 
+    @Resource
+    private UserService userService;
+
     /**
      * 添加评论
      */
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST, value = "/add",produces = "application/json;charset=UTF-8")
     public R addComment(@RequestBody Comment comment){
+        int userId = comment.getUserId();
+        String nick = userService.selectNick(userId);
+        comment.setMemberNickName(nick);
         commentService.addComment(comment);
         return R.ok();
     }

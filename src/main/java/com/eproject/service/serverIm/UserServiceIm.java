@@ -138,6 +138,11 @@ public class UserServiceIm implements UserService {
     }
 
     @Override
+    public Collect selectByProductId(Integer productId,Integer userId){
+        Collect collect = collectDao.selectByProductId(productId,userId);
+        return collect;
+    }
+    @Override
     public int insertFollowInfo(Integer id, Integer userId){
         //判断用户是否为null
         int count = userDao.countById(userId);
@@ -179,6 +184,12 @@ public class UserServiceIm implements UserService {
         int total = followList.size();
         PageResult pageResult = new PageResult(followList, total, pageQuery.getLimit(), pageQuery.getPage());
         return pageResult;
+    }
+
+    @Override
+    public String selectNick(Integer userId){
+        String nick = userDao.selectNick(userId);
+        return nick;
     }
 
 }

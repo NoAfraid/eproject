@@ -181,6 +181,7 @@ function loginout() {
 		success: function(result) {
 			delCookie("loginUser");
 			delCookie("accessToken");
+			delCookie("sessionId")
 			//刷新当前页
 			//window.location.reload();
 			window.location.href = "index.html";

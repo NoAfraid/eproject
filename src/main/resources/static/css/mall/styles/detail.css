@@ -226,6 +226,13 @@
     margin-top: 20px;
 }
 
+/*.kucun:after {*/
+/*    !*content: "\200B";*!*/
+/*    display: none;*/
+/*    height: 0;*/
+/*    clear: both;*/
+/*}*/
+
 .tm-ind-item {
     float: left;
     width: 33%;
@@ -341,7 +348,15 @@
 
 .tb-extra {
     font-size: 13px;
-    margin-top: 40px;
+    margin-top: 30px;
+    height: 70px;
+    width: 55%;
+    float: left;
+}
+
+.tb-extra2 {
+    font-size: 13px;
+    margin-top: 10px;
     height: 70px;
     width: 55%;
     float: left;

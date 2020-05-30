@@ -44,4 +44,6 @@ public interface UserDao {
     User loginUser(User user);
 
     int insertUser(User user);
+
+    String selectNick(Integer id);
 }

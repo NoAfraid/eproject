@@ -74,9 +74,9 @@
             <div class="gr">
                 <a href="follow.html">我的关注</a>
             </div>
-<!--            <div class="gr">-->
-<!--                <a href="my_address.html">我的地址</a>-->
-<!--            </div>-->
+            <!--            <div class="gr">-->
+            <!--                <a href="my_address.html">我的地址</a>-->
+            <!--            </div>-->
             <div class="gr">
                 <a href="cart.html">我的购物车</a>
             </div>
@@ -126,6 +126,10 @@
                                     <a @click="finishOrder(item.orderNo)"
                                        class="btn btn-small btn-primary" title="确认收货">确认收货</a>
                                 </div>
+                                <div v-if="item.orderStatus==4">
+                                    <a @click="commentModal"
+                                       class="btn btn-small btn-primary" title="待评价">待评价</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -135,11 +139,14 @@
                                 <div class="order-summary">
                                     <div class="order-desc">
                                         <div v-if="item.orderStatus==0">请尽快完成支付~</div>
-                                        <div v-if="item.orderStatus >=0 && item.orderStatus < 1">剩余：{{day}}天{{hr}}:{{min}}:{{sec}} 将自动取消订单</div>
+                                        <div v-if="item.orderStatus >=0 && item.orderStatus < 1">
+                                            剩余：{{day}}天{{hr}}:{{min}}:{{sec}} 将自动取消订单
+                                        </div>
                                         <div v-if="item.orderStatus==1">您已支付成功,请耐心等耐商家发货</div>
                                         <div v-if="item.orderStatus==2">仓库正在紧急配货中~</div>
                                         <div v-if="item.orderStatus==3">订单已出库正在快马加鞭向您奔来~</div>
                                         <div v-if="item.orderStatus==4">交易完成</div>
+                                        <div v-if="item.orderStatus==5">已评价</div>
                                         <div v-if="item.orderStatus < 0 ">交易已关闭~</div>
                                         <div v-if="item.orderStatus == -1 ">&nbsp;&nbsp;&nbsp;手动关闭</div>
                                         <div v-if="item.orderStatus == -2 ">&nbsp;&nbsp;&nbsp;超时关闭</div>
@@ -199,7 +206,7 @@
                                                     <div class="progress"><span class="text">交易成功</span></div>
                                                     <div class="info"></div>
                                                 </li>
-                                                <li v-else-if="item.orderStatus ==4" class="step step-active">
+                                                <li v-else-if="item.orderStatus >=4" class="step step-active">
                                                     <div class="progress"><span class="text">交易成功</span></div>
                                                     <div class="info"></div>
                                                 </li>
@@ -225,7 +232,8 @@
                                                 </a>
                                             </div>
                                         </td>
-                                        <td><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></td>
+                                        <td><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                        </td>
                                         <td class="col col-name">
                                             <p class="name">
                                                 <a target="_blank" href="#">{{cartList.productName}}</a>
@@ -318,7 +326,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                        <h6 class="modal-title" id="personalInfoModalLabel">退货申请</h6>
+                        <h4 class="modal-title" id="personalInfoModalLabel">退货申请</h4>
                     </div>
                     <div class="modal-body">
                         <form id="personalInfoForm">
@@ -327,10 +335,10 @@
                                 <input type="text" class="form-control" id="refundReason" name="address"
                                        placeholder="请输入退货原因" v-model="refundReason"
                                        required="true">
-<!--                                <label class="control-label">联系电话:</label>v-model="refundReason"-->
-<!--                                <input type="text" class="form-control" id="phoneNumber" name="address"-->
-<!--                                       placeholder="请输入收货人联系电话" v-model="updateAddressList.phoneNumber"-->
-<!--                                       required="true">v-for="item in aList" @click="updateAddress(item.id)"-->
+                                <!--                                <label class="control-label">联系电话:</label>v-model="refundReason"-->
+                                <!--                                <input type="text" class="form-control" id="phoneNumber" name="address"-->
+                                <!--                                       placeholder="请输入收货人联系电话" v-model="updateAddressList.phoneNumber"-->
+                                <!--                                       required="true">v-for="item in aList" @click="updateAddress(item.id)"-->
 
                             </div>
                         </form>
@@ -342,16 +350,120 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="personalInfoModal2" tabindex="-1" role="dialog"
+             aria-labelledby="personalInfoModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="personalInfoModalLabel">用户评价</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div>
+                                <div @click="openImg">
+                                    <img src="../../upload/xzsp.png" v-if="comment.pics==''"/>
+                                    <img id="image" :src="comment.pics" controls="controls"
+                                         style="width: 100%;height: 100%;" v-else>
+                                    <!--                                        您的浏览器不支持 video 标签-->
+                                    </img>
+                                </div>
+                                <form id="fileForm" enctype="multipart/form-data" method="post">
+                                    <input id="file" @change="preview" type="file" name="file" style="display: none;"/>
+                                </form>
+                                <div style="height: 0px; margin-left: 400px">
+                                    <button @click="openImg"
+                                            style="width: 56px; height: 28px; float: left; bottom: 0px;margin-left: 12px;">
+                                        选择
+                                    </button>
+                                    <button @click="CommentUpload"
+                                            style="width: 56px; height: 28px; float: left; bottom: 0px;margin-left: 12px;">
+                                        上传
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="float: left; margin-top: 20px;">
+                                <h5 style="float: left;margin-top:20px">请评分：</h5>
+                                <table style="margin-left: 10px;margin-top:17px" border="0" cellspacing="0"
+                                       cellpadding="1" class="table_score table_score_v2">
+                                    <tbody>
+                                    <tr>
+                                        <td class="div_float" score_v="1" style="width: 53px; text-align: left;">
+                                            <div class="q_scale_wrapper"><input name="number" type="radio"
+                                                                                v-model.number="comment.star"
+                                                                                value="1"/>
+                                                <label>1</label>
+                                            </div>
+                                        </td>
+                                        <td class="div_float" score_v="2" style="width: 53px;">
+                                            <div class="q_scale_wrapper"><input name="number" type="radio"
+                                                                                v-model.number="comment.star"
+                                                                                value="2"/>
+                                                <label>2</label>
+                                            </div>
+                                        </td>
+                                        <td class="div_float" score_v="3" style="width: 53px;">
+                                            <div class="q_scale_wrapper"><input name="number" type="radio"
+                                                                                v-model.number="comment.star"
+                                                                                value="3"/>
+                                                <label>3</label>
+                                            </div>
+                                        </td>
+                                        <td class="div_float" score_v="4" style="width: 53px;">
+                                            <div class="q_scale_wrapper"><input name="number" type="radio"
+                                                                                v-model.number="comment.star"
+                                                                                value="4"/>
+                                                <label>4</label>
+                                            </div>
+                                        </td>
+                                        <td class="div_float" score_v="5" style="width: 53px; ">
+                                            <div class="q_scale_wrapper"><input name="number" type="radio"
+                                                                                v-model.number="comment.star"
+                                                                                value="5"/>
+                                                <label>5</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <div style="float: left; margin-top: 20px;">
+                                    <textarea style="height: 250px;width: 500px;" v-model="comment.content"
+                                              placeholder="请输入评价内容"></textarea>
+                                </div>
+                                <div class="zxbt" style="display:flex; float: left">
+                                    <p><span class="red">*</span>是否匿名：</p>
+                                    <div class="xzsp">
+                                        <div style="width: 100px;height: unset">
+                                            <input type="radio" name="showStatus" v-model.number="comment.showStatus"
+                                                   value="0" id="yes"/><label for="yes">是</label>
+                                            <input type="radio" name="showStatus" v-model.number="comment.showStatus"
+                                                   value="1" id="no"/><label for="no">否</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer" v-for="(item, index) in order" :key="index">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" @click="saveComment(item.id,item.productId,item.productName)">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!--<div th:replace="mall/footer::footer-fragment"></div>-->
 <!-- jQuery -->
-<script src="../../css/admin/plugins/jquery/jquery.min.js"></script>
+<script src="../../js/jquery.js"></script>
 <script src="../../css/mall/js/bootstrap3.js"></script>
 <script src="../../js/vue.js"></script>
 <script src="../../js/md5.js"></script>
 <script src="../../js/common.js"></script>
 <script src="../../js/mall/order_detail.js"></script>
-
+<script src="../../js/jquery.form.js"></script>
 </body>
 </html>

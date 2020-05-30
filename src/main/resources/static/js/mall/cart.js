@@ -33,7 +33,9 @@ var vm = new Vue({
             orderNo: ''
         },
         user: {nick: ''},
-        cart: {count: ''},
+        cart: {
+            count: '',
+        },
         vip: [],
     },
     mounted: function () {
@@ -102,7 +104,7 @@ var vm = new Vue({
                         vm.cart = result.data
                         console.log(vm.cart)
                     } else {
-                        alert(result.msg)
+                        // alert(result.msg)
                     }
                 }
             })
@@ -259,6 +261,42 @@ var vm = new Vue({
             });
         },
 
+        /**
+         *清空购物车
+         */
+        clearCart: function(){
+            alert("是否清空购物车")
+            var userId = getCookie("sessionId");
+            var t = {
+                userId: userId,
+            };
+
+            var formData = JSON.stringify(t);
+            var now = getNow("yyyyMMddHHmmss");
+            var sign = signString(formData, now);
+            $.ajax({
+                headers: {
+                    client: client,
+                    version: version,
+                    requestTime: now,
+                    sign: sign
+                },
+                type: "post",
+                url: "http://localhost:8080/cart/clearCartInfo",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        alert("已清空")
+                        window.location.reload();
+                    } else {
+                        alert("清空错误");
+                        window.location.reload();
+                    }
+                }
+            });
+        },
         /**
          * 提交订单
          */

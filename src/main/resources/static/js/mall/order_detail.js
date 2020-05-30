@@ -52,15 +52,26 @@ var vm = new Vue({
             orderNo: '',
             orderStatus: '',
             totalPrice: '',
-            productName:'',
+            productName: '',
         },
-        user:{nick:''},
-        cart:{count:0},
-        form:'',
-        refundReason:'',
-        sendDelayMessage:'',
-        creatTime:'',
-        isEnd :false,
+        comment: {
+            orderId: '',
+            productId: '',
+            userId: '',
+            memberNickName:'',
+            productName:'',
+            pics: '',
+            showStatus: '',
+            content: '',
+            star: ''
+        },
+        user: {nick: ''},
+        cart: {count: 0},
+        form: '',
+        refundReason: '',
+        sendDelayMessage: '',
+        creatTime: '',
+        isEnd: false,
         day: 0,
         hr: 0,
         min: 0,
@@ -171,11 +182,11 @@ var vm = new Vue({
         /**
          * 设置延时取消订单
          */
-        sendDelayMessageCancelOrder: function(){
+        sendDelayMessageCancelOrder: function () {
             var formData = JSON.stringify();
             $.ajax({
                 type: "post",
-                url: "http://localhost:8080/order/cancelTimeOrder?orderId="+244,
+                url: "http://localhost:8080/order/cancelTimeOrder?orderId=" + 244,
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 data: formData,
@@ -192,9 +203,9 @@ var vm = new Vue({
         },
         countdown: function () {
             // 定义结束时间戳
-            this.sendDelayMessage = this.sendDelayMessage -1000
+            this.sendDelayMessage = this.sendDelayMessage - 1000
             // console.log(this.creatTime)  //+ this.sendDelayMessage
-            const end = Date.parse(new Date('2020-5-22 00:00:00')) ;
+            const end = Date.parse(new Date('2020-5-22 00:00:00'));
             // 定义当前时间戳
             const now = Date.parse(new Date())
             // console.log(now)
@@ -208,7 +219,7 @@ var vm = new Vue({
             //     return
             // }
             // 用结束时间减去当前时间获得倒计时时间戳
-            const msec = this.sendDelayMessage ;
+            const msec = this.sendDelayMessage;
             let day = parseInt(msec / 1000 / 60 / 60 / 24) //算出天数
             let hr = parseInt(msec / 1000 / 60 / 60 % 24)//算出小时数
             let min = parseInt(msec / 1000 / 60 % 60)//算出分钟数
@@ -231,7 +242,7 @@ var vm = new Vue({
          */
         updateStock: function (productId, productQuantity) {
             var t = [
-                 {
+                {
                     id: productId,
                     stock: productQuantity
                 },
@@ -263,7 +274,7 @@ var vm = new Vue({
          */
         finishOrder: function (orderNo) {
             var userId = getCookie("sessionId");
-            if (userId == null || userId =='') {
+            if (userId == null || userId == '') {
                 alert("您未登录，请登录");
                 window.location.href = "login.html";
             }
@@ -299,7 +310,7 @@ var vm = new Vue({
          */
         cancelOrder: function (orderNo) {
             var userId = getCookie("sessionId");
-            if (userId == null || userId =='') {
+            if (userId == null || userId == '') {
                 alert("您未登录，请登录");
                 window.location.href = "login.html";
             }
@@ -335,7 +346,7 @@ var vm = new Vue({
          */
         payOrder: function (orderNo) {
             var userId = getCookie("sessionId");
-            if (userId == null || userId =='') {
+            if (userId == null || userId == '') {
                 alert("您未登录，请登录");
                 window.location.href = "login.html";
             }
@@ -344,45 +355,92 @@ var vm = new Vue({
                 return;
             } else {
                 window.location.href = "pay-select.html?orderNo=" + orderNo
-                // var t={
-                //     orderNo:orderNo
-                // }
-                // var formData = JSON.stringify(t);
-                // $.ajax({
-                //     type: "post",
-                //     url: "http://localhost:8080/order/pay",
-                //     contentType: "application/json;charset=utf-8",
-                //     dataType: "json",
-                //     data: formData,
-                //     success: function (result) {
-                //         if (result.code == 0) {
-                //             vm.pay = result.data;
-                //             console.log(vm.pay)
-                //
-                //             // vm.cartList = result.data;
-                //         } else {
-                //             alert(result.msg);
-                //         }
-                //     }
-                // });
             }
         },
-        payByzhifubao: function(){
+        payByzhifubao: function () {
 
-            window.location.href = "http://localhost:8080/order/pay?orderNo="+orderNo;
+            window.location.href = "http://localhost:8080/order/pay?orderNo=" + orderNo;
             // this.paySuccess();
         },
-        refundModal: function(){
+        refundModal: function () {
             $('#personalInfoModal').modal('show');
         },
-        refund: function(refundAmount){
+        commentModal: function () {
+            $('#personalInfoModal2').modal('show');
+        },
+        openImg: function () {
+            $('#file').click();
+        },
+        preview: function () {
+            this.comment.pics = '';
+            var file = document.getElementById('file').files[0];
+            var url = URL.createObjectURL(file);
+            this.comment.pics = url;
+        },
+        CommentUpload: function () {
+            if ($.trim($('#file').val()) === '') {
+                alert('请选择图片');
+                return;
+            }
+            // var file = $.trim($('#file').val());
+            // var formData = JSON.stringify(file);
+            var option = {
+                type: "post",
+                url: "http://localhost:8080/admin/upload/file",
+                name: "file",
+                // contentType: false,
+                // contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                // data: formData,
+                beforeSubmit: function () {
+                    //layer.load();
+                    $('#progress').show();
+                },
+                success: function (result) {
+                    // layer.closeAll('loading');
+                    if (result != null && result.resultCode === 200) {
+                        vm.comment.pics = result.data;
+                        return false;
+                    } else {
+                        alert("error");
+                    }
+                }
+            };
+            $('#fileForm').ajaxSubmit(option);
+        },
+        saveComment: function (orderId, productId,productName) {
+            this.comment.orderId = orderId;
+            this.comment.productId = productId;
+            this.comment.productName = productName,
+            this.comment.userId = getCookie("sessionId");
+            console.log(this.user.nick)
+            this.comment.memberNickName = this.user.nick;
+            var formData = JSON.stringify(this.comment);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/comment/add",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        alert("评价成功")
+                        window.location.reload();
+                    } else {
+                        alert("评价失败")
+                        window.location.reload();
+                    }
+                }
+            });
+        },
+        refund: function (refundAmount) {
             var t = {
                 orderNo: orderNo,
             }
             var formData = JSON.stringify(t);
             $.ajax({
                 type: "post",
-                url: "http://localhost:8080/order/alipayRefundOrder?orderNo="+orderNo+"&refundReason="+this.refundReason+"&refundAmount="+refundAmount,
+                url: "http://localhost:8080/order/alipayRefundOrder?orderNo=" + orderNo + "&refundReason=" + this.refundReason + "&refundAmount=" + refundAmount,
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 data: formData,
@@ -404,7 +462,7 @@ var vm = new Vue({
          */
         payOrderType: function (payType) {
             var userId = getCookie("sessionId");
-            if (userId == null || userId =='') {
+            if (userId == null || userId == '') {
                 alert("您未登录，请登录");
                 window.location.href = "login.html";
             }
@@ -445,7 +503,7 @@ var vm = new Vue({
                 orderNo: orderNo,
                 payType: 1,
                 totalPrice: this.pay.totalPrice,
-                productName:this.pay.productName
+                productName: this.pay.productName
 
             }
             console.log(t)

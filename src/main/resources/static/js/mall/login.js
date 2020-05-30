@@ -6,7 +6,8 @@ $(function () {
         data: {
             user:{
                 username: null,
-                password: null
+                password: null,
+                phone: null
             },
             register:{
                 username: null,
@@ -24,10 +25,14 @@ $(function () {
         computed: {},
         methods: {
             loginDo: function () {
-                if ($.trim(this.user.username) == ''){
+                if ($.trim(this.user.phone) == ''){
                     // alert(this.user.username)
                     this.error = '请输入登录名/账号';
                     alert(this.error);
+                    return;
+                }
+                if (!validPhoneNumber(this.user.phone)) {
+                    alert("请输入正确的登录名(手机号)");
                     return;
                 }
                 if ($.trim(this.user.password) == ''){

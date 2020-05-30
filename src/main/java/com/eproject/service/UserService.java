@@ -61,6 +61,10 @@ public interface UserService {
     int selectCollectInfo(Integer id, Integer userId);
 
     /**
+     * 查看用户收藏的单个商品
+     */
+    Collect selectByProductId(Integer productId,Integer userId);
+    /**
      * 用户的关注：人和产品
      */
     int insertFollowInfo(Integer id, Integer userId);
@@ -86,6 +90,10 @@ public interface UserService {
      */
     PageResult selectFollowInfo(PageQuery pageQuery);
 
+    /**
+     * 筛选用户Nick
+     */
+    String selectNick(Integer userId);
     /**
      * 退出登录
      */

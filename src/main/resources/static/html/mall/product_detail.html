@@ -10,6 +10,62 @@
     <link rel="stylesheet" href="../../css/mall/styles/detail.css">
     <link rel="stylesheet" href="../../css/admin/plugins/sweetalert/sweetalert.css"/>
 </head>
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .outer {
+        position: relative;
+        margin: 50px auto;
+    }
+
+    .outer:after {
+        /*content: "\200B";*/
+        display: block;
+        height: 0;
+        clear: both;
+    }
+
+    .outer > .minbox {
+        /*width: 400px;*/
+        /*height: 200px;*/
+        border: 1px solid #888888;
+        float: left;
+        position: relative;
+    }
+
+    .outer > .minbox > img {
+        /*width: 400px;*/
+        /*height: 200px;*/
+    }
+
+    .outer > .minbox > .mask {
+        width: 100px;
+        height: 100px;
+        background-color: rgba(135, 223, 170, 0.58);
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+    }
+
+    .outer > .bigbox {
+        width: 300px;
+        height: 300px;
+        position: absolute;
+        left: 550px;
+        top: 150px;
+        overflow: hidden;
+        display: none;
+    }
+
+    .outer > .bigbox > img {
+        width: 800px;
+        height: 400px;
+    }
+</style>
 <body>
 <div id="detail">
     <!-- nav -->
@@ -40,7 +96,7 @@
                             </a>
                         </li>
                     </ul>
-                    <a href="##" class="username">
+                    <a href="center.html" class="username">
                         <div>{{user.nick}}</div>
                         <i class="iconfont icon-down"></i>
                     </a>
@@ -57,10 +113,10 @@
                         <li><a href="login.html">登录</a></li>
                         <li><a href="register.html">注册</a></li>
                     </ul>
-                    <div class="shopcart">
-                        <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>
-                            购物车(0)</a>
-                    </div>
+<!--                    <div class="shopcart">-->
+<!--                        <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>-->
+<!--                            购物车(0)</a>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -68,9 +124,13 @@
 
 
     <div class="intro mt20 w clearfix">
-        <div class="left fl" style="position: relative;">
-            <div class="swiper-container fl">
-                <img :src="detail.productImg" width="620px" height="513px">
+        <div class="outer">
+            <div class="minbox">
+                <img :src="detail.productImg" width="550px" height="510px">
+                <p class="mask"></p>
+            </div>
+            <div class="bigbox">
+                <img :src="detail.productImg">
             </div>
         </div>
         <div class="right fr">
@@ -107,17 +167,28 @@
             <div class="sub_title mr40 ml20 mt10">{{detail.description}}</div>
             <div class="ml20">
                 <p>购买数量：<input type="number" class="mui-amount-input" v-model="detail.productCount" maxlength="8"
-                               title="请输入购买量">
+                               min="1" title="请输入购买量">
             </div>
             <div class="order ml50">
                 <input class="car1" type="button" @click="saveAndGoToCart(detail)" value="立即选购"/>
                 <input class="car2" type="button" @click="saveToCart(detail)" value="加入购物车"/>
             </div>
             <div class="tb-extra ml20" id="J_tbExtra">
+                <dl v-if="collect.status == 0">
+                    <dt>收藏</dt>
+                    <dd><a @click="collectProduct" target="_blank"><img style="width: 25px;height: 25px" src="../../css/mall/image/sc-wdjzt.png"></a>
+                </dl>
+                <dl v-if="collect.status == 1">
+                    <dt>已收藏</dt>
+                    <dd><a @click="cancelProduct(collect.id)" target="_blank"><img style="width: 25px;height: 25px" src="../../css/mall/image/sc-djzt.png"></a>
+                </dl>
                 <dl>
                     <dt>承诺</dt>
                     <dd><a class="J_Cont" title="满足7天无理由退换货申请的前提下，包邮商品需要买家承担退货邮费，非包邮商品需要买家承担发货和退货邮费。" href="#"
                            target="_blank"><img src="../../css/mall/image/7d.jpg">7天无理由</a></dd>
+                    <dd><a class="J_Cont" title="" href="#"
+                           target="_blank"><img style="height: 25px; width: 100px"
+                                                src="../../upload/20200524_18495450.png"></a></dd>
                 </dl>
                 <dl>
                     <dt>支付</dt>
@@ -138,25 +209,14 @@
     <!-- 这里使用的是 th:utext 标签，用 th:text 不会解析 html，用 th:utext 会解析 html -->
     <div class="dc">
         <div class="content w">
-            <!--            <div class="title fl">商品详情</div>-->
-            <!--            <div class="title fl">商品详情</div>-->
             <nav>
-                <li style="font-size: 50px;font-weight: bold;"><a href="##">商品详情&nbsp;&nbsp;|</a></li>
-                <!--                <li>|</li>-->
-                <!--                <li><a href="##">详情</a></li>-->
-                <!--                <li style="font-size: 22px;font-weight: bold;">|</li>-->
-                <li style="font-size: 50px;font-weight: bold;"><a href="#add">用户评价</a></li>
+                <li style="font-weight: bold;"><a href="##">商品详情&nbsp;&nbsp;|</a></li>
+                <li style="font-weight: bold;"><a href="#add">用户评价</a></li>
                 <div class="clear"></div>
             </nav>
             <div class="clear"></div>
         </div>
     </div>
-    <!--    <div class="dc">-->
-    <!--        <div class="content w">-->
-    <!--            <div class="title fl">商品简介-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
     <div class="intro mt20 w clearfix">
         <span v-html="detail.detail"></span>
     </div>
@@ -168,16 +228,16 @@
                 <p><span class="score-value-no score-value-4d8"><em></em></span>
                 </p>
             </div>
-<!--            <div class="rate-graph">-->
-<!--                <div class="graph-scroller"><span style="width:96%"><em>4.8</em></span></div>-->
-<!--                <ol class="graph-desc">-->
-<!--                    <li>非常不满</li>-->
-<!--                    <li>不满意</li>-->
-<!--                    <li>一般</li>-->
-<!--                    <li>满意</li>-->
-<!--                    <li>非常满意</li>-->
-<!--                </ol>-->
-<!--            </div>-->
+            <!--            <div class="rate-graph">-->
+            <!--                <div class="graph-scroller"><span style="width:96%"><em>4.8</em></span></div>-->
+            <!--                <ol class="graph-desc">-->
+            <!--                    <li>非常不满</li>-->
+            <!--                    <li>不满意</li>-->
+            <!--                    <li>一般</li>-->
+            <!--                    <li>满意</li>-->
+            <!--                    <li>非常满意</li>-->
+            <!--                </ol>-->
+            <!--            </div>-->
             <div class="rate-tag-box">
                 <div class="rate-tag-label">
                     <span>大家都写到</span>
@@ -188,12 +248,17 @@
                         <a id="ratetag676_20011000a" href="#" data-posi="1" data-id="20011000"
                            data-spm-anchor-id="a220o.1000855.0.0" class="">颜值很高(1643)<s></s></a>
                     </span>
-                        <span class="tag-posi"><a id="ratetag676_20051059a" href="#" data-posi="1" data-id="20051059">字清晰(1296)<s></s></a>
+                        <span class="tag-posi"><a id="ratetag676_20051059a" href="#" data-posi="1"
+                                                  data-id="20051059">字清晰(1296)<s></s></a>
                     </span>
-                        <span class="tag-posi"><a id="ratetag676_20221001a" href="#" data-posi="1" data-id="20221001">拍摄效果很好(1293)<s></s></a></span>
-                        <span class="tag-posi"><a id="ratetag676_20201000a" href="#" data-posi="1" data-id="20201000">快递很好(1286)<s></s></a></span>
-                        <span class="tag-posi"><a id="ratetag676_20101023a" href="#" data-posi="1" data-id="20101023">运行速度快(1211)<s></s></a></span>
-                        <span class="tag-neg"><a id="ratetag676_20201000b" href="#" data-posi="-1" data-id="20201000">快递一般(108)<s></s></a></span>
+                        <span class="tag-posi"><a id="ratetag676_20221001a" href="#" data-posi="1"
+                                                  data-id="20221001">拍摄效果很好(1293)<s></s></a></span>
+                        <span class="tag-posi"><a id="ratetag676_20201000a" href="#" data-posi="1"
+                                                  data-id="20201000">快递很好(1286)<s></s></a></span>
+                        <span class="tag-posi"><a id="ratetag676_20101023a" href="#" data-posi="1"
+                                                  data-id="20101023">运行速度快(1211)<s></s></a></span>
+                        <span class="tag-neg"><a id="ratetag676_20201000b" href="#" data-posi="-1"
+                                                 data-id="20201000">快递一般(108)<s></s></a></span>
                     </div>
                 </div>
                 <span class="rate-tag-toggle" title="显示所有信息"></span></div>
@@ -237,7 +302,7 @@
 </div>
 
 <!--<div th:replace="mall/footer::footer-fragment"></div>-->
-
+</div>
 <!-- jQuery -->
 <script src="../../js/jquery.js"></script>
 <script src="../../js/vue.js"></script>
@@ -245,5 +310,52 @@
 <script src="../../js/common.js"></script>
 <script src="../../js/mall/product_detail.js"></script>
 <!--<script src="../../js/mall/comment.js"></script>-->
+<script>
+    oMinBox = document.querySelector('.outer>.minbox')
+    oMask = document.querySelector('.outer>.minbox>.mask')
+    oBigBox = document.querySelector('.outer>.bigbox')
+    oImg = document.querySelector('.outer>.bigbox>img')
+
+    oMinBox.onmouseenter = function (e) {
+        var e = e || window.event
+        oMask.style.display = "block"
+        oBigBox.style.display = "block"
+        oMinBox.onmousemove = function (e) {
+            var e = e || window.event
+            var maskPosition = {
+                left: e.clientX - oMask.offsetWidth / 2 - oMinBox.getBoundingClientRect().left,
+                top: e.clientY - oMask.offsetHeight / 2 - oMinBox.getBoundingClientRect().top
+            }
+            if (maskPosition.left <= 0) {
+                maskPosition.left = 0
+            } else if (maskPosition.left >= oMinBox.clientWidth - oMask.offsetWidth) {
+                maskPosition.left = oMinBox.clientWidth - oMask.offsetWidth
+            }
+            if (maskPosition.top <= 0) {
+                maskPosition.top = 0
+            } else if (maskPosition.top >= oMinBox.clientHeight - oMask.offsetHeight) {
+                maskPosition.top = oMinBox.clientHeight - oMask.offsetHeight
+            }
+            oMask.style.left = maskPosition.left + 'px'
+            oMask.style.top = maskPosition.top + 'px'
+
+            //计算比例
+            var scaleWidth = (oImg.clientWidth - oBigBox.offsetWidth) / (oMinBox.clientWidth - oMask.offsetWidth)
+            var scaleHeight = (oImg.clientHeight - oBigBox.offsetHeight) / (oMinBox.clientHeight - oMask.offsetHeight)
+            var bigBoxPosition = {
+                left: maskPosition.left * scaleWidth,
+                top: maskPosition.top * scaleHeight
+            }
+            oImg.style.marginLeft = -bigBoxPosition.left + 'px'
+            oImg.style.marginTop = -bigBoxPosition.top + 'px'
+        }
+    }
+    oMinBox.onmouseleave = function (e) {
+        var e = e || window.event
+        oMask.style.display = "none"
+        oBigBox.style.display = "none"
+    }
+
+</script>
 </body>
 </html>

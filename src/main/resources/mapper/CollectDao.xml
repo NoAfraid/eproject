@@ -20,6 +20,12 @@
         from collect
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="selectByProductId" resultType="com.eproject.entity.Collect">
+        select id,status
+        from collect
+        where product_id = #{productId} and user_id = #{userId}
+        limit 1
+    </select>
     <select id="selectInfo" parameterType="Map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

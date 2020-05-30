@@ -92,6 +92,8 @@ public class UserController {
                 String token = "";
                 try {
                     token = MD5Encode.EncoderByMd5(UUID.randomUUID().toString() + System.currentTimeMillis());
+                    //session过期时间设置
+                    session.setMaxInactiveInterval(60 * 60 * 2);
                     log.info("======登录token：{}",token);
                 } catch (NoSuchAlgorithmException e) {
                     // TODO Auto-generated catch block
@@ -273,6 +275,20 @@ public class UserController {
         }
     }
 
+    /**
+     * 查看单个收藏商品
+     */
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST, value = "/CollectById",produces = "application/json;charset=UTF-8")
+    public R CollectById(@RequestBody Map<String, Object> result, @LoginUser User u){
+        if (u == null){
+            return R.error(-1,"未登录");
+        }
+        Integer productId = Integer.parseInt(result.get("id")+"");
+        Integer userId = Integer.parseInt(result.get("userId")+"");
+        Collect collect = userService.selectByProductId(productId,userId);
+        return R.ok().put("data",collect);
+    }
     /**
      *
      * 取消收藏

@@ -22,6 +22,8 @@ public interface CollectDao {
 
     int selectCollectInfo(Integer id, Integer userId);
 
+    Collect selectByProductId(Integer productId,Integer userId);
+
     int updateByPrimaryKeySelective(Collect record);
 
     int updateByPrimaryKey(Collect record);

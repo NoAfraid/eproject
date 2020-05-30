@@ -130,16 +130,17 @@ $(function () {
                 $('#file').click();
             },
             preview: function() {
-                this.productImg = '';
+                this.product.productImg = '';
                 var file = document.getElementById('file').files[0];
                 var url = URL.createObjectURL(file);
-                this.productImg = url;
+                this.product.productImg = url;
             },
             AjaxUpload: function () {
                 if($.trim($('#file').val()) === '') {
                     alert('请选择图片');
                     return;
                 }
+                console.log($('#file').val())
                 var formData = JSON.stringify(this.product);
                 var option = {
                     type: "post",
@@ -202,7 +203,7 @@ $(function () {
              * 返回商品列表
              */
             returnProduct: function () {
-                window.location.href ="my_orders.html" ;
+                window.location.href ="goods.html" ;
             },
         }
     });

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>newbee-mall | 后台管理系统</title>
+    <title>后台管理系统</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -249,10 +249,12 @@
                                         <td v-else-if="item.orderStatus == 2">配货完成</td>
                                         <td v-else-if="item.orderStatus == 3">出库成功</td>
                                         <td v-else-if="item.orderStatus == 4">交易成功</td>
+                                        <td v-else-if="item.orderStatus == 5">已评价</td>
                                         <td v-else-if="item.orderStatus == -1">手动关闭</td>
                                         <td v-else-if="item.orderStatus == -2">超时关闭</td>
                                         <td v-else-if="item.orderStatus == -3">商家关闭</td>
                                         <td v-else-if="item.orderStatus == -5">客户退款</td>
+                                        <td v-else-if="item.orderStatus == '' || item.orderStatus ==nul">无</td>
                                         <td v-if="item.payType ==null || item.orderStatus <= 0">暂无</td>
                                         <td v-else-if="item.payType == 1 && item.orderStatus > 0">支付宝支付</td>
                                         <td v-else-if="item.payType == 0 && item.orderStatus > 0">微信支付</td>

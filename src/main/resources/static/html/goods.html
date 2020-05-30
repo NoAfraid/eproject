@@ -20,26 +20,26 @@
     <link rel="stylesheet" type="text/css" href="../css/css.css"/>
     <link rel="stylesheet" type="text/css" href="../css/zt.css"/>
 </head>
-<style>
-    .ui-jqgrid tr.jqgrow td {
-        white-space: normal !important;
-        height: auto;
-        vertical-align: text-top;
-        padding-top: 2px;
-    }
+<!--<style>-->
+<!--    .ui-jqgrid tr.jqgrow td {-->
+<!--        white-space: normal !important;-->
+<!--        height: auto;-->
+<!--        vertical-align: text-top;-->
+<!--        padding-top: 2px;-->
+<!--    }-->
 
-    a {
-        color: #1baeae;
-        text-decoration: none;
-        background-color: transparent;
-        -webkit-text-decoration-skip: objects;
-    }
+<!--    a {-->
+<!--        color: #1baeae;-->
+<!--        text-decoration: none;-->
+<!--        background-color: transparent;-->
+<!--        -webkit-text-decoration-skip: objects;-->
+<!--    }-->
 
-    a:hover {
-        color: white;
-        background-color: #1baeae;
-    }
-</style>
+<!--    a:hover {-->
+<!--        color: white;-->
+<!--        background-color: #1baeae;-->
+<!--    }-->
+<!--</style>-->
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" id="goodsList">
     <!-- 引入页面头header-fragment -->
@@ -210,7 +210,7 @@
                             <button  >
                                 <input class="text" type="text" id="keyword" autocomplete="off" v-model="productL.productName">
                             </button>
-                            <button @click="searchP">搜索商品</button>
+                            <button style="font-size: 16px" @click="searchP">搜索商品</button>
                             &nbsp;&nbsp;
                             <button class="btn btn-info" @click="addProduct"><i
                                     class="fa fa-pencil-square-o"></i>&nbsp;添加商品
@@ -237,20 +237,14 @@
                                 <table class="gridtable" >
                                     <tr>
                                         <td><label><input type="checkbox" id="checkAll"/></label></td>
-                                        <th>商品编号</th>
-                                        <th>商品名称</th>
-                                        <td>商品图片</td>
-                                        <th>商品库存</th>
-                                        <th>商品售价</th>
-                                        <th>商品状态</th>
-                                        <th>商品简介</th>
-                                        <th>推荐状态</th>
-                                        <th>
-                                            查看次数
-                                            <div class="ck">
-                                                <p></p>
-                                            </div>
-                                        </th>
+                                        <th style="width: 116px;height: 104px">商品编号</th>
+                                        <th style="width: 116px;height: 104px">商品名称</th>
+                                        <th style="width: 116px;height: 104px">商品图片</th>
+                                        <th style="width: 116px;height: 104px">商品库存</th>
+                                        <th style="width: 116px;height: 104px">商品售价</th>
+                                        <th style="width: 116px;height: 104px">商品状态</th>
+                                        <th style="width: 116px;height: 104px">商品简介</th>
+                                        <th style="width: 116px;height: 104px">推荐状态</th>
                                     </tr>
                                     <tr class="gridtable" v-for="item in goodsList.list">
                                         <td><input type="checkbox" v-model="msg" :value="item.id"/></td>
@@ -264,12 +258,6 @@
                                         <td>{{item.description}}</td>
                                         <td v-if="item.recomandStatus == 1">已推荐</td>
                                         <td v-else="item.recomandStatus == 0">不推荐</td>
-                                        <td>
-                                            {{item.viewCount}}
-                                            <div class="ck">
-<!--                                                <a :href="'../advice-detail.html?item='+item.id+'&isCenter='+isCenter">查看</a>-->
-                                            </div>
-                                        </td>
 
                                     </tr>
                                 </table>

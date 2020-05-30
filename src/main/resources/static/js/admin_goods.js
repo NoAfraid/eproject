@@ -212,7 +212,6 @@ console.log(id)
                     limit: this.limit,
                     // page: page == null ? this.current : page
                 };
-                alert(this.productL)
                 var formData = JSON.stringify(t);
                 $.ajax({
                     type: "post",
@@ -223,9 +222,9 @@ console.log(id)
                     success: function (result) {
                         if (result.code == 0) {
                             vm.goodsList = result.data
-                            console.log(vm.goodsList)
+                            // console.log(vm.goodsList)
                         } else {
-                            alert(result.msg)
+                            // alert(result.msg)
                         }
                     }
                 })

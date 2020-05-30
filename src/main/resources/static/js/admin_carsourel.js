@@ -99,7 +99,7 @@ var vm = new Vue({
                 alert('请选择图片');
                 return;
             }
-            var formData = JSON.stringify(this.product);
+            // var formData = JSON.stringify(this.product);
             var option = {
                 type: "post",
                 url:  "http://localhost:8080/admin/upload/file",
@@ -107,11 +107,11 @@ var vm = new Vue({
                 // contentType: false,
                 // contentType: "application/json;charset=utf-8",
                 dataType: "json",
-                data: formData,
-                beforeSubmit: function() {
-                    //layer.load();
-                    $('#carouselModal').show();
-                },
+                // data: formData,
+                // beforeSubmit: function() {
+                //     //layer.load();
+                //     $('#carouselModal').show();
+                // },
                 success: function (result) {
                     // layer.closeAll('loading');
                     if (result != null && result.resultCode === 200) {

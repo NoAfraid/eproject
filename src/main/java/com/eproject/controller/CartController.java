@@ -84,7 +84,7 @@ public class CartController {
             request.setAttribute("totalAmount",totalAmount);
             return R.ok().put("data",cartList);
         }
-        return R.error(-1,"查询为空");
+        return R.error(-1,"购物车为空");
     }
 
     /**
@@ -106,7 +106,7 @@ public class CartController {
             map.put("totalAmount",totalAmount);
             return R.ok().put("data",map);
         }
-        return R.error(-1,"查询为空");
+        return R.error(-1,"购物车为空");
     }
     /**
      * 跳转到下单页

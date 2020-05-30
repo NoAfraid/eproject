@@ -172,6 +172,7 @@
                                             <td v-else-if="item.orderStatus == 2">已配货</td>
                                             <td v-else-if="item.orderStatus == 3">已出库</td>
                                             <td v-else-if="item.orderStatus == 4">交易成功</td>
+                                            <td v-else-if="item.orderStatus == 5">已评价</td>
                                             <td>{{item.productPrice}}元 x {{item.productQuantity}}</td>
 
                                             <td>{{item.productPrice * item.productQuantity}}.00元</td>

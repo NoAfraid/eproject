@@ -198,6 +198,7 @@ public class OrderController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            o.setPayType("1");
             Integer count = orderService.paySuccess(o.getOrderNo(), o.getPayType());
 //            return form;
 //            return R.ok().put("data", form);

@@ -1,6 +1,6 @@
 var id = getRequest();
 var id = id['id']
-console.log(id)
+// console.log(id)
 function getRequest() {
     var url = location.search; //获取url中"?"符后的字串
     // alert(url)
@@ -31,8 +31,16 @@ var vm = new Vue({
             price:'',
         },
         total: 0,
-        user:{nick:''},
+        user:{
+            nick:'',
+            id:''
+        },
         cart:{count:0},
+        collect:{
+            status:'',
+            id:'',
+            userId:'',
+        },
         vip: [],
         commentList:{
             memberNickName:'',
@@ -55,6 +63,7 @@ var vm = new Vue({
         this.getUserInfo();
         this.getCartInfo();
         this.getCommentList();
+        this.collectList();
     },
     create:{},
     methods: {
@@ -81,7 +90,7 @@ var vm = new Vue({
                     success: function (result) {
                         if (result.code == 0) {
                             vm.user = result.data
-                            console.log(vm.user.nick)
+                            // console.log(vm.user.nick)
                         } else {
                             // alert(result.msg)
                         }
@@ -113,7 +122,7 @@ var vm = new Vue({
                     success: function (result) {
                         if (result.code == 0) {
                             vm.cart.count = result.data
-                            console.log(vm.cart.count)
+                            // console.log(vm.cart.count)
                         } else {
                             // alert(result.msg)
                         }
@@ -177,9 +186,12 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         // window.location.href = "product_detail.html";
+
                         alert(result.data)
+                        window.location.reload();
                     } else {
                         alert(result.msg);
+                        window.location.reload();
                     }
                 }
             });
@@ -248,7 +260,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.commentList = result.data;
-                        console.log(vm.commentList)
+                        // console.log(vm.commentList)
                     } else {
                         return;
                     }
@@ -275,6 +287,94 @@ var vm = new Vue({
             console.log(pic)
             return pic
 
+        },
+        collectProduct: function(){
+            var userId = getCookie("sessionId");
+            this.user.id = userId;
+            var formData = JSON.stringify(this.user);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
+            console.log(this.user)
+            $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
+                type: "post",
+                url: "http://localhost:8080/user/collect?id=" + id,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        alert("收藏成功");
+                        window.location.reload()
+                    } else {
+                        return;
+                    }
+                }
+            });
+        },
+        collectList: function(){
+            var userId = getCookie("sessionId");
+            var t = {
+                userId: userId,
+                id:id
+            };
+            var formData = JSON.stringify(t);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
+            $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
+                type: "post",
+                url: "http://localhost:8080/user/CollectById",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.collect = result.data;
+                        // console.log(vm.collect)
+                    } else {
+                        return;
+                    }
+                }
+            });
+        },
+        cancelProduct: function(collectId){
+            this.collect.id = collectId;
+            this.collect.userId = getCookie("sessionId");
+            var formData = JSON.stringify(this.collect);
+            var now =  getNow("yyyyMMddHHmmss");
+            var sign  = signString(formData,now);
+            $.ajax({
+                headers:{
+                    client:client,
+                    version:version,
+                    requestTime:now,
+                    sign:sign
+                },
+                type: "post",
+                url: "http://localhost:8080/user/cancelCollect",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: formData,
+                success: function (result) {
+                    if (result.code == 0) {
+                        alert("取消成功");
+                        window.location.reload()
+                    } else {
+                        return;
+                    }
+                }
+            });
         },
         /** 
          * 时间格式化
